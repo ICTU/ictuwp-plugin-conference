@@ -1,0 +1,317 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ICTU / WP Register post types and taxonomies\n"
+"POT-Creation-Date: 2019-01-22 21:45+0100\n"
+"PO-Revision-Date: 2019-01-22 21:45+0100\n"
+"Last-Translator: Paul van Buuren <paul@wbvb.nl>\n"
+"Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: rhswp-register_taxonomies.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: rhswp-register_taxonomies.php:131 rhswp-register_taxonomies.php:136
+#: rhswp-register_taxonomies.php:138 rhswp-register_taxonomies.php:158
+msgctxt "Dossier"
+msgid "Topics"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:132 rhswp-register_taxonomies.php:137
+msgctxt "Dossier"
+msgid "Topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:139
+msgctxt "Dossier"
+msgid "All topics"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:140 rhswp-register_taxonomies.php:141
+msgctxt "Dossier"
+msgid "Add new topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:142
+msgctxt "Dossier"
+msgid "Edit topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:143
+msgctxt "Dossier"
+msgid "New topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:144
+msgctxt "Dossier"
+msgid "View topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:145
+msgctxt "Dossier"
+msgid "Search topic"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:146
+msgctxt "Dossier"
+msgid "No topic found"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:147
+msgctxt "Dossier"
+msgid "No topic found in trash"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:148 rhswp-register_taxonomies.php:191
+#: rhswp-register_taxonomies.php:229 rhswp-register_taxonomies.php:271
+msgid "Featured image"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:149 rhswp-register_taxonomies.php:192
+#: rhswp-register_taxonomies.php:230 rhswp-register_taxonomies.php:272
+msgid "Archives"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:150 rhswp-register_taxonomies.php:193
+#: rhswp-register_taxonomies.php:231 rhswp-register_taxonomies.php:273
+msgid "Uploaded media"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:154
+msgctxt "Dossiers label"
+msgid "Topics"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:174 rhswp-register_taxonomies.php:201
+msgctxt "digibeterkleuren"
+msgid "Onderdelen NL Digibeter"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:175
+msgctxt "digibeterkleuren"
+msgid "Onderdeel NL Digibeter"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:179 rhswp-register_taxonomies.php:181
+msgctxt "digibeterkleuren"
+msgid "Digibeter-kleuren"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:180
+msgctxt "digibeterkleuren"
+msgid "Digibeter-kleur"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:182
+msgctxt "digibeterkleuren"
+msgid "Alle kleuren"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:183
+msgctxt "digibeterkleuren"
+msgid "Nieuw onderdeel toevoegen"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:184
+msgctxt "digibeterkleuren"
+msgid "Voeg nieuw onderdeel toe"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:185
+msgctxt "digibeterkleuren"
+msgid "Bewerk onderdeel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:186
+msgctxt "digibeterkleuren"
+msgid "Nieuw onderdeel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:187
+msgctxt "digibeterkleuren"
+msgid "Bekijk onderdeel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:188
+msgctxt "digibeterkleuren"
+msgid "Zoek onderdeel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:189
+msgctxt "digibeterkleuren"
+msgid "Geen onderdelen gevonden"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:190
+msgctxt "digibeterkleuren"
+msgid "Geen onderdelen gevonden in de prullenbak"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:197
+msgctxt "Digibeter label"
+msgid "Onderdelen NL Digibeter"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:217 rhswp-register_taxonomies.php:219
+msgctxt "document type"
+msgid "Documents"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:218
+msgctxt "document type"
+msgid "Document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:220
+msgctxt "document type"
+msgid "All documents"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:221 rhswp-register_taxonomies.php:222
+msgctxt "document type"
+msgid "Add new document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:223
+msgctxt "document type"
+msgid "Edit document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:224
+msgctxt "document type"
+msgid "New document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:225
+msgctxt "document type"
+msgid "View document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:226
+msgctxt "document type"
+msgid "Search document"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:227
+msgctxt "document type"
+msgid "No documents found"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:228
+msgctxt "document type"
+msgid "No documents found in trash"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:235
+msgctxt "Documents label"
+msgid "Documents"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:259 rhswp-register_taxonomies.php:261
+msgctxt "caroussel"
+msgid "Carrousels"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:260
+msgctxt "caroussel"
+msgid "Carrousel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:262
+msgctxt "caroussel"
+msgid "Alle carrousels"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:263
+msgctxt "caroussel"
+msgid "Nieuwe carrousel toevoegen"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:264
+msgctxt "caroussel"
+msgid "Voeg nieuwe carrousel toe"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:265
+msgctxt "caroussel"
+msgid "Bewerk carrousel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:266
+msgctxt "caroussel"
+msgid "Nieuwe carrousel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:267
+msgctxt "caroussel"
+msgid "Bekijk carrousel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:268
+msgctxt "caroussel"
+msgid "Zoek carrousel"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:269
+msgctxt "caroussel"
+msgid "Geen carrousels gevonden"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:270
+msgctxt "caroussel"
+msgid "Geen carrousels gevonden in de prullenbak"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:277
+msgctxt "Carrousels label"
+msgid "Carrousels"
+msgstr ""
+
+#: rhswp-register_taxonomies.php:279
+msgctxt "Carrousels description"
+msgid ""
+"Foto\\'s en links. Toe te voegen aan pagina\\'s en taxonomieen op Digitale "
+"Overheid"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "ICTU / WP Register post types and taxonomies"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid ""
+"https://github.com/ICTU/Digitale-Overheid---WordPress-Custom-Post-Types-"
+"and-Taxonomies"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Plugin for digitaleoverheid.nl to register custom post types and custom "
+"taxonomies"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Paul van Buuren"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://wbvb.nl/"
+msgstr ""
+
+#~ msgctxt "Dossiers label"
+#~ msgid "Dossiers"
+#~ msgstr "Dossiers"
+
+#~ msgctxt "Dossier"
+#~ msgid "Dossiers"
+#~ msgstr "Dossiers"

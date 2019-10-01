@@ -1,0 +1,251 @@
+
+
+// Gebruiker Centraal - mixins.less
+// ----------------------------------------------------------------------------------
+// bevat CSS voor frontend
+// ----------------------------------------------------------------------------------
+// @package   ictu-gc-posttypes-inclusie
+// @author    Paul van Buuren
+// @license   GPL-2.0+
+// @version   0.0.10
+// @desc.     CPT procestips toegevoegd. Mogelijkheid OD-tips toe te voegen op stap-pagina.
+// @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
+
+
+
+//=========================================================================================================
+
+@blauw3:                	#002F3E;
+@wit:                   	#fff;
+@lichtgrijs:            	#e2e2e2;
+
+@bordercolor:           	#d1dfe3; // @lichtgrijs;
+
+@txt:                   	@blauw3;
+
+@inclusierood:          	#D94721;
+@inclusieroze:          	#FCD7CB;
+@inclusieoranje:        	#F89D1D;
+@inclusiekoraal:			#C73D19;
+
+@inclusiekoraal_2:			#F05A24;
+
+//=========================================================================================================
+
+
+@gc_old_green:				#25B34B; // als vanouds
+
+@gc_a11y_green:				#148839; // ook wel 'GC Green - Accessible'
+@gc_a11y_green_dark_1:		#0b732c; // ook wel 'GC Green - Darker'
+@gc_a11y_green_dark_2:		darken( @gc_a11y_green_dark_1, 10% );
+@gc_a11y_green_light_1:		pink; // lighten( @gc_a11y_green, 10% );
+@gc_a11y_green_light_2:		#E0F6E7; // voor hover 
+
+@gc_a11y_orange:			#c73d19; // ook wel 'Inclusie Accessible Orange'
+@gc_a11y_orange_less:		#d94721; // ook wel 'Inclusie Less Accessible Orange'
+
+@gc_darkblue: 				#004152; // ook wel 'GC Dark Blue'
+@gc_darkerblue:				#00303d; // ook wel 'GC Darker Blue'
+
+@gc_pantybrown_light: 		#f2ebe4; // ook wel 'GC PantyBrown Light'
+@gc_pantybrown: 			#e8d8c7; // ook wel 'GC PantyBrown'
+
+
+@gc_cardbordergrey: 		#D1DFE3; 
+
+@white:					    #FFF;
+
+@color-primary:				@gc_a11y_green;
+
+
+
+//=========================================================================================================
+
+@break_fullwidth:       	800px; // was 960px ( 63 * @padding );
+@break_tablet:          	650px;
+@break_phone:           	500px;
+
+@contentmaxwidth:			1180px; 
+@contentwidth_960:			960px; 
+@contentwidth_761:			761px; 
+@containermaxwidth: 		1900px;
+
+
+// Gutters & Margins
+@gutter: 					3rem;
+
+@spacer-default:			3rem;
+@spacer-med:				5rem;
+@spacer-large:				8rem;
+
+//=========================================================================================================
+
+@pixel:                 	1px;
+@viewport:              	1vw;
+@basefontsize:          	10;
+@basefont:              	( @basefontsize * @pixel );
+
+//=========================================================================================================
+
+@headerfont:				'League Gothic', Impact, Helvetica, Arial, sans-serif;
+@headerfont2:				'montserratregular', Helvetica, Arial, sans-serif;
+@bodyfont:					'Montserrat light', Helvetica, Arial, sans-serif; // 'Montserrat light',Helvetica,Arial,sans-serif
+@bodyfont_bold:				'montserratbold', Helvetica, Arial, sans-serif; 
+@montserrat_semibold:   	'montserrat_semiboldregular', Helvetica, Arial, sans-serif;
+
+//=========================================================================================================
+
+@listimagewidth:			3rem;
+@avafactor:					( 402 / 586 ); // factor for correct dimensions of avatars
+@avatarwidth:				250px;
+
+@linkerrechtermarge:		2rem;
+@demarges:					( @linkerrechtermarge * 2 );
+
+@citaten_minheight:			30rem;
+
+@font-primary-reg:			@headerfont2;
+
+@font-secondary:			@headerfont;
+
+
+//=========================================================================================================
+
+.visuallyhidden() {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+.visuallyhidden {
+	.visuallyhidden();  
+}
+
+
+//=========================================================================================================
+
+.visuallyvisual() {
+	border: inherit;
+	clip: auto;
+	height: auto;
+	margin: auto;
+	overflow: auto;
+	padding: inherit;
+	position: inherit;
+	width: auto;
+}
+
+.visuallyvisual {
+	.visuallyvisual();  
+}
+
+//=========================================================================================================
+
+.icon_replace_filler(@src, @fill-old, @fill-new) {
+    @data-uri:          data-uri('image/svg+xml;charset=UTF-8', "@{src}");
+    @replace-default:   escape('fill="@{fill-old}"');
+    @replace-new:       escape('fill="@{fill-new}"');
+    @replacesrc1:       replace("@{data-uri}", @replace-default, @replace-new, "g");
+    background-image: e(@replacesrc1);
+}
+
+//========================================================================================================
+
+.font-size(@input) {
+	font-size: ( ( ( @input / @basefontsize ) * @basefontsize ) * @pixel );
+}
+
+//========================================================================================================
+
+.icoontje( @classname: 'default', @src: '../images/icon-deel.svg' ) {
+
+	@fill-old: @wit;
+	@fill-new: @wit;
+	
+	.@{classname} {
+		@media only screen and ( max-width: @break_fullwidth ) {
+			button {
+				.icon_replace_filler( @src, @fill-old, @fill-new);
+				background-repeat: no-repeat;
+			}
+			p.icon.@{classname} {
+				&:before {
+					.icon_replace_filler( @src, @fill-old, @fill-new);
+				}
+
+				&.current {
+					&:before {
+						background-color: @gc_pantybrown;
+						border-color: @gc_pantybrown;
+						.icon_replace_filler( @src, @fill-old, @txt);
+					}
+				}
+			}
+		}
+		@media only screen and ( min-width: @break_fullwidth ) {
+			&:before {
+				.icon_replace_filler( @src, @fill-old, @fill-new);
+				background-repeat: no-repeat;
+			}
+			&.current {
+				&:before {
+					background-color: @gc_pantybrown;
+					border-color: @gc_pantybrown;
+					.icon_replace_filler( @src, @fill-old, @txt);
+				}
+			}
+		}
+	}
+}
+
+//=========================================================================================================
+
+.title_click_indicator() {
+	content: ' ';
+	border: 1px solid transparent;
+	.icon_replace_filler('../images/arrow-right.svg', '#004152', @txt );
+	background-repeat: no-repeat;
+	background-position: center center;
+	float: right;
+	display: block;
+}
+
+//=========================================================================================================
+
+.gc-padding() {
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+
+	@media only screen and ( min-width: @break_fullwidth ) {
+		padding-left: 3rem;
+		padding-right: 3rem;
+	}
+}
+
+//=========================================================================================================
+
+.gc-box-shadow() {
+	box-shadow: 4px 4px 0 rgba(#000, 0.1);
+}
+
+//=========================================================================================================
+
+.gc-section-heading() {
+	.font-size(34);
+	font-family: @font-secondary;
+	text-transform: uppercase;
+	line-height: 40px;
+
+	@media only screen and ( min-width: @break_fullwidth ) {
+		.font-size(46);
+		line-height: 50px;
+	}
+}
+
+//=========================================================================================================
+
