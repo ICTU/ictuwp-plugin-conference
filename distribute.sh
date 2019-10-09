@@ -1,5 +1,5 @@
 
-# sh '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-posttypes-inclusie/distribute.sh' &>/dev/null
+# sh '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-plugin-conference/distribute.sh' &>/dev/null
 
 echo '-- JA --';
 echo '----------------------------------------------------------------';
@@ -9,8 +9,8 @@ echo 'Distribute GC post type plugin';
 > '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/debug.log'
 
 # copy to temp dir
-# rsync -r -a --delete '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-posttypes-inclusie/' '/shared-paul-files/Webs/temp/'
-rsync -r -a --delete '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-posttypes-inclusie/' '/shared-paul-files/Webs/temp/'
+# rsync -r -a --delete '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-plugin-conference/' '/shared-paul-files/Webs/temp/'
+rsync -r -a --delete '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/plugins/ictu-gc-plugin-conference/' '/shared-paul-files/Webs/temp/'
 
 # clean up temp dir
 rm -rf '/shared-paul-files/Webs/temp/.git/'
@@ -29,7 +29,7 @@ rm '/shared-paul-files/Webs/temp/package.json'
 # Vertalingen --------------------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------------------------------
 # remove the .pot
-rm '/shared-paul-files/Webs/temp/languages/ictu-gc-posttypes-inclusie.pot'
+rm '/shared-paul-files/Webs/temp/languages/ictu-gc-plugin-conference.pot'
 
 # copy files to /wp-content/languages/themes
 rsync -ah '/shared-paul-files/Webs/temp/languages/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/languages/plugins/'
@@ -48,10 +48,10 @@ cd '/shared-paul-files/Webs/temp/'
 find . -name ‘*.DS_Store’ -type f -delete
 
 # en een kopietje naar Sentia accept
-rsync -r -a --delete '/shared-paul-files/Webs/temp/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/sentia/accept/www/wp-content/plugins/ictu-gc-posttypes-inclusie/'
+rsync -r -a --delete '/shared-paul-files/Webs/temp/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/sentia/accept/www/wp-content/plugins/ictu-gc-plugin-conference/'
 
 # en een kopietje naar Sentia live
-rsync -r -a --delete '/shared-paul-files/Webs/temp/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/sentia/live/www/wp-content/plugins/ictu-gc-posttypes-inclusie/'
+rsync -r -a --delete '/shared-paul-files/Webs/temp/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/sentia/live/www/wp-content/plugins/ictu-gc-plugin-conference/'
 
 # remove temp dir
 #  rm -rf '/shared-paul-files/Webs/temp/'
