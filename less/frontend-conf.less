@@ -5,7 +5,7 @@
 // @package   ictu-gc-posttypes-inclusie
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   0.0.1
+// @version   0.0.2e
 // @desc.     Eerste opzet.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
@@ -58,11 +58,18 @@ Imports
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_grid.less";
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_btn.less";
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_card.less";
+@import "../../ictu-gc-posttypes-inclusie/less/includes/_flexblock.less";
 
 /*
 ---------------------------------------------------------------------------------------------------- */
 
-@speaker_maxwidth: 110px;
+@speaker_maxwidth: 			110px;
+@light_gray:            	#719BA5;
+@description_max: 			( @speaker_maxwidth + 64px );
+@datebadge_width: 			6rem;
+@pijlgrootte: 				8px;
+@datebadge_margin_right:	2rem;
+
 
 
 .section-block {
@@ -82,21 +89,16 @@ Imports
 	}
 }
 
-
-.card + .card {
-	margin-top: 2rem; 
-}
-
 .speaker-photo {
 	border: 1px solid @bordercolor;
-//	border: 1px solid red;
+	.gc-box-shadow();
 	display: inline-block;
-//	float: left;
+	margin-right: .5rem !important;
+//	filter: hue-rotate(10deg) saturate(3);	
 }
 
 .speakers {
 	overflow: hidden;
-	border: 1px solid green;
 	
 	h2, h3, h4 {
 		.visuallyhidden();
@@ -125,7 +127,27 @@ Imports
 		
 	}
 	&.full-description {
-		padding: 1rem;
+//		display: flex;
+//		flex-direction: row;
+//		width: 100%;
+		
+		.speaker-image,
+		.speaker-bio {
+			overflow: hidden;
+			max-width: 50%;
+			display: inline-block;
+			float: left;
+			margin: 0;
+			padding: 0;
+		}
+		.speaker-image {
+			padding-right: 1rem;
+			max-width: @speaker_maxwidth;
+		}
+		.speaker-bio {
+			padding-left: 1rem;
+			max-width: ~"calc(100% - @{speaker_maxwidth})";
+		}
 	}
 	
 	img {
@@ -136,10 +158,19 @@ Imports
 		padding-top: 0;
 		margin-top: 0;
 	}
-	
+	&.flexblock {
+		box-shadow: 3px 3px 0px rgba(#000, 0.2);
+		border: 1px solid @gc_cardbordergrey;
+		padding: 2rem;
+		
+		ul li {
+			padding-left: 1rem;
+			margin-bottom: 2rem;
+		}
+	}
 }
 
-.social-media li {
+.social-media.speaker li {
 	margin-right: 1rem;
 	a {
 		&.linkedin,
@@ -170,18 +201,11 @@ Imports
 	}
 }
 
-.time {
-	border: 1px solid @bordercolor;
-}
 
 .jobtitle {
 	font-weight: bold;
 	font-size: 105%;
 }
-
-@datebadge_width: 6rem;
-@pijlgrootte: 8px;
-@datebadge_margin_right: 2rem;
 
 section.has-time {
 
@@ -234,10 +258,76 @@ section.has-time {
 	}
 }
 
+.country {
+	color: @light_gray;
+}
+
 //========================================================================================================
 
 .div-session {
 	overflow: hidden;
 	box-shadow: none;
+
+	& + .div-session {
+		border-top: 1px solid @bordercolor;
+	}
+	
+	@media only screen and ( min-width: ( @break_fullwidth )) {
+		padding-left: 0;
+	}
+	
+	dl {
+		display: inline-block;
+		margin: 0 2rem 0 0;
+		float: left;
+		overflow: hidden;
+		
+		.thumbnail {
+			max-width: 55px;
+			height: auto;
+		}
+		
+		dt, dd {
+			display: inline-block;
+			float: left;
+			margin: 0;
+			padding: 0;
+		}
+		dd {
+			& + dd {
+				&:before {
+					content: ', ';
+					display: inline-block;
+					float: left;
+					margin-right: .75rem;
+				}
+			}
+		}
+		dt {
+			.visuallyhidden();
+			/*
+			font-weight: bold;
+			padding-right: 1rem;
+			overflow: hidden;
+			&:after {
+				content: ':';
+				margin-left: .75rem;
+				display: inline-block;
+				float: right;
+			}
+			*/
+		}
+		&.time-location {
+			dd {
+				padding-right: 2rem;
+			}
+		}
+	}
 }
 
+.session-time {
+	font-size: 80%;
+	min-width: 120px;
+}
+
+//========================================================================================================
