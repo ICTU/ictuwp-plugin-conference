@@ -14,9 +14,9 @@
  */
 
 
-if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
+if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 
-	function ictu_gcconf_initialize_acf_fields() {
+	function fn_ictu_gcconf_initialize_acf_fields() {
 	
 		if( function_exists('acf_add_local_field_group') ):
 

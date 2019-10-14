@@ -360,6 +360,12 @@ Imports
 }
 /*
 ---------------------------------------------------------------------------------------------------- */
+body .site-container {
+  overflow: hidden;
+}
+.page-template-conf-overviewpage .content .entry-content {
+  min-height: 0;
+}
 .section-block {
   margin-top: 2rem;
   padding-top: 2rem;
@@ -374,26 +380,76 @@ Imports
   padding-bottom: 2rem;
   border-bottom: 2px solid #d1dfe3;
 }
-.speaker-photo {
+.speaker-thumbnail {
+  display: inline-block;
+  margin-right: 0.5rem;
   border: 1px solid #d1dfe3;
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  margin-right: 0.5rem !important;
 }
-.speakers {
-  overflow: hidden;
+.card--keynote,
+.card--event,
+.card--session {
+  display: unset;
 }
-.speakers h2,
-.speakers h3,
-.speakers h4 {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+.full-width-content .content {
+  width: auto;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1180px;
+}
+.full-width-content .content .entry {
+  padding-left: 0;
+  padding-right: 0;
+}
+#maincontent {
+  max-width: 1900px;
+}
+#maincontent article.entry .wrap {
+  background-color: #fff;
+  padding-bottom: 2rem;
+}
+#maincontent article.entry.inleiding .entry-header {
+  padding-bottom: 0;
+}
+#maincontent article.entry.inleiding .entry-header .entry-title {
+  text-transform: none;
+  font-size: 34px;
+  line-height: 1;
+  padding-top: 2rem;
+}
+#maincontent article.entry.inleiding .entry-header,
+#maincontent article.entry.inleiding .entry-content {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media only screen and (min-width: 800px) {
+  #maincontent article.entry.inleiding .entry-header,
+  #maincontent article.entry.inleiding .entry-content {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media only screen and (min-width: 800px) {
+  #maincontent article.entry.inleiding .entry-header,
+  #maincontent article.entry.inleiding .entry-content {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media only screen and (max-width: 800px) {
+  #maincontent article.entry {
+    margin-top: 2rem;
+  }
+}
+@media only screen and (min-width: 800px) {
+  #maincontent article.entry {
+    margin-top: 10rem;
+    margin-bottom: 4rem;
+  }
+  #maincontent article.entry.inleiding .entry-header .entry-title {
+    font-size: 70px;
+  }
 }
 .div-speaker {
   padding-top: 0.5rem;
@@ -414,28 +470,8 @@ Imports
 }
 @media only screen and (min-width: 650px) {
   .div-speaker:not(.full-description) {
-    max-width: 110px;
+    max-width: 140px;
   }
-}
-.div-speaker.full-description .speaker-image,
-.div-speaker.full-description .speaker-bio {
-  overflow: hidden;
-  max-width: 50%;
-  display: inline-block;
-  float: left;
-  margin: 0;
-  padding: 0;
-}
-.div-speaker.full-description .speaker-image {
-  padding-right: 1rem;
-  max-width: 110px;
-}
-.div-speaker.full-description .speaker-bio {
-  padding-left: 1rem;
-  max-width: calc(100% - 110px);
-}
-.div-speaker img {
-  height: auto;
 }
 .div-speaker h2,
 .div-speaker h3,
@@ -522,6 +558,9 @@ section.has-time header {
   margin-left: -8rem;
   padding-left: 8rem;
 }
+.card:not(.no-line) {
+  border: 1px solid #d1dfe3;
+}
 .card h2,
 .card h3 {
   font-family: 'montserrat_semiboldregular', Helvetica, Arial, sans-serif;
@@ -531,42 +570,53 @@ section.has-time header {
 .country {
   color: #719BA5;
 }
-.div-session {
+.section-block .card--keynote,
+.section-block .card--event,
+.section-block .card--session {
+  padding-left: 0;
+  border-style: none;
+  box-shadow: none;
+  display: block;
+  overflow: hidden;
+}
+.section-block .card--keynote + .card--keynote,
+.section-block .card--event + .card--keynote,
+.section-block .card--session + .card--keynote,
+.section-block .card--keynote + .card--event,
+.section-block .card--event + .card--event,
+.section-block .card--session + .card--event,
+.section-block .card--keynote + .card--session,
+.section-block .card--event + .card--session,
+.section-block .card--session + .card--session {
+  border-top: 1px solid #d1dfe3;
+}
+.card--session {
   overflow: hidden;
   box-shadow: none;
 }
-.div-session + .div-session {
-  border-top: 1px solid #d1dfe3;
-}
-@media only screen and (min-width: 800px) {
-  .div-session {
-    padding-left: 0;
-  }
-}
-.div-session dl {
-  display: inline-block;
-  margin: 0 2rem 0 0;
-  float: left;
+dl.dl-speaker-names,
+dl.dl-time-location {
   overflow: hidden;
+  margin: 0;
 }
-.div-session dl .thumbnail {
-  max-width: 55px;
-  height: auto;
-}
-.div-session dl dt,
-.div-session dl dd {
+dl.dl-speaker-names dt,
+dl.dl-time-location dt,
+dl.dl-speaker-names dd,
+dl.dl-time-location dd {
   display: inline-block;
   float: left;
   margin: 0;
   padding: 0;
 }
-.div-session dl dd + dd:before {
+dl.dl-speaker-names dd + dd:before,
+dl.dl-time-location dd + dd:before {
   content: ', ';
   display: inline-block;
   float: left;
   margin-right: 0.75rem;
 }
-.div-session dl dt {
+dl.dl-speaker-names dt,
+dl.dl-time-location dt {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -575,23 +625,144 @@ section.has-time header {
   padding: 0;
   position: absolute;
   width: 1px;
-  /*
-			font-weight: bold;
-			padding-right: 1rem;
-			overflow: hidden;
-			&:after {
-				content: ':';
-				margin-left: .75rem;
-				display: inline-block;
-				float: right;
-			}
-			*/
 }
-.div-session dl.time-location dd {
+dl.dl-speaker-names,
+dl.dl-time-location {
+  display: inline-block;
+  margin: 1rem 1rem 1rem 0;
+  float: left;
+}
+dl.dl-speaker-names .thumbnail,
+dl.dl-time-location .thumbnail {
+  max-width: 55px;
+  height: auto;
+}
+dl.dl-speaker-names.dl-time-location dd,
+dl.dl-time-location.dl-time-location dd {
+  padding-right: 1rem;
+}
+.card--speaker {
+  border: 1px solid #d1dfe3;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+  background: #fff;
+}
+.card--speaker h2,
+.card--speaker h3 {
+  font-size: 20px;
+  margin-top: 2rem;
+}
+.card--speaker h2 a,
+.card--speaker h3 a {
+  display: inline;
+  text-decoration: underline;
+}
+.card--speaker p {
+  -webkit-hyphens: none;
+      -ms-hyphens: none;
+          hyphens: none;
+}
+.card--speaker .speaker-thumbnail {
+  z-index: 1;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -6rem;
+}
+.card--speaker .speaker-info {
+  overflow: hidden;
+  position: relative;
+}
+.card--speaker .speaker-info h2,
+.card--speaker .speaker-info h3,
+.card--speaker .speaker-info .speaker-jobtitle,
+.card--speaker .speaker-info .speaker-country {
+  text-align: center;
+}
+.card--speaker .verziering {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+.card--speaker .verziering:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110%;
+  height: 12rem;
+  background: #f2ebe4;
+  margin: -3rem -2rem 0;
+  -webkit-transform: rotate(4deg);
+          transform: rotate(4deg);
+}
+.card--speaker h2,
+.card--speaker h3,
+.card--speaker p {
+  z-index: 1;
+  position: relative;
+}
+.grid--col-3 .card--speaker {
+  border: 1px solid #d1dfe3;
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+  background: #fff;
+}
+@media only screen and (min-width: 500px) {
+  .grid--col-3 .card--speaker,
+  .grid--col-3 .card--speaker:first-child {
+    margin-left: 3.75rem;
+    margin-right: 3.75rem;
+    width: calc(33.333% - 7.5rem);
+  }
+}
+.speaker-image,
+.speaker-bio {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 50%;
+  float: left;
+  margin: 0;
+  padding: 0;
+}
+.speaker-image {
+  padding-right: 1rem;
+  max-width: 140px;
+}
+.speaker-image img {
+  height: auto;
+}
+.speaker-bio {
+  padding-left: 1rem;
+  max-width: calc(100% - 140px);
+}
+.entry-content.speaker-bio {
+  padding-left: 17rem !important;
   padding-right: 2rem;
+  max-width: calc({break_fullwidth} - 152rem);
 }
-.session-time {
-  font-size: 80%;
-  min-width: 120px;
+.meta {
+  display: block;
+  float: none;
+  overflow: hidden;
+}
+h2 + .meta dl.dl-speaker-names,
+h3 + .meta dl.dl-speaker-names,
+h4 + .meta dl.dl-speaker-names,
+h5 + .meta dl.dl-speaker-names,
+h2 + .meta dl.dl-time-location,
+h3 + .meta dl.dl-time-location,
+h4 + .meta dl.dl-time-location,
+h5 + .meta dl.dl-time-location {
+  margin-top: 0;
+}
+@media only screen and (min-width: 800px) {
+  .grid.speakers {
+    margin-left: -140px;
+    margin-right: -140px;
+  }
 }
 /*# sourceMappingURL=frontend-conf.css.map */

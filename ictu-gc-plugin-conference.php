@@ -25,7 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 //========================================================================================================
 
-add_action( 'plugins_loaded', array( 'ICTU_GC_Conf_posttypes', 'init' ), 10 );
+add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 
 //========================================================================================================
 
@@ -61,6 +61,9 @@ if ( ! defined( 'ICTU_GCCONF_CT_COUNTRY' ) ) {
   define( 'ICTU_GCCONF_CT_COUNTRY', 'speakercountry' );  // slug for custom taxonomy for a speaker's country
 }
 
+if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
+  define( 'SPEAKER_IMG_SIZE', 'speaker-image-size' );
+}
 
 
 
@@ -86,9 +89,9 @@ define( 'ICTU_GC_INCL_VERSION',		'0.0.2' );
  */
 
 
-if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
+if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
-  class ICTU_GC_Conf_posttypes {
+  class ICTU_GC_conference {
   
     /**
      * @var Conference plugin
@@ -109,15 +112,15 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
      */
     public function __construct() {
 
-      $this->includes();
-      $this->setup_actions();
+      $this->fn_ictu_gcconf_includes();
+      $this->fn_ictu_gcconf_setup_actions();
 
     }
   
     /** ----------------------------------------------------------------------------------------------------
      * Hook this plugins functions into WordPress
      */
-	private function includes() {
+	private function fn_ictu_gcconf_includes() {
 		
       require_once dirname( __FILE__ ) . '/includes/conference-acf-definitions.php';
 
@@ -126,109 +129,96 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * Hook this plugins functions into WordPress
      */
-	private function setup_actions() {
+	private function fn_ictu_gcconf_setup_actions() {
 		
-		add_action( 'init', array( $this, 'ictu_gcconf_register_post_types' ) );
-		add_action( 'init', 'ictu_gcconf_initialize_acf_fields' );
+		add_action( 'init', array( $this, 'fn_ictu_gcconf_register_post_types' ) );
+		add_action( 'init', 'fn_ictu_gcconf_initialize_acf_fields' );
 
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
-		add_action( 'init', array( $this, 'ictu_gc_add_rewrite_rules' ) );
+		add_action( 'plugins_loaded', array( $this, 'fn_ictu_gcconf_load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'fn_ictu_gcconf_add_rewrite_rules' ) );
 
-		add_filter( 'genesis_single_crumb',   array( $this, 'filter_breadcrumb' ), 10, 2 );
-		add_filter( 'genesis_page_crumb',     array( $this, 'filter_breadcrumb' ), 10, 2 );
-		add_filter( 'genesis_archive_crumb',  array( $this, 'filter_breadcrumb' ), 10, 2 ); 				
-		add_filter( 'genesis_tax_crumb',  	  array( $this, 'filter_breadcrumb' ), 10, 2 ); 				
-		
-		
-		add_action( 'genesis_entry_content',  array( $this, 'prepend_content' ), 8 ); 				
-		add_action( 'genesis_entry_content',  array( $this, 'append_content' ), 15 ); 			
+		add_filter( 'genesis_single_crumb',   array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+		add_filter( 'genesis_page_crumb',     array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+		add_filter( 'genesis_archive_crumb',  array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 ); 				
+		add_filter( 'genesis_tax_crumb',  	  array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 ); 				
+
+		add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
 		
 		// add a page temlate name
 		$this->templates 						= array();
 		$this->template_conf_overviewpage 		= 'conf-overviewpage.php';
 		
 		// add the page template to the templates list
-		add_filter( 'theme_page_templates',   array( $this, 'ictu_gcconf_add_page_templates' ) );
+		add_filter( 'theme_page_templates',   array( $this, 'fn_ictu_gcconf_add_page_templates' ) );
 		
 		// activate the page filters
-		add_action( 'template_redirect',      array( $this, 'ictu_gcconf_frontend_use_page_template' )  );
+		add_action( 'template_redirect',      array( $this, 'fn_ictu_gcconf_frontend_use_page_template' )  );
 		
 		// add styling and scripts
-		add_action( 'wp_enqueue_scripts',     array( $this, 'ictu_gcconf_register_frontend_style_script' ) );
+		add_action( 'wp_enqueue_scripts',     array( $this, 'fn_ictu_gcconf_register_frontend_style_script' ) );
 
 	}
     
     /** ----------------------------------------------------------------------------------------------------
      * Initialise translations
      */
-	public function load_plugin_textdomain() {
+	public function fn_ictu_gcconf_load_plugin_textdomain() {
 		
-		load_plugin_textdomain( 'ictu-gcconf-posttypes', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		fn_ictu_gcconf_load_plugin_textdomain( 'ictu-gcconf-posttypes', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		
 	}
 
-
-	//========================================================================================================
-	
-	/**
+    /** ----------------------------------------------------------------------------------------------------
 	* Hides the custom post template for pages on WordPress 4.6 and older
 	*
 	* @param array $post_templates Array of page templates. Keys are filenames, values are translated names.
 	* @return array Expanded array of page templates.
 	*/
-	function ictu_gcconf_add_page_templates( $post_templates ) {
+	function fn_ictu_gcconf_add_page_templates( $post_templates ) {
 	
 		$post_templates[$this->template_conf_overviewpage]				= _x( 'Conf. Overview page', "naam template",  'ictu-gcconf-posttypes' );    
 		return $post_templates;
 		
 	}
 
-	//========================================================================================================
 	
-	/**
+    /** ----------------------------------------------------------------------------------------------------
 	* custom loop
 	*/
-	function ictu_gcconf_tax_loop(  ) {
+	function fn_ictu_gcconf_tax_loop(  ) {
 	
 		if ( have_posts() ) :
 			
-			echo '<div class="archive-list">';
+			echo '<div class="archive-list grid grid--col-3">';
 			
 			while ( have_posts() ) : the_post();
+
 				
 				// do loop stuff
-				$getid        	= get_the_ID();
-				$posttype     	= get_post_type( $getid );
-				$permalink    	= get_permalink( $getid );
-				$publishdate  	= get_the_date();
-				$theID        	= 'featured_image_post_' . $getid;
-				$the_image_ID 	= 'image_' . $theID; // HIERO, the loop
-				$extra_cssclass = ' ' . $posttype;
-				$class 			= 'feature-image noimage';
-				$bluh			= '';
-				$image			= [];
+				$type 			= get_post_type( $post );
 				
-
-				$speakers 							= get_field('speakers', $getid );
+				$args = array( 
+					'ID'		=> get_the_ID(),
+					'titletag'	=> 'h2',
+				);
 				
-				echo '<section class="entry' . $extra_cssclass . '" itemscope itemtype="http://schema.org/SocialMediaPosting" id="' . $theID . '">';
-				echo '<a href="' . $permalink . '" itemprop="url">';
+				if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
 					
-				echo '<h2 class="entry-title" itemprop="headline">' . get_the_title() . '</h2></header>';
-				echo '<div class="excerpt">';
-				echo get_the_excerpt( $getid );
-				echo '</div>';
-
-				if ( $speakers ) {
-					echo '<div><h3>' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . '</h3>';
-					foreach( $speakers as $speaker ):
-						echo $this->ictu_gcconf_speakerinfo( array( 'ID' => $speaker->ID ) );		
-					endforeach;
-					echo '</div>';
+					echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
+					
 				}
+				elseif ( $type === ICTU_GCCONF_CPT_KEYNOTE ) {
 				
-				echo '</a>';
-				echo '</section>';
+					echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
+					
+				}
+				else {
+				
+					echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
+					
+				}
+
+
 			
 			endwhile; /** end of one post **/
 	
@@ -239,90 +229,18 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 		else : /** if no posts exist **/
 			do_action( 'genesis_loop_else' );
 		endif; /** end loop **/
-		
 
-		
 	}
 
-	
 
-    //========================================================================================================
-    /**
+
+    /** ----------------------------------------------------------------------------------------------------
      * Handles the front-end display. 
      *
      * @return void
      */
      
-	public function ictu_gcconf_speakerinfo( $args = [] ) {
-
-	    $defaults = array (
-	        'showname'		=> true,
-	        'dolink'		=> false,
-	        'titletag'		=> 'h3', 
-	        'ID'			=> 0, 
-	        'fulldesc'		=> false, 
-	        'socmedlinks'	=> false,
-	        'echo' 			=> true
-	    );
-	     
-	    // Parse incoming $args into an array and merge it with $defaults
-	    $args = wp_parse_args( $args, $defaults );
-
-		if ( ! $args['ID'] ) {
-			return;
-		}
-
-		$return = '<div class="div-speaker card no-image">';
-
-		if ( $args['fulldesc'] ) {
-			$return = '<div class="div-speaker full-description card no-image">';
-		}
-		
-		
-		if ( $args['showname'] ) {
-			if ( $args['dolink'] ) {
-				$return .= '<' . $args['titletag'] . ' class="div-speaker-name"><a href="' . get_the_permalink( $args['ID'] ) . '">' . get_the_title( $args['ID'] ) . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';		
-			}
-			else {
-				$return .= '<' . $args['titletag'] . ' class="div-speaker-name">' . get_the_title( $args['ID'] ) . '</' . $args['titletag'] . '>';		
-			}
-
-		}
-
-		
-		if ( $args['fulldesc'] ) {
-			$excerpt = get_the_excerpt( $args['ID'] );
-			$return .= '<p>' . get_the_post_thumbnail( $args['ID'], 'thumbnail', array( 'class' => 'speaker-photo thumbnail alignleft' ) );
-			$return .= wp_strip_all_tags( $excerpt );
-			if ( $args['socmedlinks'] ) {
-				$return .= $this->ictu_gc_frontend_weblinks( array( 'ID' => $args['ID'], 'echo' => false, ) );
-			}
-			$return .= '</p>';
-		}
-		else {
-			$return .= get_the_post_thumbnail( $args['ID'], 'thumbnail', array( 'class' => 'speaker-photo thumbnail alignleft' ) );
-		}
-
-		$return .= '</div>';
-
-		if ( $args['echo'] ) {
-			echo $return;
-		}
-		else {
-			return $return;
-		}
-
-	}
-
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-     
-	public function ictu_gc_frontend_home_after_content() {
+	public function fn_ictu_gcconf_frontend_template_append_blocks() {
 
 		global $post;
 		
@@ -385,6 +303,8 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 					echo $block_free_text;
 				}
 
+
+				// -----------------------------------------------------------------------------------------
 				if ( 'events' === $block_extra_type ) {
 					
 					$posts = get_sub_field( 'block_events' );
@@ -398,10 +318,27 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 							$section_title 		= get_the_title( $post->ID );
 							$title_id			= sanitize_title( $section_title );
 			                $EM_Event       	= em_get_event( $post );
+							$times 				= $EM_Event->output( '#_EVENTTIMES' );
+							$town 				= $EM_Event->output( '#_LOCATIONTOWN' );
 
-							echo '<div class="card no-image" aria-labelledby="' . $title_id . '" class="div-session">';
+							echo '<div class="card no-image card--event" aria-labelledby="' . $title_id . '">';
 							echo '<' . $headertitle_tag . ' id="' . $title_id . '"><a href="' . get_permalink( $post->ID ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $headertitle_tag . '>';
-							
+
+							if ( $times || $town ) {
+
+								echo '<div class="meta">';
+								echo '<dl class="dl-time-location">';
+								if ( $times ) {
+									echo '<dt>' . _x( 'Time', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-times">' . $times . '</dd> ';	
+								}	
+								if ( $town ) {
+									echo '<dt>' . _x( 'Location', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-location">' . $town . '</dd> ';	
+								}	
+								echo '</dl>';
+								echo '</div>';
+								
+							}
+													
 							echo '<p>';
 							echo $EM_Event->output( '#_EVENTEXCERPT{999}' );
 							echo '</p>';
@@ -415,6 +352,7 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 					endif;
 					
 				}
+				// -----------------------------------------------------------------------------------------
 				elseif ( 'keynotes' === $block_extra_type ) {
 
 					$posts = get_sub_field( 'block_keynotes' );
@@ -425,86 +363,14 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 						
 							setup_postdata($post);
 
-							$section_title 		= get_the_title( $post->ID );
-							$title_id			= sanitize_title( $section_title );
-							$speakers 			= get_field('speakers', $post->ID );
+							$args = array( 
+								'ID'		=> $post->ID,
+								'titletag'	=> 'h2',
+								'echo'		=> false
+							);
 
-							$time_term			= get_term_by( 'id', $post->ID, ICTU_GCCONF_CT_TIMESLOT );
-							$location_term		= get_term_by( 'id', $post->ID, ICTU_GCCONF_CT_LOCATION );
-
-							echo '<div class="div-session card" aria-labelledby="' . $title_id . '">';
-							// card
-
-							echo '<' . $headertitle_tag . ' id="' . $title_id . '"><a href="' . get_permalink( $post->ID ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $headertitle_tag . '>';
-
-							if ( $speakers ) {
-								
-								$postcounter    = 0;
-								$countrycounter    = 0;
-								
-								echo '<p>';
-								
-								foreach( $speakers as $speaker ):
-									$postcounter++;
-									
-									if ( $postcounter > 1 ) {
-										echo ', ';
-									}
-									else {
-										echo ' - ';
-									}
-									echo get_the_title( $speaker->ID );		
-
-									$county_term			= wp_get_post_terms( $speaker->ID, ICTU_GCCONF_CT_COUNTRY );
-							
-									if ( $county_term && ! is_wp_error( $county_term ) ) { 
-										echo ' (';	
-										foreach ( $county_term as $term ) {
-
-											$countrycounter++;
-											
-											if ( $countrycounter > 1 ) {
-												echo ', ';
-											}
-											
-											echo $term->name;	
-										}	
-										echo ') ';	
-									}	
-									
-									
-								endforeach;
-
-								echo '</p>';
-								
-							}
-
-							echo '<p>';
-							if ( $speakers ) {
-								foreach( $speakers as $speaker ):
-									echo  get_the_post_thumbnail( $speaker->ID, 'thumbnail', array( 'class' => 'speaker-photo thumbnail alignleft' ) );
-								endforeach;
-							}
-
-							if ( $time_term || $location_term ) {
-							
-								echo '<div class="time-location">';		
-								if ( $time_term ) {
-									echo '<a href="' . get_term_link( $time_term ) . '">' . $time_term->name . '</a> ';	
-								}	
-								if ( $location_term ) {
-									echo '<a href="' . get_term_link( $location_term ) . '">' . $location_term->name . '</a> ';	
-								}	
-								echo '</div>';
-								
-							}
-							
-
-							$excerpt = get_the_excerpt( $post->ID );
-							echo wp_strip_all_tags( $excerpt );
-							echo '</p>';							
-
-							echo '</div>';		
+//							echo '<h2>' . get_the_title( $post->ID ) . '</h2>';
+							echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 
 						endforeach;
 						
@@ -513,48 +379,26 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 					endif;
 					
 				}
+				// -----------------------------------------------------------------------------------------
 				elseif ( 'speakers' === $block_extra_type ) {
 
 					$posts = get_sub_field( 'block_speakers' );
 
 					if( $posts ):
 
-						echo '<div class="grid grid--col-2">';
+						echo '<div class="grid grid--col-3 speakers">';
 
 						foreach( $posts as $post):
 						
 							setup_postdata($post);
 
-							$section_title 		= get_the_title( $post->ID );
-							$title_id			= sanitize_title( $section_title );
-							$speakers 			= get_field('speakers', $post->ID );
-
-							$time_term			= get_term_by( 'id', $post->ID, ICTU_GCCONF_CT_TIMESLOT );
-							$location_term		= get_term_by( 'id', $post->ID, ICTU_GCCONF_CT_LOCATION );
-
-							echo '<div aria-labelledby="' . $title_id . '" class="div-session">';
-							echo '<' . $headertitle_tag . ' id="' . $title_id . '"><a href="' . get_permalink( $post->ID ) . '">' . $section_title . '</a></' . $headertitle_tag . '>';
+							$args = array( 
+								'ID'		=> $post->ID,
+								'titletag'	=> 'h2',
+								'echo'		=> false
+							);
 							
-							$extraattr			= array( 'class' => 'speaker-photo thumbnail alignleft' );
-							$size 				= 'thumbnail';
-							
-							$image = get_the_post_thumbnail( $post->ID, $size, $extraattr );
-							
-							if ( ! $image ) {
-
-								$arr_speaker_images 	= get_field('fallback_for_speaker_images', 'option');
-								
-								if ( $arr_speaker_images ) {
-									$randomid = array_rand( $arr_speaker_images, 1 );
-									$image = wp_get_attachment_image( $arr_speaker_images[ $randomid ], $size, false, $extraattr );
-								}
-							
-							}
-							echo $image;
-
-							echo get_the_excerpt( $post->ID );
-
-							echo '</div>';		
+							echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
 
 						endforeach;
 
@@ -565,62 +409,46 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 					endif;
 					
 				}				
+				// -----------------------------------------------------------------------------------------
 				elseif ( 'sessions' === $block_extra_type ) {
 					
 					if( have_rows('block_sessions') ):
 					
 						// loop through rows (sub repeater)
 						while( have_rows('block_sessions') ): the_row();
-						
+
 							$block_sessions_session 			= get_sub_field( 'block_sessions_session' );
-							$block_sessions_session_time 		= get_sub_field( 'block_sessions_session_time' );
-							$block_sessions_session_location	= get_sub_field( 'block_sessions_session_location' );
 
-							$time_term 							= get_term_by( 'id', $block_sessions_session_time, ICTU_GCCONF_CT_TIMESLOT );
-							$location_term						= get_term_by( 'id', $block_sessions_session_location, ICTU_GCCONF_CT_LOCATION );
+							if ( is_object( $block_sessions_session ) ) {
 
-							$speakers 							= get_field('speakers', $block_sessions_session->ID );
-							$section_title 						= get_the_title( $block_sessions_session->ID );
-							$title_id							= sanitize_title( $section_title );
+								$block_sessions_session_time 		= get_sub_field( 'block_sessions_session_time' );
+								$block_sessions_session_location	= get_sub_field( 'block_sessions_session_location' );
 
-
-							echo '<div class="card no-image" aria-labelledby="' . $title_id . '" class="div-session">';
-							echo '<' . $headertitle_tag . ' id="' . $title_id . '"><a href="' . get_permalink( $block_sessions_session->ID ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $headertitle_tag . '>';
-
-							if ( $speakers ) {
-								echo '<div class="speakers"><' . $headertitle_tag_sub . '>' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . '</' . $headertitle_tag_sub . '>';
-								foreach( $speakers as $speaker ):
-									echo $this->ictu_gcconf_speakerinfo( array( 'ID' => $speaker->ID ) );		
-								endforeach;
-								echo '</div>';
-							}
-
-							if ( $time_term || $location_term ) {
+								$args = array( 
+									'ID'				=> $block_sessions_session->ID,
+									'titletag'			=> 'h2',
+									'echo'				=> true,
+							        'session_time'		=> $block_sessions_session_time, 
+							        'session_location'	=> $block_sessions_session_location, 
+									
+								);
 							
-								echo '<p class="time-location">';		
-								if ( $time_term ) {
-									echo '<a href="' . get_term_link( $time_term ) . '">' . $time_term->name . '</a> ';	
-								}	
-								if ( $location_term ) {
-									echo '<a href="' . get_term_link( $location_term ) . '">' . $location_term->name . '</a> ';	
-								}	
-								echo '</p>';
-								
+//								echo '<h2>' . get_the_title( $block_sessions_session->ID ) . '</h2>';
+								echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
+							
 							}
 
-							echo get_the_excerpt( $block_sessions_session->ID );
-
-							echo '</div>';		
-						
 						endwhile;
 					
 					endif;
 				
 				}
+				// -----------------------------------------------------------------------------------------
 
-				echo '</div>'; // .section-content
 
-				echo '</section>';
+				echo "\n" . '</div> <!-- // .section-content -->' . "\n";
+
+				echo '</section>' . "\n\n\n";
 
 			endwhile;
 			
@@ -635,46 +463,48 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
      *
      * @return void
      */
-	public function ictu_gc_frontend_keynote_single_content() {
-
-		global $post;
-		
-		echo '<p>TEST : ictu_gc_frontend_keynote_single_content </p>';
-		
-	}
-
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-	public function ictu_gcconf_frontend_append_speakers( $args = [] ) {
+	public function fn_ictu_gcconf_frontend_append_speakers( $args = [] ) {
 		
 		global $post;
 
 	    $defaults = array (
-	        'showname' => true,
-	        'dolink' => false,
-	        'echo' => true
+	        'echo' 			=> true
 	    );
-	     
-	    // Parse incoming $args into an array and merge it with $defaults
-	    $args = wp_parse_args( $args, $defaults );
-	    
+
 	    $return = '';
 
-		$speakers 							= get_field('speakers', $post->ID );
+	    // Parse incoming $args into an array and merge it with $defaults
+	    $args = wp_parse_args( $args, $defaults );
 
-		if ( $speakers ) {
-			$return = '<div class="speakers"><h2>' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . '</h2>';
-			$return = '<div class="grid grid--col-2">';
+		if ( ! $post->ID ) {
+			return;
+		}
+
+		$speakers 					= get_field( 'speakers', $post->ID );
+		$speakers_from_pure_acf 	= get_field( 'speaker_session_keynote_relations', $post->ID );
+		$speakers_from_post_meta 	= get_post_meta( $post->ID, 'speaker_session_keynote_relations' );
+
+		if ( $speakers || $speakers_from_pure_acf || $speakers_from_post_meta ) {
+			$return = '<div class="speakers"><h2 class="visuallyhidden">' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . '</h2>';
+			$return .= '<div class="grid grid--col-2">';
+
 			foreach( $speakers as $speaker ):
-				$return .= $this->ictu_gcconf_speakerinfo( array( 'ID' => $speaker->ID, 'dolink' => true, 'echo' => false, 'fulldesc' => true, 'socmedlinks' => true ) );		
+
+				$args2  = array(
+							'ID'				=> $speaker->ID,
+							'titletag'			=> 'h3',
+							'fulldesc'			=> true,						
+							'addspeakerlinks'	=> true,	
+							'addcountry'		=> true,					
+							'echo'				=> false
+						);
+				$return .= $this->fn_ictu_gcconf_frontend_write_speakercard( $args2 );		
+				
 			endforeach;
+
 			$return .= '</div>';
 			$return .= '</div>';
+			
 		}
 
 		if ( $args['echo'] ) {
@@ -687,73 +517,12 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 
 	}
 
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-	public function ictu_gc_frontend_session_before_content() {
-		
-		global $post;
-
-		echo '<p>TEST : ictu_gc_frontend_session_before_content </p>';
-
-	}
-
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-	public function ictu_gc_frontend_session_after_content() {
-		
-		global $post;
-
-		echo '<p>TEST : ictu_gc_frontend_session_after_content </p>';
-
-	}
-
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-	public function ictu_gc_frontend_stap_before_content() {
-
-		global $post;
-
-		echo '<p>TEST : ictu_gc_frontend_stap_before_content </p>';
-		
-	}
-
-
-    //========================================================================================================
-    /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
-	public function ictu_gc_frontend_home_before_content() {
-
-		global $post;
-
-		echo '<p>TEST : ictu_gc_frontend_home_before_content </p>';
-		
-	}    
-
-
     //========================================================================================================
 
     /**
      * Register frontend styles
      */
-	public function ictu_gcconf_register_frontend_style_script( ) {
+	public function fn_ictu_gcconf_register_frontend_style_script( ) {
 	
 		global $post;
 	
@@ -787,7 +556,7 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /**
     * Modify page content if using a specific page template.
     */
-	public function ictu_gcconf_frontend_use_page_template() {
+	public function fn_ictu_gcconf_frontend_use_page_template() {
 		
 		global $post;
 		
@@ -796,27 +565,24 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 		if ( $this->template_conf_overviewpage == $page_template ) {
 			
 			remove_filter( 'genesis_post_title_output', 'gc_wbvb_sharebuttons_for_page_top', 15 );
-			
-			//* Remove standard header
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-//			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
 
-			//* Remove the post content (requires HTML5 theme support)
-//			remove_action( 'genesis_entry_content', 'genesis_do_post_content' );
-			
+			//* Force full-width-content layout
+			add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
+
 			// append content
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_home_before_content' ), 8 ); 				
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_home_after_content' ), 12 ); 				
-			
-			
+			add_action( 'genesis_entry_content', 		array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 ); 				
+
+			// 
+			add_action( 'genesis_after_entry_content',	array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 ); 			
+
+			add_filter( 'genesis_attr_entry',			array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
+
 		}
 		elseif ( is_post_type_archive( ICTU_GCCONF_CPT_KEYNOTE ) )  {
 
 			/** Replace the standard loop with our custom loop */
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
 			remove_action( 'genesis_loop', 'gc_wbvb_archive_loop' );
-//			add_action( 'genesis_loop', array( $this, 'ictu_gcconf_tax_loop' ) );
 			
 		}
 		elseif ( is_tax( ICTU_GCCONF_CT_TIMESLOT ) )  {
@@ -828,124 +594,59 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 			/** Replace the standard loop with our custom loop */
 			remove_action( 'genesis_loop', 'genesis_do_loop' );
 			remove_action( 'genesis_loop', 'gc_wbvb_archive_loop' );
-			add_action( 'genesis_loop', array( $this, 'ictu_gcconf_tax_loop' ) );
+			add_action( 'genesis_loop', array( $this, 'fn_ictu_gcconf_tax_loop' ) );
 			
 
 		}
 		elseif ( ICTU_GCCONF_CPT_SPEAKER == get_post_type( ) )  {
 
-			// Prepend job title
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_speaker_append_jobtitle' ), 6 ); 		
+			//* Force full-width-content layout
+			add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
+
+			add_filter( 'genesis_attr_entry', 	  		array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
+
+			add_filter( 'genesis_attr_entry-content', 	array( $this, 'fn_ictu_gcconf_add_class_speakerbio_to_entry' ) );
 
 			// Prepend job title
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_speaker_append_country' ), 5 ); 		
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_jobtitle' ), 6 ); 		
+
+			// Prepend job title
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_country' ), 5 ); 		
 					
 			// append speaker image
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gcconf_frontend_speaker_featured_image' ), 8 ); 		
+			add_action( 'genesis_after_entry_content', 	array( $this, 'fn_ictu_gcconf_frontend_speaker_featured_image' ), 8 ); 		
 
 			// append weblinks
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_speaker_append_weblinks' ), 12 ); 		
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_weblinks' ), 12 ); 		
+			
 					
 		}
 		elseif ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
 
-			//* Remove standard header
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-//			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 12 ); 			
 
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_session_before_content' ), 8 ); 				
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_session_after_content' ), 12 ); 				
-
-			
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_keynote_append_title' ), 9 ); 				
-
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gcconf_frontend_append_speakers' ), 12 ); 			
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_keynote_append_vaardigheden' ), 17 ); 			
-
-
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gcconf_frontend_sessionkeynote_speakers' ), 20 ); 				
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_sessionkeynote_speakers' ), 20 ); 				
 	
 		}
 		elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
 
-			//* Remove standard header
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-//			remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-//			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 12 ); 			
 
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_keynote_after_content' ), 8 ); 				
-
-							
-//			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_keynote_append_title' ), 9 ); 				
-
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gcconf_frontend_append_speakers' ), 12 ); 			
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gc_frontend_keynote_append_vaardigheden' ), 17 ); 			
-
-
-			add_action( 'genesis_entry_content',  array( $this, 'ictu_gcconf_frontend_sessionkeynote_speakers' ), 20 ); 				
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_sessionkeynote_speakers' ), 20 ); 				
 	
 		}
 
 
 		//=================================================
 		
-		add_filter( 'genesis_post_info',   array( $this, 'filter_postinfo' ), 10, 2 );
-		
-	}
-
-    /** ----------------------------------------------------------------------------------------------------
-     * Append vaardigheden to keynote single
-     */
-	public function ictu_gcconf_frontend_append_speakersx() {
-	
-		global $post;
-	
-	    $keynote_tips 			= get_field( 'keynote_tips', $post->ID );
-	    $keynote_tips_titel		= get_field( 'keynote_tips_titel', $post->ID );
-	    $keynote_tips_inleiding	= get_field( 'keynote_tips_inleiding', $post->ID );
-
-		$section_title = ( $keynote_tips_titel ) ? $keynote_tips_titel : _x( 'Tips', 'titel op keynote-pagina', 'ictu-gcconf-posttypes' );
-		$title_id       = sanitize_title( $section_title . '-' . $post->ID );
-	
-	    if( $keynote_tips ):
-
-	      $title_id       = sanitize_title( $section_title . '-' . $post->ID );
-	    
-	      echo '<h2 id="' . $title_id . '" class="">' . $section_title . '</h2>';
-
-	      if ( $keynote_tips_inleiding ) {
-		      echo '<p>' . $keynote_tips_inleiding . '</p>';
-	      }
-
-	      // loop through the rows of data
-	      foreach( $keynote_tips as $post ):
-	
-	        setup_postdata( $post );
-	
-	        $theid 			= $post->ID;
-	        $section_title  = get_the_title( $theid );
-	        $section_text   = get_the_excerpt( $theid );
-	        $title_id       = sanitize_title( $section_title );
-
-	        echo '<section aria-labelledby="' . $title_id . '" class="vaardigheid">';
-			echo '<h3 id="' . $title_id . '"><a href="' . get_permalink( $theid ) . '">' . $section_title . '</a></h3>';
-	        echo $section_text;
-	        echo '</section>';
-
-
-	      endforeach;
-	      
-	      wp_reset_postdata();          
-	      
-	    endif;
+		add_filter( 'genesis_post_info',   array( $this, 'fn_ictu_gcconf_frontend_filter_postinfo' ), 10, 2 );
 		
 	}
 
     /** ----------------------------------------------------------------------------------------------------
      * Append country tax to speaker single
      */
-	public function ictu_gc_frontend_speaker_append_country() {
+	public function fn_ictu_gcconf_frontend_speaker_append_country() {
 		
 		global $post;
 
@@ -974,7 +675,7 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * Append job title to keynote single
      */
-	public function ictu_gc_frontend_speaker_append_jobtitle() {
+	public function fn_ictu_gcconf_frontend_speaker_append_jobtitle() {
 		
 		global $post;
 		
@@ -991,7 +692,7 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * Append country tax to speaker single
      */
-	public function ictu_gc_frontend_weblinks( $args = [] ) {
+	public function fn_ictu_gcconf_frontend_append_speaker_weblinks( $args = [] ) {
 		
 		global $post;
 
@@ -1052,136 +753,24 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * Append vaardigheden to keynote single
      */
-	public function ictu_gc_frontend_speaker_append_weblinks() {
+	public function fn_ictu_gcconf_frontend_speaker_append_weblinks() {
 		
 		global $post;
 		
-//		$this->ictu_gc_frontend_weblinks( array( 'ID' => $post->ID, 'sectiontitle' => sprintf( _x( '%s on the web', 'stappen', 'gebruikercentraal' ), get_the_title( $post ) ) ) );
-		$this->ictu_gc_frontend_weblinks( array( 'ID' => $post->ID, 'sectiontitle' => _x( 'Links', 'Header text speaker links', 'gebruikercentraal' ) ) );
-//		$this->ictu_gc_frontend_weblinks( array( 'ID' => $post->ID ) );
+//		$this->fn_ictu_gcconf_frontend_append_speaker_weblinks( array( 'ID' => $post->ID, 'sectiontitle' => sprintf( _x( '%s on the web', 'stappen', 'gebruikercentraal' ), get_the_title( $post ) ) ) );
+		$this->fn_ictu_gcconf_frontend_append_speaker_weblinks( array( 'ID' => $post->ID, 'sectiontitle' => _x( 'Links', 'Header text speaker links', 'gebruikercentraal' ) ) );
+//		$this->fn_ictu_gcconf_frontend_append_speaker_weblinks( array( 'ID' => $post->ID ) );
 		
 	}
 
-    /** ----------------------------------------------------------------------------------------------------
-     * Append vaardigheden to keynote single
-     */
-	public function ictu_gc_frontend_keynote_append_vaardigheden() {
-		
-		global $post;
-	
-	    $keynote_vaardigheden 			= get_field( 'keynote_vaardigheden', $post->ID );
-	    $keynote_vaardigheden_titel 		= get_field( 'keynote_vaardigheden_titel', $post->ID );
-	    $keynote_vaardigheden_inleiding	= get_field( 'keynote_vaardigheden_inleiding', $post->ID );
-	
-	    if( $keynote_vaardigheden ):
-	
-	      $section_title = ( $keynote_vaardigheden_titel ) ? $keynote_vaardigheden_titel : _x( 'Vaardigheden', 'titel op keynote-pagina', 'ictu-gcconf-posttypes' );
-	      $title_id       = sanitize_title( $section_title . '-' . $post->ID );
-	    
-	      echo '<h2 id="' . $title_id . '" class="">' . $section_title . '</h2>';
-	      
-	      if ( $keynote_vaardigheden_inleiding ) {
-		      echo '<p>' . $keynote_vaardigheden_inleiding . '</p>';
-	      }
-	    
-	      // loop through the rows of data
-	      foreach( $keynote_vaardigheden as $post ):
-	
-	        setup_postdata( $post );
-	
-	        $theid = $post->ID;
-	    
-	        $section_title  = get_the_title( $theid );
-	        $section_text   = get_the_excerpt( $theid );
-	
-	        $content        = $post->post_content;
-	        $section_text   = apply_filters('the_content', $content);   
-	
-	        $section_link   = get_sub_field( 'home_template_teaser_link' );
-	        $title_id       = sanitize_title( $section_title );
-	    
-	        echo '<section aria-labelledby="' . $title_id . '" class="vaardigheid">';
-	        echo '<h3 id="' . $title_id . '">' . $section_title . '</h3>';
-	        echo $section_text;
-	
-	        $vaardigheid_afraders   = get_field( 'vaardigheid_afraders', $theid );
-	        $vaardigheid_aanraders  = get_field( 'vaardigheid_aanraders', $theid );
-	
-	        if( $vaardigheid_afraders || $vaardigheid_aanraders ):
-	
-	          echo '<div class="grid grid--col-2 dosdonts">';
-	
-	          if ( $vaardigheid_aanraders ) {
-	            $section_title = _x( 'Aanraders', 'titel op Stap-pagina', 'ictu-gcconf-posttypes' );
-	            echo '<div class="aanrader flexblock">';
-	            echo '<h4 id="' . $title_id . '">' . $section_title . '</h4>';
-	            echo '<ul>';
-	            foreach( $vaardigheid_aanraders as $dingges ):
-	              echo '<li>' . get_the_title( $dingges->ID ) . '</li>';
-	            endforeach;
-//	            wp_reset_postdata();          
-	            echo '</ul>';
-	            echo '</div>';
-	          }
-	          if ( $vaardigheid_afraders ) {
-	            $section_title = _x( 'Afraders', 'titel op Stap-pagina', 'ictu-gcconf-posttypes' );
-	            echo '<div class="afrader flexblock">';
-	            echo '<h4 id="' . $title_id . '">' . $section_title . '</h4>';
-	            echo '<ul>';
-	            foreach( $vaardigheid_afraders as $dingges ):
-	              echo '<li>' . get_the_title( $dingges->ID ) . '</li>';
-	            endforeach;
-//	            wp_reset_postdata();          
-	            echo '</ul>';
-	            echo '</div>';
-	          }
-	
-	          echo '</div>';
-	        
-	        endif;
 
-	        echo '</section>';
-	    
-	      endforeach;
-	      
-	      wp_reset_postdata();          
-	      
-	    endif;
-	
-	}
-	
-    /** ----------------------------------------------------------------------------------------------------
-     * Add an archive title
-     */
-    public function ictu_gc_add_posttype_title() {
-    
-	    if ( ! is_post_type_archive( ICTU_GCCONF_CPT_KEYNOTE ) )
-	        return;
-
-		$headline	= '';
-		$intro_text	= '';
-		$class 		= 'taxonomy-description';
-
-		if ( is_post_type_archive( ICTU_GCCONF_CPT_KEYNOTE ) ) {
-			$class 		= 'posttype-description';
-			$headline = sprintf( '<h1 class="archive-title">%s</h1>', _x( "keynotes", "Post type name", 'ictu-gcconf-posttypes' ) );
-	    }
-	
-	    if ( $headline || $intro_text ) {
-	        printf( '<div class="' . $class . '">%s</div>', $headline . $intro_text );
-	    }
-	    else {
-	        echo '';
-	    }
-  
-	}
     
 
 
     /** ----------------------------------------------------------------------------------------------------
      * Post info: do not write any post info
      */
-    public function filter_postinfo() {
+    public function fn_ictu_gcconf_frontend_filter_postinfo() {
     
     	return '';
   
@@ -1191,68 +780,359 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * A new version of the_loop for keynotes
      */
-	public function ictu_gc_frontend_archive_keynote_loop() {
 
-		// code for a completely custom loop
-		global $post;
-
-		echo '<h1> ictu_gc_frontend_archive_keynote_loop </h1>';
-
-		$args = array(
-		    'post_type'             =>  ICTU_GCCONF_CPT_KEYNOTE,
-			'posts_per_page'        =>  -1,
-			'order'                 =>  'ASC',
-			'orderby'               =>  'post_title'
-		  );
-		  
-		$sidebarposts = new WP_query( $args );
 		
-		if ($sidebarposts->have_posts()) {
-	
-			echo '<div class="flexbox">';
-			
-			$postcounter = 0;
-			
-			while ($sidebarposts->have_posts()) : $sidebarposts->the_post();
-			
-				$postcounter++;
-				
-//				$keynote      	= get_field('keynote_avatar', $post->ID );
-				$citaat         	= get_field('facts_citaten', $post->ID );
-
-				echo $this->ictu_gc_keynote_card( $post, $citaat );
-
-			endwhile;
-			
-			echo '</div>';
-			
-			wp_reset_query();
-			
-		}
-	}
-		
-    /** ----------------------------------------------------------------------------------------------------
-     * add content before the actual the_content
-     */
-    public function prepend_content( $thecontent ) {
-
-      global $post;
-
-      if ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
-
-      }
-      elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
-	      
-      }
-
-    }
 
     /** ----------------------------------------------------------------------------------------------------
-     * Add rewrite rules
+     * COMMENT HERE
      */
-    public function ictu_gc_add_rewrite_rules() {
+    public function fn_ictu_gcconf_add_rewrite_rules() {
     
     	return '';
+  
+	}
+
+
+    /** ----------------------------------------------------------------------------------------------------
+     * COMMENT HERE
+     */
+    public function fn_ictu_gcconf_frontend_write_keynotecard( $args = [] ) {
+
+	    $defaults = array (
+	        'ID'			=> 0, 
+	        'titletag'		=> 'h3', 
+	        'echo' 			=> true
+	    );
+	    
+	    $return = "\n";
+
+	    // Parse incoming $args into an array and merge it with $defaults
+	    $args = wp_parse_args( $args, $defaults );
+
+		if ( ! $args['ID'] ) {
+			return;
+		}
+
+		$section_title 						= get_the_title( $args['ID'] );
+		$title_id							= sanitize_title( $section_title );
+		$excerpt 							= get_the_excerpt( $args['ID'] );
+		$metainfo 							= '';
+		$speakers 							= get_field('speakers', $args['ID'] );
+		$speakernames 						= '';
+
+		if ( $speakers ) {
+			$speakercounter = 0;
+			$speakernames = '<dl class="dl-speaker-names">';
+			$speakernames .= '<dt>';
+			
+			if ( count( $speakers ) > 1 ) {
+				$speakernames .= _x( 'Speakers', 'ictu-gcconf-posttypes' );
+			}
+			else {
+				$speakernames .= _x( 'Speaker', 'ictu-gcconf-posttypes' );
+			}
+			$speakernames .= '</dt>';
+			
+			foreach( $speakers as $speaker ):
+				$speakercounter++;
+				$countrynames = '';
+				$speakernames .= '<dd>';
+				
+				$county_term			= wp_get_post_terms( $speaker->ID, ICTU_GCCONF_CT_COUNTRY );
+		
+				if ( $county_term && ! is_wp_error( $county_term ) ) { 
+					$countrynames	= ' (';
+					$countrycounter = 0;
+					
+					foreach ( $county_term as $term ) {
+		
+						$countrycounter++;
+						
+						if ( $countrycounter > 1 ) {
+							$countrynames	.= ', ';
+						}
+						
+						$countrynames .=  $term->name;	
+					}	
+					$countrynames	.= ')';
+				}	
+				
+				
+				$speakernames .= get_the_title( $speaker->ID ) . $countrynames;		
+				$speakernames .= '</dd>';
+			endforeach;
+			
+			$speakernames .= '</dl>';
+		}
+
+
+		$return = '<div class="card card--keynote" aria-labelledby="' . $title_id . '">';
+		$return .= '<' . $args['titletag'] . ' id="' . $title_id . '"><a href="' . get_permalink( $args['ID'] ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';
+
+		if ( $speakers ) {
+
+			$return .= '<span class="speaker-image">';
+			foreach( $speakers as $speaker ):
+
+				if ( has_post_thumbnail( $speaker->ID ) ) {
+					$return .= get_the_post_thumbnail( $speaker->ID, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+				}
+				else {
+					// 
+					$arr_speaker_images	= get_field('fallback_for_speaker_images', 'option');
+					$randomid = array_rand( $arr_speaker_images, 1 );
+					$return .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+				}
+
+			endforeach;
+			
+			$return .= '</span>';
+			$return .= '<span class="speaker-bio">';
+			if ( $speakernames ) {
+				$return .= '<div class="meta">' . $speakernames . '</div>';
+			}
+			$return .= wp_strip_all_tags( $excerpt );
+			$return .= '</span>';
+			
+		}	
+		else {
+			$return .= '<span class="speaker-bio">';
+			$return .= wp_strip_all_tags( $excerpt );
+			$return .= '</span>';
+		}
+
+		if ( $metainfo ) {
+			$return .= '<div class="meta">' . $metainfo . '</div>';
+		}
+		
+		$return .= '</div>' .  "\n\n\n";		
+  
+		if ( $args['echo'] ) {
+			echo $return;
+		}
+		else {
+			return $return;
+		}
+
+	}
+
+
+    /** ----------------------------------------------------------------------------------------------------
+     * COMMENT HERE
+     */
+    public function fn_ictu_gcconf_frontend_write_sessioncard( $args = [] ) {
+
+	    $defaults = array (
+	        'ID'				=> 0, 
+	        'session_time'		=> null, 
+	        'session_location'	=> null, 
+	        'titletag'			=> 'h3', 
+	        'echo' 				=> true
+	    );
+
+	    $return = '';
+
+	    // Parse incoming $args into an array and merge it with $defaults
+	    $args = wp_parse_args( $args, $defaults );
+
+		if ( ! $args['ID'] ) {
+			return;
+		}
+
+		$time_term 							= get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
+		$location_term						= get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
+		
+		$speakers 							= get_field( 'speakers', $args['ID'] );
+		$section_title 						= get_the_title( $args['ID'] );
+		$title_id							= sanitize_title( $section_title );
+
+		$metainfo 							= '';
+
+		if ( $time_term || $location_term ) {
+			
+			$metainfo .= '<dl class="dl-time-location">';
+			if ( $time_term ) {
+				$metainfo .= '<dt>' . _x( 'Time', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-times">' . $time_term->name . '</dd> ';	
+			}	
+			if ( $location_term ) {
+				$metainfo .= '<dt>' . _x( 'Location', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-location">' . $location_term->name . '</dd> ';	
+			}	
+			$metainfo .= '</dl>';
+			
+		}
+
+		if ( $speakers ) {
+			$speakercounter = 0;
+			$metainfo .= '<dl class="dl-speaker-names">';
+			$metainfo .= '<dt>';
+			
+			if ( count( $speakers ) > 1 ) {
+				$metainfo .= _x( 'Speakers', 'ictu-gcconf-posttypes' );
+			}
+			else {
+				$metainfo .= _x( 'Speaker', 'ictu-gcconf-posttypes' );
+			}
+			$metainfo .= '</dt>';
+			
+			foreach( $speakers as $speaker ):
+				$speakercounter++;
+				$metainfo .= '<dd>';
+				$metainfo .= get_the_title( $speaker->ID );		
+				$metainfo .= '</dd>';
+			endforeach;
+			
+			$metainfo .= '</dl>';
+		}
+
+
+		$return .= '<div class="card card--session" aria-labelledby="' . $title_id . '">';
+		$return .= '<' . $args['titletag'] . ' id="' . $title_id . '"><a href="' . get_permalink( $args['ID'] ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';
+
+		if ( $metainfo ) {
+			$return .= '<div class="meta">' . $metainfo . '</div>';
+		}
+		
+		$excerpt = get_the_excerpt( $args['ID'] );
+		$return .= wp_strip_all_tags( $excerpt );
+		
+		$return .= '</div>';		
+  
+		if ( $args['echo'] ) {
+			echo $return;
+		}
+		else {
+			return $return;
+		}
+  
+	}
+
+
+    /** ----------------------------------------------------------------------------------------------------
+     * COMMENT HERE
+     */
+    public function fn_ictu_gcconf_frontend_write_speakercard( $args = [] ) {
+
+	    $defaults = array (
+	        'ID'							=> 0, 
+	        'titletag'						=> 'h3', 
+	        'titlelink'						=> true, 
+	        'fulldesc'						=> false, 
+	        'addspeakerlinks'				=> false, 
+	        'addcountry'					=> false,
+	        'echo' 							=> true,
+	        'speakerlinks_sectiontitletag' 	=> '',
+	        'speakerlinks_sectiontitle' 	=> ''
+	    );
+	    $return = '';
+
+	    // Parse incoming $args into an array and merge it with $defaults
+	    $args = wp_parse_args( $args, $defaults );
+
+		if ( ! $args['ID'] ) {
+			return;
+		}
+
+		$extraattr 			= array( 'class' => 'speaker-thumbnail thumbnail alignleft' );
+		
+		$speaker_jobtitle 	= get_field( 'speaker_jobtitle', $args['ID'] );
+
+		if ( has_post_thumbnail( $args['ID'] ) ) {
+			$image			= get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE, $extraattr );
+		}
+		else {
+			$arr_speaker_images = get_field('fallback_for_speaker_images', 'option');
+			$randomid		= array_rand( $arr_speaker_images, 1 );
+			$image			= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, $extraattr );
+		}
+		$section_title 		= get_the_title( $args['ID'] );
+		$title_id			= sanitize_title( $section_title . '-' . $args['ID'] );
+		
+		$return				= '<div class="card card--speaker" id="' . $title_id . '">' . $image;
+		$return			   .= '<div class="speaker-info">';
+		$return			   .= '<' . $args['titletag'] . '>';
+
+		if ( $args['titlelink'] ) {
+			$return		   .= '<a href="' . get_permalink( $args['ID'] ) . '">';
+			$return		   .= $section_title;
+			$return		   .= '</a>';
+		}
+		else {
+			$return		   .= $section_title;
+		}		
+		$return			   .= '</' . $args['titletag'] . '>';
+		
+
+		if ( $args['addcountry'] ) {
+
+			$county_term			= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_COUNTRY );
+	
+			if ( $county_term && ! is_wp_error( $county_term ) ) { 
+				$return	   .= '<p class="speaker-country">';
+				$countrycounter = 0;
+				
+				foreach ( $county_term as $term ) {
+	
+					$countrycounter++;
+					
+					if ( $countrycounter > 1 ) {
+						$return	.= ', ';
+					}
+					
+					$return .=  $term->name;	
+				}	
+				$return	   .= '</p>';
+			}	
+						
+		}
+		if ( $args['fulldesc'] ) {
+			$excerpt 		= get_the_excerpt( $args['ID'] );
+			$return		   .= '<p class="excerpt">' . wp_strip_all_tags( $excerpt ) . '</p>';
+		}
+		else {
+			$return		   .= '<p class="speaker-jobtitle">' . $speaker_jobtitle . '</p>';
+		}
+
+		if ( $args['addspeakerlinks'] ) {
+			
+			if( have_rows('speaker_links', $args['ID'] ) ) {
+	
+				$return .= '<div class="speaker-links">';		
+				if ( $args['speakerlinks_sectiontitle'] ) {
+					$return .= '<' . $args['speakerlinks_sectiontitletag'] . '>' . $args['speakerlinks_sectiontitle'] . '</' . $args['speakerlinks_sectiontitletag'] . '>';		
+				}
+				$return .= '<ul class="social-media speaker">';		
+			
+				// loop through rows (sub repeater)
+				while( have_rows('speaker_links', $args['ID'] ) ): the_row();
+				
+					$speaker_link_url 		= get_sub_field( 'speaker_link_url' );
+					$speaker_link_text 		= get_sub_field( 'speaker_link_text' );
+					$speaker_link_type		= get_sub_field( 'speaker_link_type' );
+	
+					if ( $speaker_link_url ) {
+						$return .= '<li><a href="' . $speaker_link_url . '" class="' . $speaker_link_type . '">';
+						$return .= $speaker_link_text . '</a></li>';
+					}
+				
+				endwhile;
+	
+				$return .= '</ul>';		
+				$return .= '</div>';		
+			
+			}
+		}
+	
+		
+		$return		   	   .= '</div>';
+		$return			   .= '<span class="verziering">&nbsp;</<span>';
+		$return		   	   .= '</div>';
+
+		if ( $args['echo'] ) {
+			echo $return;
+		}
+		else {
+			return $return;
+		}
   
 	}
 
@@ -1260,8 +1140,9 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
      * Add content to the content 
      * \0/
      */
-	public function append_content( $thecontent ) {
-		
+	public function fn_ictu_gcconf_frontend_template_content_for_noblocks_page( ) {
+
+
 		global $post;
 		
 		if ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
@@ -1279,6 +1160,8 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 			$keynote_page 	= get_field('themesettings_conference_keynotes', 'option');
 			$session_page	= get_field('themesettings_conference_sessions', 'option');
 			$postcounter 	= 0;
+
+			$args = array();
 			
 			if ( $speaker_page->ID === $the_id ) {
 				$docheck	= true;	
@@ -1287,52 +1170,58 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 			elseif ( $keynote_page->ID === $the_id ) {
 				$docheck	= true;	
 				$type		= ICTU_GCCONF_CPT_KEYNOTE;
+
 			}
 			elseif ( $session_page->ID === $the_id ) {
 				$docheck	= true;	
 				$type		= ICTU_GCCONF_CPT_SESSION;
 			}
-			
+
 			if ( $docheck && !have_rows('blocks') ) {
 
 				$args = array(
 				    'post_type'             =>  $type,
 					'posts_per_page'        =>  -1,
-//					'order'                 =>  'ASC',
-//					'orderby'               =>  'post_title'
-				    
+					'order'                 =>  'ASC',
+					'orderby'               =>  'post_title'
 				  );
+
 				$sidebarposts = new WP_query( $args );
 		
 				if ($sidebarposts->have_posts()) {
 
-					echo '<div class="grid grid--col-2">';
+					$colcount = 'grid--col-2';
+
+					if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+						$colcount = 'grid--col-3';
+					}					
+
+					echo '<div class="grid ' . $colcount . ' ' . $type . '">';
 					
-					while ($sidebarposts->have_posts()) : $sidebarposts->the_post();
+					while ( $sidebarposts->have_posts() ) : $sidebarposts->the_post();
 					
 						$postcounter++;
 
-						$speakers 							= get_field('speakers', $sidebarposts->ID );
-		
-						echo '<div class="card no-image">';
-						echo '<h2><a href="' . get_the_permalink( $sidebarposts->ID ) . '">' . get_the_title( $sidebarposts->ID ) . '<span class="btn btn--arrow"></span></a></h2>';
-						echo '<p>' . get_the_excerpt( $sidebarposts->ID ) . '</p>'; // excerpt
+						$args = array( 
+							'ID'		=> $post->ID,
+							'titletag'	=> 'h2',
+						);
 
-						if ( $speakers ) {
-							$speakercounter = 0;
-							echo '<p>' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . ' : ';
-							foreach( $speakers as $speaker ):
-								$speakercounter++;
-								if ( $speakercounter > 1 ) {
-									echo ', ';
-								}
-								echo get_the_title( $speaker->ID );		
-							endforeach;
-							echo '</p>';
+						if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+							
+							echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
+							
 						}
+						elseif ( $type === ICTU_GCCONF_CPT_KEYNOTE ) {
 
-						
-						echo '</div>';
+							echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
+							
+						}
+						else {
+
+							echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
+							
+						}
 
 					endwhile;
 					
@@ -1349,23 +1238,21 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 		if ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) || is_singular( 'page' ) ) {
 		// 
 		}
-		
-		return $thecontent;
-		
+
 	}
 
     
     /** ----------------------------------------------------------------------------------------------------
      * Prepends a title before the content
      */
-    public function ictu_gcconf_frontend_speaker_featured_image() {
+    public function fn_ictu_gcconf_frontend_speaker_featured_image() {
 	    
 	    global $post;
 
 		if ( has_post_thumbnail( $post ) ) {
-			echo '<div class="thumbnail alignright">';
-			the_post_thumbnail( BLOG_SINGLE_TABLET );
-			echo '</div>';
+			echo '<span class="speaker-image">';
+			echo get_the_post_thumbnail( $post, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
+			echo '</span>';
 		}
 
 		
@@ -1376,7 +1263,7 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * Prepends a title before the content
      */
-    public function ictu_gcconf_frontend_sessionkeynote_speakers() {
+    public function fn_ictu_gcconf_frontend_sessionkeynote_speakers() {
 	    
 	    global $post;
 
@@ -1474,105 +1361,12 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
 		}
 	}
 	
-	
-    /** ----------------------------------------------------------------------------------------------------
-     * Prepends a title before the content
-     */
-    public function ictu_gc_frontend_keynote_append_title() {
-	    
-		global $post;
-		
-		$title	= sprintf( _x( 'Over %s', 'Label stappen', 'ictu-gcconf-posttypes' ), get_the_title( )  ); 
-	    echo '<h2>' . $title. '</h2>';
-	    
-	}
 
-
-
-    /** ----------------------------------------------------------------------------------------------------
-     * Prepends a title before the content
-     */
-    public function ictu_gc_frontend_stap_append_title() {
-	
-		global $post;
-
-		$section_title = _x( 'Tips', 'titel op Stap-pagina', 'ictu-gcconf-posttypes' );
-		$title_id       = sanitize_title( $section_title . '-' . $post->ID );
-		
-		// force a title, but do not make it seeable
-		echo '<h2 id="' . $title_id . '" class="visuallyhidden">' . $section_title . '</h2>';
-
-    }
-
-    /** ----------------------------------------------------------------------------------------------------
-     * Prepends a title before the content
-     */
-    public function ictu_gc_keynote_card( $keynote, $citaat ) {
-
-		if ( is_object( $citaat ) && 'WP_Post' == get_class( $citaat ) ) {
-			$citaat_post    	= get_post( $citaat->ID );
-			$citaat_auteur  	= sanitize_text_field( get_field( 'citaat_auteur', $citaat->ID ) );
-			$content        	= '&ldquo;' . $citaat_post->post_content . '&rdquo;';
-		}
-		else {
-			if ( $citaat[0]->post_content ) {
-				$content        = '&ldquo;' . $citaat[0]->post_content . '&rdquo;';
-				$citaat_auteur  = sanitize_text_field( get_field( 'citaat_auteur', $citaat[0]->ID ) );
-			}
-			else {
-				return '';
-			}
-		}
-
-		$content        	= apply_filters('the_content', $content);   
-		
-		if ( is_object( $keynote ) ) { 
-			$keynote_ID		= $keynote->ID;
-		}
-		elseif( $keynote > 0 ) {
-			$keynote_ID		= $keynote;
-		}
-		else {
-			return;
-		}
-
-		$posttype       	= get_post_type( $keynote_ID );
-		$title_id       	= sanitize_title( 'title-' . $posttype . '-' . $keynote_ID );
-		$section_id     	= sanitize_title( 'section-' . $posttype . '-' . $keynote_ID );
-		$keynotepoppetje	= 'poppetje-1';
-		$cardtitle			= esc_html( get_the_title( $keynote->ID ) );
-		
-		// wat extra afbreekmogelijkheden toevoegen in de titel
-		$cardtitle			= str_replace("laaggeletterden", "laag&shy;geletterden", $cardtitle);
-		$cardtitle			= str_replace("gebruikssituaties", "gebruiks&shy;situaties", $cardtitle);
-		
-
-		if ( get_field('keynote_avatar', $keynote_ID ) ) {
-			$keynotepoppetje	= get_field('keynote_avatar', $keynote_ID );
-		}
-
-		$return 	= '<section aria-labelledby="' . $title_id . '" class="card card--keynote ' . $keynotepoppetje . '" id="' . $section_id . '">';
-		$return    .= '<div class="card__image"></div>';
-		$return    .= '<div class="card__content">';
-		$return    .=
-      '<h2 id="' . $title_id . '">'.
-      '<a href="' . get_permalink( $keynote->ID ) . '">'.
-      '<span>' . _x( 'Ontwerpen voor', 'Home section keynote', 'ictu-gcconf-posttypes' ) . ' </span>'.
-      '<span>' . $cardtitle . '</span>'.
-      '<span class="btn btn--arrow"></span>'.
-      '</a></h2>';
-		$return    .= '<div class="tegeltje">' . $content . '<p><strong>' . $citaat_auteur . '</strong></p></div>';
-		$return    .= '</div>';
-		$return    .= '</section>';
-
-		return $return;
-
-    }
 
     /** ----------------------------------------------------------------------------------------------------
      * Do actually register the post types we need
      */
-    public function ictu_gcconf_register_post_types() {
+    public function fn_ictu_gcconf_register_post_types() {
       
       // ---------------------------------------------------------------------------------------------------
       // custom post type voor 'keynote'
@@ -1934,51 +1728,11 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
   
     }
 
-//
-  
-	/** ----------------------------------------------------------------------------------------------------
-	* display taxonomies
-	*/
-	public function get_classifications( $theid = '', $taxonomy = '', $wrapper1 = 'dt', $wrapper2 = 'dd' ) {
-		
-		$return     = '';
-		
-		if ( $theid && $taxonomy ) {
-	
-			$args = array(
-				'name' => $taxonomy
-			);
-			$output		= 'objects'; // or names
-			
-			$taxobject  = get_taxonomies( $args, $output ); 
-			$tax_info   = array_values($taxobject)[0];
-			$return     = '<' . $wrapper1 . '>' . $tax_info->label . '</' . $wrapper1 . '> <' . $wrapper2 . '>';
-			$term_list  = wp_get_post_terms( $theid, $taxonomy, array("fields" => "all"));
-			$postcounter    = 0;
-			
-			foreach( $term_list as $term_single ) {
-				
-				$postcounter++;
-				$term_link = get_term_link( $term_single );
-				
-				if ( $postcounter > 1 ) {
-					$return .= ', '; //do something here
-				}
-				$return .= $term_single->name;
-			}
-			
-			$return .= '</' . $wrapper2 . '>';
-			
-		}
-		
-		return $return;
-		
-	}
 
     /** ----------------------------------------------------------------------------------------------------
      * filter the breadcrumb
      */
-	public function filter_breadcrumb( $crumb = '', $args = '' ) {
+	public function fn_ictu_gcconf_filter_breadcrumb( $crumb = '', $args = '' ) {
 		
 		global $post;
 
@@ -2029,10 +1783,21 @@ if ( ! class_exists( 'ICTU_GC_Conf_posttypes' ) ) :
     /** ----------------------------------------------------------------------------------------------------
      * add extra class to page template .entry
      */
-	function add_class_inleiding_to_entry( $attributes ) {
+	function fn_ictu_gcconf_add_class_inleiding_to_entry( $attributes ) {
 		$attributes['class'] .= ' inleiding';
 		return $attributes;
 	}
+	
+    
+    /** ----------------------------------------------------------------------------------------------------
+     * add extra class to page template .entry
+     */
+	function fn_ictu_gcconf_add_class_speakerbio_to_entry( $attributes ) {
+		$attributes['class'] .= ' speaker-bio';
+		return $attributes;
+	}
+	
+	
 
 }
 
