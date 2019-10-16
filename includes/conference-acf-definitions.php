@@ -5,11 +5,11 @@
 // ----------------------------------------------------------------------------------
 // ACF definities voor conference plugin
 // ----------------------------------------------------------------------------------
-// @package   ictu-gc-posttypes-inclusie
+// @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   0.0.1
-// @desc.     Eerste opzet.
+// @version   1.0.1
+// @desc.     Live at Oct 15 2019.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 
@@ -376,9 +376,10 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 				'key' => 'group_5d933fd1c6977',
 				'title' => 'Speaker / speakers for this session or keynote',
 				'fields' => array(
+
 					array(
 						'key' => 'field_5d933fd673c87',
-						'label' => 'Speakers',
+						'label' => 'NIET GEBRUIKEN',
 						'name' => 'speakers',
 						'type' => 'relationship',
 						'instructions' => '',
@@ -401,7 +402,36 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 						),
 						'min' => '',
 						'max' => '',
-						'return_format' => 'object',
+						'return_format' => 'id',
+					),
+					
+					array(
+						'key' => 'field_5da0567590bed',
+						'label' => 'Speakers',
+						'name' => 'speaker_session_keynote_relations',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'speaker',
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+							1 => 'taxonomy',
+						),
+						'elements' => array(
+							0 => 'featured_image',
+						),
+						'min' => '',
+						'max' => '',
+						'return_format' => 'id',
 					),
 				),
 				'location' => array(
@@ -539,6 +569,38 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 							),
 						),
 					),
+
+					array(
+						'key' => 'field_5da0567590bee',
+						'label' => 'Keynotes or sessions',
+						'name' => 'speaker_session_keynote_relations',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => ICTU_GCCONF_CPT_SESSION,
+							1 => ICTU_GCCONF_CPT_KEYNOTE,
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+							1 => 'taxonomy',
+						),
+						'elements' => array(
+							0 => 'featured_image',
+						),
+						'min' => '',
+						'max' => '',
+						'return_format' => 'object',
+					),
+
+					
 				),
 				'location' => array(
 					array(

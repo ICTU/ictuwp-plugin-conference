@@ -2,17 +2,17 @@
 // ----------------------------------------------------------------------------------
 // bevat CSS voor frontend
 // ----------------------------------------------------------------------------------
-// @package   ictu-gc-posttypes-inclusie
+// @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   0.0.2e
-// @desc.     Eerste opzet.
+// @version   1.0.1
+// @desc.     Live at Oct 15 2019.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 /*!
 
 
-<!--                 frontend.css - v0.0.1                    -->
+<!--                 frontend.css - v1.0.1                    -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->
@@ -45,7 +45,7 @@
 <!--              `::::::::::::::::}}}}}}}}}}}}}}.              -->
 <!--              `::::::::::::::::}}}}}}}}}}}}}}.              -->
 <!--                                                            -->
-<!-- =============== f=========================================   -->
+<!-- ========================================================   -->
 <!--                                                            -->
 	
 
@@ -59,6 +59,7 @@ Imports
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_btn.less";
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_card.less";
 @import "../../ictu-gc-posttypes-inclusie/less/includes/_flexblock.less";
+
 
 /*
 ---------------------------------------------------------------------------------------------------- */
@@ -75,13 +76,18 @@ Imports
 @resulte:					( 1180px - 900px );
 @card_speaker_gutter: 		( 2.5 * @gutter );
 
+@pijltje: 					( 1.25 * @gutter );
+@transform: 				( ( -1 * @pijltje ) + 3px );
+
+/*
+---------------------------------------------------------------------------------------------------- */
+
 
 body {
 	.site-container {
 		overflow: hidden;
 	}
 }
-
 
 .page-template-conf-overviewpage .content .entry-content {
 	min-height: 0;
@@ -115,6 +121,112 @@ body {
 .card--event,
 .card--session {
 	display: unset;
+	display: inline-block;
+}
+
+.card--speaker {
+	border: 1px solid @bordercolor;
+	margin-top: @dinges;
+	margin-bottom: @dinges;
+	background: @wit;
+}
+
+.speaker-country-jobtitle {
+	color: @gc_greyblue;
+	.font-size( 12 );
+}
+
+.card--authorbox {
+	padding-top: ( @pijltje * 2.25 );
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border-color: @gc_pantybrown_xlight;
+	position: relative;
+	display: unset;
+	display: block;
+	overflow: hidden;
+	box-shadow: none;
+	
+	.btn--arrow {
+		border-color: @gc_pantybrown_xlight;
+	}
+
+	* {
+		z-index: 1;
+		position: relative;
+	}
+
+	.speaker-country-jobtitle {
+		margin-top: 0;
+	}
+
+	&:after,
+	&:before {
+		content: ' ';
+		display: block;
+		position: absolute;
+		z-index: 1;
+	}
+	
+	&:before {
+		left: 0;
+		right: 1rem;
+		top: ( @pijltje * 1.5 );
+		bottom: 1rem;
+		background: @gc_pantybrown_xlight;
+		.gc-box-shadow();
+	}
+	&:after {
+		background: transparent;
+		width: 1px;
+		height: 1px;
+		
+		border-top: @pijltje solid transparent;
+		border-right: @pijltje solid transparent;
+		border-left: @pijltje solid transparent;
+		border-bottom: @pijltje solid @gc_pantybrown_xlight;
+
+		top: 0;
+		left: ( 1.3 * @pijltje);
+		transform: translateY( -.25 * @pijltje );
+	}          
+	
+	.speaker-thumbnail {
+		max-width: @speaker_maxwidth;
+	}
+	
+	@media only screen and (max-width: @break_tablet ) {
+		.speaker-info {
+			display: block;
+			float: none;
+			clear: both;
+		}
+	}
+	
+	@media only screen and (min-width: @break_tablet ) {
+		.speaker-info {
+			display: inline-block;
+			float: left;
+			clear: none;
+			max-width: ~"calc(98% - @{speaker_maxwidth})";
+			padding-left: 2rem;
+		}
+	}
+	
+	&:nth-child(odd) {
+		&:after {
+			left: unset;
+			right: ( 1.3 * @pijltje);
+		}
+
+		.speaker-thumbnail.alignleft {
+			float: right;
+			margin-left: 2rem;
+		}		
+		.speaker-info {
+			max-width: ~"calc(94% - @{speaker_maxwidth})";
+		}
+	}
 }
 
 .full-width-content .content {
@@ -128,7 +240,6 @@ body {
 		padding-right: 0;
 	}
 }
-
 
 #maincontent {
 	max-width: @containermaxwidth;
@@ -167,9 +278,6 @@ body {
 			&.inleiding {
 				.entry-header .entry-title {
 					.font-size(70);
-				}
-				p {
-//					.font-size(20);
 				}
 			}
 		}
@@ -214,37 +322,37 @@ body {
 	}
 }
 
-.social-media.speaker li {
-	margin-right: 1rem;
-	a {
-		&.linkedin,
-		&.facebook,
-		&.twitter,
-		&.personallink {
-			width: auto;
-			height: auto;
-			margin-right: 1rem;
-			background-position: left center;
-			padding-left: 2.5rem;		
-			border-style: none;
-		}	
-	}	
+.archive-list + .speaker-links {
+	border-top: 1px solid @bordercolor;
 }
 
 .speaker-links {
-	border-top: 2px solid @bordercolor;
+
 	clear: both;
-	padding-top: 2rem;
-	margin-top: 2rem;
+	margin-top: 3rem;
 	margin-bottom: 2rem;
-	h2, h3, h4, h5 {
-		padding-bottom: 0;
-		margin-bottom: 0;
-		padding-top: 0;
-		margin-top: 0;
+
+	.social-media li {
+		margin-right: 1rem;
+		a {
+			.font-size( 12 );
+			
+			&.website,
+			&.other,
+			&.linkedin,
+			&.facebook,
+			&.twitter,
+			&.personallink {
+				width: auto;
+				height: auto;
+				margin-right: 2rem;
+				background-position: left center;
+				padding-left: 2.5rem;		
+				border-style: none;
+			}	
+		}	
 	}
 }
-
 
 .jobtitle {
 	font-weight: bold;
@@ -299,16 +407,34 @@ section.has-time {
 		border: 1px solid @bordercolor;
 	}
 
-	h2, h3 {
+}
+
+.speaker-links,
+.card {
+
+	h2, h3, h4 {
 		// ja sorry
-		font-family: @montserrat_semibold;		
+//		font-family: @montserrat_semibold;
+		font-family: @bodyfont_bold;
 		text-transform: none;
 		.font-size( 20 );
+		line-height: 1.5;
 	}
 }
 
 .country {
 	color: @light_gray;
+}
+
+.archive-list {
+	&.grid {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.card {
+		margin-right: .25rem;
+		margin-left: .25rem;
+	}	
 }
 
 //========================================================================================================
@@ -330,13 +456,14 @@ section.has-time {
 			border-top: 1px solid @bordercolor;
 		}
 	}
+
+	.card--session {
+		overflow: hidden;
+		box-shadow: none;
+	}
 	
 }
 
-.card--session {
-	overflow: hidden;
-	box-shadow: none;
-}
 
 
 dl.dl-speaker-names,
@@ -351,6 +478,7 @@ dl.dl-time-location {
 		padding: 0;
 	}
 	dd {
+/*		
 		& + dd {
 			&:before {
 				content: ', ';
@@ -359,6 +487,7 @@ dl.dl-time-location {
 				margin-right: .75rem;
 			}
 		}
+*/		
 	}
 	dt {
 		.visuallyhidden();
@@ -420,12 +549,12 @@ dl.dl-time-location {
 	.speaker-info {
 		overflow: hidden;
 		position: relative;
-		h2, h3, .speaker-jobtitle, .speaker-country {
+		h2, h3, .speaker-jobtitle, .speaker-country-jobtitle {
 			text-align: center;
 		}
 	}
 
-	.verziering {
+	.diagonal-bg-block {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -440,7 +569,7 @@ dl.dl-time-location {
 			left: 0;
 			width: 110%;
 			height: 12rem;
-			background: @gc_pantybrown_light;
+			background: @gc_pantybrown_xlight;
 			margin: -3rem -2rem 0;
 			transform: rotate(4deg);
 		}
@@ -453,62 +582,110 @@ dl.dl-time-location {
 }
 
 
+@media only screen and ( min-width: @break_tablet ) {
+	
+	.speaker-image,
+	.speaker-bio {
+		display: inline-block;
+		overflow: hidden;
+		float: left;
+		margin: 0;
+		padding: 0;
+	}
+	
+	.speaker-image {
+		padding-right: 1rem;
+		max-width: @speaker_maxwidth;
+	
+		img {
+			height: auto;
+		}
+	}
+	.speaker-image + .speaker-bio {
+		padding-left: 1rem;
+		max-width: ~"calc(90% - @{speaker_maxwidth})";
+	}
+}
+
+
+
+.grid--col-2,
 .grid--col-3 {
 
-	.card--speaker {
-		
-		border: 1px solid @bordercolor;
-		margin-top: @dinges;
-		margin-bottom: @dinges;
-		background: @wit;
+	margin-left: 1rem;
+	margin-right: 1rem;
+
+	.card {
 		
 		&, &:first-child {
+
+//			border: 5px dotted red;
+			width: ~"calc(100% - @{gutter})";
+
 			@media only screen and ( min-width: ( @break_phone )) {
-				margin-left: ( 1.25 * @gutter );
-				margin-right: ( 1.25 * @gutter );
-				width: ~"calc(33.333% - @{card_speaker_gutter})";
+//				border-color: green;
+				width: ~"calc(50% - 1rem)";
+			}
+			
+			@media only screen and ( min-width: @break_tablet ) {
+//				border-color: blue;
+				width: ~"calc(50% - @{gutter})";
+				
+				.speaker-image,
+				.speaker-bio {
+					max-width: 100%;
+				}
+			}
+
+			@media only screen and ( min-width: ( @contentwidth_960 )) {
+//				border-color: yellow;
+				width: ~"calc(50% - @{card_speaker_gutter})";
+
+				.speaker-image {
+					max-width: @speaker_maxwidth;
+				}
+				.speaker-bio {
+					padding-left: 1rem;
+					max-width: ~"calc(100% - @{speaker_maxwidth})";
+				}
 			}
 		}
 	}
 }
 
-.speaker-image,
-.speaker-bio {
-	display: inline-block;
-	overflow: hidden;
-	max-width: 50%;
-	float: left;
-	margin: 0;
-	padding: 0;
-}
+.grid--col-3 {
 
-.speaker-image {
-	padding-right: 1rem;
-	max-width: @speaker_maxwidth;
-
-	img {
-		height: auto;
-	}
-
-}
-.speaker-bio {
-	padding-left: 1rem;
-	max-width: ~"calc(100% - @{speaker_maxwidth})";
-}
-
-.entry-content{
-	&.speaker-bio {
-		padding-left: 17rem !important;
-		padding-right: 2rem;	
-		max-width: ~"calc({break_fullwidth} - @{photomargin})";
+	.card {
+		
+		&, &:first-child {
+			
+			@media only screen and ( min-width: ( @break_tablet )) {
+				margin-left: ( 1.25 * @gutter );
+				margin-right: ( 1.25 * @gutter );
+				width: ~"calc(50% - @{card_speaker_gutter})";
+			}
+			
+			@media only screen and ( min-width: ( @contentwidth_960 )) {
+				margin-left: ( 1.25 * @gutter );
+				margin-right: ( 1.25 * @gutter );
+				width: ~"calc(33.333% - @{card_speaker_gutter})";
+			}
+		}
+		
 	}
 }
-
 
 .meta {
 	display: block;
 	float: none;
 	overflow: hidden;
+}
+
+.single-keynote,
+.single-session {
+	.entry-content .meta {
+		border-bottom-style: none;
+	}
 }
 
 h2, h3, h4, h5 {
@@ -528,3 +705,4 @@ h2, h3, h4, h5 {
 		margin-right: ( @resulte / -2 );
 	}
 }
+

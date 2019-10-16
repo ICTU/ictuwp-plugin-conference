@@ -4,10 +4,10 @@
 // ----------------------------------------------------------------------------------
 // bevat CSS voor frontend
 // ----------------------------------------------------------------------------------
-// @package   ictu-gc-posttypes-inclusie
+// @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   0.0.2e
+// @version   1.0.1
 // @desc.     CPT procestips toegevoegd. Mogelijkheid OD-tips toe te voegen op stap-pagina.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
@@ -47,8 +47,9 @@
 @gc_darkblue: 				#004152; // ook wel 'GC Dark Blue'
 @gc_darkerblue:				#00303d; // ook wel 'GC Darker Blue'
 
-@gc_pantybrown_light: 		#f2ebe4; // ook wel 'GC PantyBrown Light'
-@gc_pantybrown: 			#e8d8c7; // ook wel 'GC PantyBrown'
+@gc_pantybrown_light:		#f2ebe4; // ook wel 'GC PantyBrown Light'
+@gc_pantybrown_xlight:		#f9f6f3; // ook wel 'GC PantyBrown X-Light'
+@gc_pantybrown:				#e8d8c7; // ook wel 'GC PantyBrown'
 
 
 @gc_cardbordergrey: 		#D1DFE3; 
@@ -56,6 +57,9 @@
 @white:					    #FFF;
 
 @color-primary:				@gc_a11y_green;
+
+@gc_greyblue:					#4f7781;
+
 
 
 
@@ -157,7 +161,17 @@
 //========================================================================================================
 
 .font-size(@input) {
-	font-size: ( ( ( @input / @basefontsize ) * @basefontsize ) * @pixel );
+	.fontsize( @input );	
+	//	font-size: ( ( ( @input / @basefontsize ) * @basefontsize ) * @pixel );
+}
+
+//========================================================================================================
+
+.fontsize( @sizeValue: 16 ) {
+	@pxValue: (@sizeValue * 1);
+	@remValue: (@sizeValue / 10);
+	font-size: ~"@{pxValue}px"; 
+	font-size: ~"@{remValue}rem";
 }
 
 //========================================================================================================
