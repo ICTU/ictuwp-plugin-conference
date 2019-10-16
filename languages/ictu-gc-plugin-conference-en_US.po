@@ -1,303 +1,506 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: ICTU / WP Register post types and taxonomies\n"
-"POT-Creation-Date: 2019-01-22 21:45+0100\n"
-"PO-Revision-Date: 2019-01-22 21:45+0100\n"
+"Project-Id-Version: ICTU / Gebruiker Centraal / Conference post types and "
+"taxonomies\n"
+"POT-Creation-Date: 2019-10-15 18:08+0200\n"
+"PO-Revision-Date: 2019-10-15 18:08+0200\n"
 "Last-Translator: Paul van Buuren <paul@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
-"Language: en\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: rhswp-register_taxonomies.php\n"
+"X-Poedit-WPHeader: ictu-gc-plugin-conference.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: rhswp-register_taxonomies.php:131 rhswp-register_taxonomies.php:136
-#: rhswp-register_taxonomies.php:138 rhswp-register_taxonomies.php:158
-msgctxt "Dossier"
-msgid "Topics"
+#: ictu-gc-plugin-conference.php:181
+msgctxt "naam template"
+msgid "Conf. Overview page"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:132 rhswp-register_taxonomies.php:137
-msgctxt "Dossier"
-msgid "Topic"
+#: ictu-gc-plugin-conference.php:347 ictu-gc-plugin-conference.php:1096
+#: ictu-gc-plugin-conference.php:1472
+msgctxt "ictu-gcconf-posttypes"
+msgid "Time"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:139
-msgctxt "Dossier"
-msgid "All topics"
+#: ictu-gc-plugin-conference.php:350 ictu-gc-plugin-conference.php:1099
+#: ictu-gc-plugin-conference.php:1489
+msgctxt "ictu-gcconf-posttypes"
+msgid "Location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:140 rhswp-register_taxonomies.php:141
-msgctxt "Dossier"
-msgid "Add new topic"
+#: ictu-gc-plugin-conference.php:507 ictu-gc-plugin-conference.php:962
+#: ictu-gc-plugin-conference.php:1111
+msgctxt "ictu-gcconf-posttypes"
+msgid "Speakers"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:142
-msgctxt "Dossier"
-msgid "Edit topic"
+#: ictu-gc-plugin-conference.php:843 ictu-gc-plugin-conference.php:1288
+#, php-format
+msgid "Find %s on social media"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:143
-msgctxt "Dossier"
-msgid "New topic"
+#: ictu-gc-plugin-conference.php:887
+msgctxt "Header text speaker links"
+msgid "Links"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:144
-msgctxt "Dossier"
-msgid "View topic"
+#: ictu-gc-plugin-conference.php:965 ictu-gc-plugin-conference.php:1114
+msgctxt "ictu-gcconf-posttypes"
+msgid "Speaker"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:145
-msgctxt "Dossier"
-msgid "Search topic"
+#: ictu-gc-plugin-conference.php:1496
+msgctxt "ictu-gcconf-posttypes"
+msgid "Level"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:146
-msgctxt "Dossier"
-msgid "No topic found"
+#: ictu-gc-plugin-conference.php:1503
+msgctxt "ictu-gcconf-posttypes"
+msgid "Type"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:147
-msgctxt "Dossier"
-msgid "No topic found in trash"
+#: ictu-gc-plugin-conference.php:1531 ictu-gc-plugin-conference.php:1533
+#: ictu-gc-plugin-conference.php:1549
+msgctxt "session type"
+msgid "Sessions"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:148 rhswp-register_taxonomies.php:191
-#: rhswp-register_taxonomies.php:229 rhswp-register_taxonomies.php:271
+#: ictu-gc-plugin-conference.php:1532
+msgctxt "session type"
+msgid "Session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1534
+msgctxt "session type"
+msgid "All sessions"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1535 ictu-gc-plugin-conference.php:1536
+msgctxt "session type"
+msgid "Add new session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1537
+msgctxt "session type"
+msgid "Edit session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1538
+msgctxt "session type"
+msgid "New session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1539
+msgctxt "session type"
+msgid "View session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1540
+msgctxt "session type"
+msgid "Search session"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1541 ictu-gc-plugin-conference.php:1542
+msgctxt "session type"
+msgid "No sessions found"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1543 ictu-gc-plugin-conference.php:1586
+#: ictu-gc-plugin-conference.php:1629 ictu-gc-plugin-conference.php:1678
+#: ictu-gc-plugin-conference.php:1722 ictu-gc-plugin-conference.php:1765
+#: ictu-gc-plugin-conference.php:1808 ictu-gc-plugin-conference.php:1851
 msgid "Featured image"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:149 rhswp-register_taxonomies.php:192
-#: rhswp-register_taxonomies.php:230 rhswp-register_taxonomies.php:272
+#: ictu-gc-plugin-conference.php:1544 ictu-gc-plugin-conference.php:1587
+#: ictu-gc-plugin-conference.php:1630 ictu-gc-plugin-conference.php:1679
+#: ictu-gc-plugin-conference.php:1723 ictu-gc-plugin-conference.php:1766
+#: ictu-gc-plugin-conference.php:1809 ictu-gc-plugin-conference.php:1852
 msgid "Archives"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:150 rhswp-register_taxonomies.php:193
-#: rhswp-register_taxonomies.php:231 rhswp-register_taxonomies.php:273
+#: ictu-gc-plugin-conference.php:1545 ictu-gc-plugin-conference.php:1588
+#: ictu-gc-plugin-conference.php:1631 ictu-gc-plugin-conference.php:1680
+#: ictu-gc-plugin-conference.php:1724 ictu-gc-plugin-conference.php:1767
+#: ictu-gc-plugin-conference.php:1810 ictu-gc-plugin-conference.php:1853
 msgid "Uploaded media"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:154
-msgctxt "Dossiers label"
-msgid "Topics"
+#: ictu-gc-plugin-conference.php:1574 ictu-gc-plugin-conference.php:1576
+msgctxt "keynotes type"
+msgid "Keynotes"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:174 rhswp-register_taxonomies.php:201
-msgctxt "digibeterkleuren"
-msgid "Onderdelen NL Digibeter"
+#: ictu-gc-plugin-conference.php:1575
+msgctxt "keynotes type"
+msgid "Keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:175
-msgctxt "digibeterkleuren"
-msgid "Onderdeel NL Digibeter"
+#: ictu-gc-plugin-conference.php:1577
+msgctxt "keynotes type"
+msgid "All keynotes"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:179 rhswp-register_taxonomies.php:181
-msgctxt "digibeterkleuren"
-msgid "Digibeter-kleuren"
+#: ictu-gc-plugin-conference.php:1578 ictu-gc-plugin-conference.php:1579
+msgctxt "keynotes type"
+msgid "Add new keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:180
-msgctxt "digibeterkleuren"
-msgid "Digibeter-kleur"
+#: ictu-gc-plugin-conference.php:1580
+msgctxt "keynotes type"
+msgid "Edit keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:182
-msgctxt "digibeterkleuren"
-msgid "Alle kleuren"
+#: ictu-gc-plugin-conference.php:1581
+msgctxt "keynotes type"
+msgid "New keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:183
-msgctxt "digibeterkleuren"
-msgid "Nieuw onderdeel toevoegen"
+#: ictu-gc-plugin-conference.php:1582
+msgctxt "keynotes type"
+msgid "View keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:184
-msgctxt "digibeterkleuren"
-msgid "Voeg nieuw onderdeel toe"
+#: ictu-gc-plugin-conference.php:1583
+msgctxt "keynotes type"
+msgid "Search keynote"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:185
-msgctxt "digibeterkleuren"
-msgid "Bewerk onderdeel"
+#: ictu-gc-plugin-conference.php:1584 ictu-gc-plugin-conference.php:1585
+msgctxt "keynotes type"
+msgid "No keynotes found"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:186
-msgctxt "digibeterkleuren"
-msgid "Nieuw onderdeel"
+#: ictu-gc-plugin-conference.php:1592
+msgctxt "Stappen label"
+msgid "Keynotes"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:187
-msgctxt "digibeterkleuren"
-msgid "Bekijk onderdeel"
+#: ictu-gc-plugin-conference.php:1617 ictu-gc-plugin-conference.php:1619
+msgctxt "speaker type"
+msgid "Speakers"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:188
-msgctxt "digibeterkleuren"
-msgid "Zoek onderdeel"
+#: ictu-gc-plugin-conference.php:1618
+msgctxt "speaker type"
+msgid "Speaker"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:189
-msgctxt "digibeterkleuren"
-msgid "Geen onderdelen gevonden"
+#: ictu-gc-plugin-conference.php:1620
+msgctxt "speaker type"
+msgid "All speakers"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:190
-msgctxt "digibeterkleuren"
-msgid "Geen onderdelen gevonden in de prullenbak"
+#: ictu-gc-plugin-conference.php:1621 ictu-gc-plugin-conference.php:1622
+msgctxt "speaker type"
+msgid "Add new speaker"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:197
+#: ictu-gc-plugin-conference.php:1623 ictu-gc-plugin-conference.php:1624
+msgctxt "speaker type"
+msgid "Edit speaker"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1625
+msgctxt "speaker type"
+msgid "View speaker"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1626
+msgctxt "speaker type"
+msgid "Search speaker"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1627 ictu-gc-plugin-conference.php:1628
+msgctxt "speaker type"
+msgid "No speakers found"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1635
+msgctxt "Speakers label"
+msgid "Speakers"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1661 ictu-gc-plugin-conference.php:1666
+#: ictu-gc-plugin-conference.php:1668 ictu-gc-plugin-conference.php:1684
+#: ictu-gc-plugin-conference.php:1688
+msgctxt "timeblock taxonomy"
+msgid "Timeblocks"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1662 ictu-gc-plugin-conference.php:1667
+msgctxt "timeblock taxonomy"
+msgid "Timeblock"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1669
+msgctxt "timeblock taxonomy"
+msgid "All timeblocks"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1670 ictu-gc-plugin-conference.php:1671
+msgctxt "timeblock taxonomy"
+msgid "Add timeblock"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1672
+msgctxt "timeblock taxonomy"
+msgid "Bewerk tijdsinschatting"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1673
+msgctxt "timeblock taxonomy"
+msgid "Nieuwe tijdsinschatting"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1674
+msgctxt "timeblock taxonomy"
+msgid "Bekijk tijdsinschatting"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1675
+msgctxt "timeblock taxonomy"
+msgid "Zoek tijdsinschatting"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1676
+msgctxt "timeblock taxonomy"
+msgid "Geen tijdsinschattingen gevonden"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1677
+msgctxt "timeblock taxonomy"
+msgid "Geen tijdsinschattingen gevonden in de prullenbak"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1705 ictu-gc-plugin-conference.php:1711
+msgctxt "session type taxonomy"
+msgid "Session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1706 ictu-gc-plugin-conference.php:1710
+#: ictu-gc-plugin-conference.php:1712 ictu-gc-plugin-conference.php:1728
+#: ictu-gc-plugin-conference.php:1732
+msgctxt "session type taxonomy"
+msgid "Session types"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1713
+msgctxt "session type taxonomy"
+msgid "All session types"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1714 ictu-gc-plugin-conference.php:1715
+msgctxt "session type taxonomy"
+msgid "Add session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1716
+msgctxt "session type taxonomy"
+msgid "Edit session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1717
+msgctxt "session type taxonomy"
+msgid "New session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1718
+msgctxt "session type taxonomy"
+msgid "View session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1719
+msgctxt "session type taxonomy"
+msgid "Search session type"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1720 ictu-gc-plugin-conference.php:1721
+msgctxt "session type taxonomy"
+msgid "No session types found"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1748 ictu-gc-plugin-conference.php:1753
+#: ictu-gc-plugin-conference.php:1755
+msgctxt "session level taxonomy"
+msgid "Session levels"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1749 ictu-gc-plugin-conference.php:1754
+#: ictu-gc-plugin-conference.php:1775
+msgctxt "session level taxonomy"
+msgid "Session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1756
+msgctxt "session level taxonomy"
+msgid "All session levels"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1757 ictu-gc-plugin-conference.php:1758
+msgctxt "session level taxonomy"
+msgid "Add session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1759
+msgctxt "session level taxonomy"
+msgid "Edit session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1760
+msgctxt "session level taxonomy"
+msgid "New session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1761
+msgctxt "session level taxonomy"
+msgid "View session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1762
+msgctxt "session level taxonomy"
+msgid "Search session level"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1763 ictu-gc-plugin-conference.php:1764
+msgctxt "session level taxonomy"
+msgid "No search session levels found"
+msgstr ""
+
+#: ictu-gc-plugin-conference.php:1771
 msgctxt "Digibeter label"
-msgid "Onderdelen NL Digibeter"
+msgid "Session level"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:217 rhswp-register_taxonomies.php:219
-msgctxt "document type"
-msgid "Documents"
+#: ictu-gc-plugin-conference.php:1791 ictu-gc-plugin-conference.php:1796
+#: ictu-gc-plugin-conference.php:1798
+msgctxt "session location taxonomy"
+msgid "Session locations"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:218
-msgctxt "document type"
-msgid "Document"
+#: ictu-gc-plugin-conference.php:1792 ictu-gc-plugin-conference.php:1797
+#: ictu-gc-plugin-conference.php:1818
+msgctxt "session location taxonomy"
+msgid "Session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:220
-msgctxt "document type"
-msgid "All documents"
+#: ictu-gc-plugin-conference.php:1799
+msgctxt "session location taxonomy"
+msgid "All session locations"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:221 rhswp-register_taxonomies.php:222
-msgctxt "document type"
-msgid "Add new document"
+#: ictu-gc-plugin-conference.php:1800 ictu-gc-plugin-conference.php:1801
+msgctxt "session location taxonomy"
+msgid "Add session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:223
-msgctxt "document type"
-msgid "Edit document"
+#: ictu-gc-plugin-conference.php:1802
+msgctxt "session location taxonomy"
+msgid "Edit session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:224
-msgctxt "document type"
-msgid "New document"
+#: ictu-gc-plugin-conference.php:1803
+msgctxt "session location taxonomy"
+msgid "New session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:225
-msgctxt "document type"
-msgid "View document"
+#: ictu-gc-plugin-conference.php:1804
+msgctxt "session location taxonomy"
+msgid "View session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:226
-msgctxt "document type"
-msgid "Search document"
+#: ictu-gc-plugin-conference.php:1805
+msgctxt "session location taxonomy"
+msgid "Search session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:227
-msgctxt "document type"
-msgid "No documents found"
+#: ictu-gc-plugin-conference.php:1806 ictu-gc-plugin-conference.php:1807
+msgctxt "session location taxonomy"
+msgid "No search session locations found"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:228
-msgctxt "document type"
-msgid "No documents found in trash"
+#: ictu-gc-plugin-conference.php:1814
+msgctxt "Digibeter label"
+msgid "Session location"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:235
-msgctxt "Documents label"
-msgid "Documents"
+#: ictu-gc-plugin-conference.php:1834 ictu-gc-plugin-conference.php:1839
+#: ictu-gc-plugin-conference.php:1841
+msgctxt "session level taxonomy"
+msgid "Countries"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:259 rhswp-register_taxonomies.php:261
-msgctxt "caroussel"
-msgid "Carrousels"
+#: ictu-gc-plugin-conference.php:1835 ictu-gc-plugin-conference.php:1840
+#: ictu-gc-plugin-conference.php:1861
+msgctxt "session level taxonomy"
+msgid "Country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:260
-msgctxt "caroussel"
-msgid "Carrousel"
+#: ictu-gc-plugin-conference.php:1842
+msgctxt "session level taxonomy"
+msgid "All countries"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:262
-msgctxt "caroussel"
-msgid "Alle carrousels"
+#: ictu-gc-plugin-conference.php:1843 ictu-gc-plugin-conference.php:1844
+msgctxt "session level taxonomy"
+msgid "Add country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:263
-msgctxt "caroussel"
-msgid "Nieuwe carrousel toevoegen"
+#: ictu-gc-plugin-conference.php:1845
+msgctxt "session level taxonomy"
+msgid "Edit country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:264
-msgctxt "caroussel"
-msgid "Voeg nieuwe carrousel toe"
+#: ictu-gc-plugin-conference.php:1846
+msgctxt "session level taxonomy"
+msgid "New country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:265
-msgctxt "caroussel"
-msgid "Bewerk carrousel"
+#: ictu-gc-plugin-conference.php:1847
+msgctxt "session level taxonomy"
+msgid "View country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:266
-msgctxt "caroussel"
-msgid "Nieuwe carrousel"
+#: ictu-gc-plugin-conference.php:1848
+msgctxt "session level taxonomy"
+msgid "Search country"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:267
-msgctxt "caroussel"
-msgid "Bekijk carrousel"
+#: ictu-gc-plugin-conference.php:1849 ictu-gc-plugin-conference.php:1850
+msgctxt "session level taxonomy"
+msgid "No countries found"
 msgstr ""
 
-#: rhswp-register_taxonomies.php:268
-msgctxt "caroussel"
-msgid "Zoek carrousel"
-msgstr ""
-
-#: rhswp-register_taxonomies.php:269
-msgctxt "caroussel"
-msgid "Geen carrousels gevonden"
-msgstr ""
-
-#: rhswp-register_taxonomies.php:270
-msgctxt "caroussel"
-msgid "Geen carrousels gevonden in de prullenbak"
-msgstr ""
-
-#: rhswp-register_taxonomies.php:277
-msgctxt "Carrousels label"
-msgid "Carrousels"
-msgstr ""
-
-#: rhswp-register_taxonomies.php:279
-msgctxt "Carrousels description"
-msgid ""
-"Foto\\'s en links. Toe te voegen aan pagina\\'s en taxonomieen op Digitale "
-"Overheid"
+#: ictu-gc-plugin-conference.php:1857
+msgctxt "Digibeter label"
+msgid "Country"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "ICTU / WP Register post types and taxonomies"
+msgid "ICTU / Gebruiker Centraal / Conference post types and taxonomies"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
 msgid ""
-"https://github.com/ICTU/Digitale-Overheid---WordPress-Custom-Post-Types-"
-"and-Taxonomies"
+"https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-"
+"taxonomies"
 msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Plugin for digitaleoverheid.nl to register custom post types and custom "
-"taxonomies"
+"Plugin for conference.gebruikercentraal.nl to register custom post types and "
+"custom taxonomies"
 msgstr ""
 
 #. Author of the plugin/theme

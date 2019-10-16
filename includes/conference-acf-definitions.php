@@ -5,22 +5,23 @@
 // ----------------------------------------------------------------------------------
 // ACF definities voor conference plugin
 // ----------------------------------------------------------------------------------
-// @package   ictu-gc-posttypes-inclusie
+// @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   0.0.1
-// @desc.     Eerste opzet.
+// @version   1.0.1
+// @desc.     Live at Oct 15 2019.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 
 
-if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
+if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 
-	function ictu_gcconf_initialize_acf_fields() {
+	function fn_ictu_gcconf_initialize_acf_fields() {
 	
 		if( function_exists('acf_add_local_field_group') ):
 
-
+//if ( 22 === 33 ) {
+	
 			//------------------------------------------------------------------------------------------------
 			// blocks constellation
 			acf_add_local_field_group(array(
@@ -48,7 +49,7 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 						'sub_fields' => array(
 							array(
 								'key' => 'field_5d93501247395',
-								'label' => 'block_title',
+								'label' => 'Title',
 								'name' => 'block_title',
 								'type' => 'text',
 								'instructions' => '',
@@ -66,9 +67,9 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 								'maxlength' => '',
 							),
 							array(
-								'key' => 'field_5d93502647396',
-								'label' => 'block_title_id',
-								'name' => 'block_title_id',
+								'key' => 'field_5d9aea653f7d6',
+								'label' => 'Time',
+								'name' => 'block_time',
 								'type' => 'text',
 								'instructions' => '',
 								'required' => 0,
@@ -85,8 +86,27 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 								'maxlength' => '',
 							),
 							array(
+								'key' => 'field_5d93502647396',
+								'label' => 'ID',
+								'name' => 'block_title_id',
+								'type' => 'text',
+								'instructions' => 'The ID so you can directly link to this block. If you leave this empty, the title will be used to create an ID.',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'maxlength' => '',
+							),
+							array(
 								'key' => 'field_5d93503e47397',
-								'label' => 'block_free_text',
+								'label' => 'Free text',
 								'name' => 'block_free_text',
 								'type' => 'wysiwyg',
 								'instructions' => '',
@@ -105,7 +125,7 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 							),
 							array(
 								'key' => 'field_5d93507bb14f2',
-								'label' => 'block_extra_type',
+								'label' => 'Add extra content?',
 								'name' => 'block_extra_type',
 								'type' => 'radio',
 								'instructions' => '',
@@ -117,10 +137,11 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 									'id' => '',
 								),
 								'choices' => array(
-									'none' => 'No extra items',
-									'keynotes' => 'Keynotes',
-									'events' => 'Events',
-									'sessions' => 'Sessions',
+									'none' => 'No extra content',
+									'keynotes' => 'Yes, add keynotes',
+									'events' => 'Yes, add events',
+									'sessions' => 'Yes, add sessions',
+									'speakers' => 'Yes, add speakers',
 								),
 								'allow_null' => 0,
 								'other_choice' => 0,
@@ -270,7 +291,7 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 										array(
 											'field' => 'field_5d93507bb14f2',
 											'operator' => '==',
-											'value' => 'events',
+											'value' => 'keynotes',
 										),
 									),
 								),
@@ -281,6 +302,40 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 								),
 								'post_type' => array(
 									0 => 'keynote',
+								),
+								'taxonomy' => '',
+								'filters' => array(
+									0 => 'search',
+									1 => 'taxonomy',
+								),
+								'elements' => '',
+								'min' => '',
+								'max' => '',
+								'return_format' => 'object',
+							),
+							array(
+								'key' => 'field_5d9affb1f2725',
+								'label' => 'Speakers',
+								'name' => 'block_speakers',
+								'type' => 'relationship',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => array(
+									array(
+										array(
+											'field' => 'field_5d93507bb14f2',
+											'operator' => '==',
+											'value' => 'speakers',
+										),
+									),
+								),
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'speaker',
 								),
 								'taxonomy' => '',
 								'filters' => array(
@@ -314,16 +369,46 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 				'description' => '',
 			));
 
+
 			//------------------------------------------------------------------------------------------------
 			// relation of a session / keynote and its speakers
 			acf_add_local_field_group(array(
 				'key' => 'group_5d933fd1c6977',
 				'title' => 'Speaker / speakers for this session or keynote',
 				'fields' => array(
+
 					array(
 						'key' => 'field_5d933fd673c87',
-						'label' => 'Speakers',
+						'label' => 'NIET GEBRUIKEN',
 						'name' => 'speakers',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'speaker',
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+						),
+						'elements' => array(
+							0 => 'featured_image',
+						),
+						'min' => '',
+						'max' => '',
+						'return_format' => 'id',
+					),
+					
+					array(
+						'key' => 'field_5da0567590bed',
+						'label' => 'Speakers',
+						'name' => 'speaker_session_keynote_relations',
 						'type' => 'relationship',
 						'instructions' => '',
 						'required' => 0,
@@ -346,7 +431,7 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 						),
 						'min' => '',
 						'max' => '',
-						'return_format' => 'object',
+						'return_format' => 'id',
 					),
 				),
 				'location' => array(
@@ -471,7 +556,8 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 								'choices' => array(
 									'linkedin' => 'LinkedIn',
 									'twitter' => 'Twitter',
-									'website' => 'Website',
+									'facebook' => 'facebook',
+									'personallink' => 'Website',
 									'other' => 'Other',
 								),
 								'allow_null' => 0,
@@ -483,6 +569,38 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 							),
 						),
 					),
+
+					array(
+						'key' => 'field_5da0567590bee',
+						'label' => 'Keynotes or sessions',
+						'name' => 'speaker_session_keynote_relations',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => ICTU_GCCONF_CPT_SESSION,
+							1 => ICTU_GCCONF_CPT_KEYNOTE,
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+							1 => 'taxonomy',
+						),
+						'elements' => array(
+							0 => 'featured_image',
+						),
+						'min' => '',
+						'max' => '',
+						'return_format' => 'object',
+					),
+
+					
 				),
 				'location' => array(
 					array(
@@ -503,7 +621,127 @@ if( ! function_exists('ictu_gcconf_initialize_acf_fields') ) {
 				'description' => '',
 			));
 
+
 			//------------------------------------------------------------------------------------------------
+			// Theme settings
+			acf_add_local_field_group(array(
+				'key' => 'group_5d9b3421a5abc',
+				'title' => 'Conference theme settings',
+				'fields' => array(
+					array(
+						'key' => 'field_5d9b3433962bb',
+						'label' => 'Speaker page',
+						'name' => 'themesettings_conference_speakers',
+						'type' => 'post_object',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'multiple' => 0,
+						'return_format' => 'object',
+						'ui' => 1,
+					),
+					array(
+						'key' => 'field_5d9b350ad4a5e',
+						'label' => 'Keynotes page',
+						'name' => 'themesettings_conference_keynotes',
+						'type' => 'post_object',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'multiple' => 0,
+						'return_format' => 'object',
+						'ui' => 1,
+					),
+					array(
+						'key' => 'field_5d9b3cb4d0d6e',
+						'label' => 'Sessions page',
+						'name' => 'themesettings_conference_sessions',
+						'type' => 'post_object',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'page',
+						),
+						'taxonomy' => '',
+						'allow_null' => 0,
+						'multiple' => 0,
+						'return_format' => 'object',
+						'ui' => 1,
+					),
+					array(
+						'key' => 'field_5d9dedf5c7277',
+						'label' => 'Fallback for speaker images',
+						'name' => 'fallback_for_speaker_images',
+						'type' => 'relationship',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'attachment',
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+						),
+						'elements' => array(
+							0 => 'featured_image',
+						),
+						'min' => 1,
+						'max' => '',
+						'return_format' => 'id',
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'options_page',
+							'operator' => '==',
+							'value' => 'instellingen',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => true,
+				'description' => '',
+			));
+
+
 
 		endif;
     }
