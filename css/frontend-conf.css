@@ -1,7 +1,19 @@
 /*!
 
+// Conference Plugin (Gebruiker Centraal) - frontend-conf.css
+// ----------------------------------------------------------------------------------
+// bevat CSS voor frontend
+// ----------------------------------------------------------------------------------
+// @package   ictu-gc-plugin-conference
+// @author    Paul van Buuren
+// @license   GPL-2.0+
+// @version   1.0.2
+// @desc.     Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
+// @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
-<!--                 frontend.css - v1.0.1                    -->
+
+
+<!--                 frontend.css - v1.0.2                      -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->

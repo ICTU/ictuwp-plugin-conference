@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ICTU / Gebruiker Centraal / Conference post types and "
 "taxonomies\n"
-"POT-Creation-Date: 2019-10-15 18:08+0200\n"
-"PO-Revision-Date: 2019-10-15 18:12+0200\n"
+"POT-Creation-Date: 2019-10-30 13:37+0100\n"
+"PO-Revision-Date: 2019-10-30 13:37+0100\n"
 "Last-Translator: Paul van Buuren <paul@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
 "Language: nl_NL\n"
@@ -22,509 +22,435 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: ictu-gc-plugin-conference.php:181
+#: ictu-gc-plugin-conference.php:178
 msgctxt "naam template"
 msgid "Conf. Overview page"
-msgstr ""
+msgstr "Conf. overzichtspagina"
 
-#: ictu-gc-plugin-conference.php:347 ictu-gc-plugin-conference.php:1096
-#: ictu-gc-plugin-conference.php:1472
-msgctxt "ictu-gcconf-posttypes"
+#: ictu-gc-plugin-conference.php:356 ictu-gc-plugin-conference.php:1460
+msgctxt "Event times"
 msgid "Time"
-msgstr ""
+msgstr "Tijd"
 
-#: ictu-gc-plugin-conference.php:350 ictu-gc-plugin-conference.php:1099
-#: ictu-gc-plugin-conference.php:1489
-msgctxt "ictu-gcconf-posttypes"
+#: ictu-gc-plugin-conference.php:359
+msgctxt "Event city"
 msgid "Location"
-msgstr ""
+msgstr "Plaats"
 
-#: ictu-gc-plugin-conference.php:507 ictu-gc-plugin-conference.php:962
-#: ictu-gc-plugin-conference.php:1111
-msgctxt "ictu-gcconf-posttypes"
+#: ictu-gc-plugin-conference.php:515 ictu-gc-plugin-conference.php:928
+#: ictu-gc-plugin-conference.php:1079 ictu-gc-plugin-conference.php:1609
+#: ictu-gc-plugin-conference.php:1611 ictu-gc-plugin-conference.php:1627
+msgctxt "speaker type"
 msgid "Speakers"
-msgstr ""
+msgstr "Sprekers"
 
-#: ictu-gc-plugin-conference.php:843 ictu-gc-plugin-conference.php:1288
+#: ictu-gc-plugin-conference.php:814 ictu-gc-plugin-conference.php:1262
 #, php-format
 msgid "Find %s on social media"
-msgstr ""
+msgstr "%s op social media"
 
-#: ictu-gc-plugin-conference.php:887
+#: ictu-gc-plugin-conference.php:857
 msgctxt "Header text speaker links"
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
-#: ictu-gc-plugin-conference.php:965 ictu-gc-plugin-conference.php:1114
-msgctxt "ictu-gcconf-posttypes"
+#: ictu-gc-plugin-conference.php:931 ictu-gc-plugin-conference.php:1082
+#: ictu-gc-plugin-conference.php:1610
+msgctxt "speaker type"
 msgid "Speaker"
-msgstr ""
+msgstr "Spreker"
 
-#: ictu-gc-plugin-conference.php:1496
-msgctxt "ictu-gcconf-posttypes"
-msgid "Level"
-msgstr ""
+#: ictu-gc-plugin-conference.php:1064 ictu-gc-plugin-conference.php:1654
+#: ictu-gc-plugin-conference.php:1659
+msgctxt "timeblock taxonomy"
+msgid "Timeblock"
+msgstr "Tijdsblok"
 
-#: ictu-gc-plugin-conference.php:1503
-msgctxt "ictu-gcconf-posttypes"
-msgid "Type"
-msgstr ""
+#: ictu-gc-plugin-conference.php:1067 ictu-gc-plugin-conference.php:1471
+#: ictu-gc-plugin-conference.php:1784 ictu-gc-plugin-conference.php:1789
+#: ictu-gc-plugin-conference.php:1806 ictu-gc-plugin-conference.php:1810
+msgctxt "session location taxonomy"
+msgid "Session location"
+msgstr "Zaal"
 
-#: ictu-gc-plugin-conference.php:1531 ictu-gc-plugin-conference.php:1533
-#: ictu-gc-plugin-conference.php:1549
+#: ictu-gc-plugin-conference.php:1480 ictu-gc-plugin-conference.php:1741
+#: ictu-gc-plugin-conference.php:1746 ictu-gc-plugin-conference.php:1763
+#: ictu-gc-plugin-conference.php:1767
+msgctxt "session level taxonomy"
+msgid "Session level"
+msgstr "Workshop-niveau"
+
+#: ictu-gc-plugin-conference.php:1489 ictu-gc-plugin-conference.php:1697
+#: ictu-gc-plugin-conference.php:1703
+msgctxt "session type taxonomy"
+msgid "Session type"
+msgstr "Workshop-type"
+
+#: ictu-gc-plugin-conference.php:1523 ictu-gc-plugin-conference.php:1525
+#: ictu-gc-plugin-conference.php:1541
 msgctxt "session type"
 msgid "Sessions"
-msgstr ""
+msgstr "Workshops"
 
-#: ictu-gc-plugin-conference.php:1532
+#: ictu-gc-plugin-conference.php:1524
 msgctxt "session type"
 msgid "Session"
-msgstr ""
+msgstr "Workshop"
 
-#: ictu-gc-plugin-conference.php:1534
+#: ictu-gc-plugin-conference.php:1526
 msgctxt "session type"
 msgid "All sessions"
-msgstr ""
+msgstr "Alle sessies"
 
-#: ictu-gc-plugin-conference.php:1535 ictu-gc-plugin-conference.php:1536
+#: ictu-gc-plugin-conference.php:1527 ictu-gc-plugin-conference.php:1528
 msgctxt "session type"
 msgid "Add new session"
 msgstr "Nieuwe workshop toevoegen"
 
-#: ictu-gc-plugin-conference.php:1537
+#: ictu-gc-plugin-conference.php:1529
 msgctxt "session type"
 msgid "Edit session"
 msgstr "Bewerk workshop"
 
-#: ictu-gc-plugin-conference.php:1538
+#: ictu-gc-plugin-conference.php:1530
 msgctxt "session type"
 msgid "New session"
 msgstr "Nieuwe workshop"
 
-#: ictu-gc-plugin-conference.php:1539
+#: ictu-gc-plugin-conference.php:1531
 msgctxt "session type"
 msgid "View session"
 msgstr "Bekijk workshop"
 
-#: ictu-gc-plugin-conference.php:1540
+#: ictu-gc-plugin-conference.php:1532
 msgctxt "session type"
 msgid "Search session"
 msgstr "Zoek workshop"
 
-#: ictu-gc-plugin-conference.php:1541 ictu-gc-plugin-conference.php:1542
+#: ictu-gc-plugin-conference.php:1533 ictu-gc-plugin-conference.php:1534
 msgctxt "session type"
 msgid "No sessions found"
 msgstr "Geen workshops gevonden"
 
-#: ictu-gc-plugin-conference.php:1543 ictu-gc-plugin-conference.php:1586
-#: ictu-gc-plugin-conference.php:1629 ictu-gc-plugin-conference.php:1678
-#: ictu-gc-plugin-conference.php:1722 ictu-gc-plugin-conference.php:1765
-#: ictu-gc-plugin-conference.php:1808 ictu-gc-plugin-conference.php:1851
+#: ictu-gc-plugin-conference.php:1535 ictu-gc-plugin-conference.php:1578
+#: ictu-gc-plugin-conference.php:1621 ictu-gc-plugin-conference.php:1670
+#: ictu-gc-plugin-conference.php:1714 ictu-gc-plugin-conference.php:1757
+#: ictu-gc-plugin-conference.php:1800 ictu-gc-plugin-conference.php:1843
 msgid "Featured image"
 msgstr "Uitgelichte afbeelding"
 
-#: ictu-gc-plugin-conference.php:1544 ictu-gc-plugin-conference.php:1587
-#: ictu-gc-plugin-conference.php:1630 ictu-gc-plugin-conference.php:1679
-#: ictu-gc-plugin-conference.php:1723 ictu-gc-plugin-conference.php:1766
-#: ictu-gc-plugin-conference.php:1809 ictu-gc-plugin-conference.php:1852
+#: ictu-gc-plugin-conference.php:1536 ictu-gc-plugin-conference.php:1579
+#: ictu-gc-plugin-conference.php:1622 ictu-gc-plugin-conference.php:1671
+#: ictu-gc-plugin-conference.php:1715 ictu-gc-plugin-conference.php:1758
+#: ictu-gc-plugin-conference.php:1801 ictu-gc-plugin-conference.php:1844
 msgid "Archives"
 msgstr "Overzichten"
 
-#: ictu-gc-plugin-conference.php:1545 ictu-gc-plugin-conference.php:1588
-#: ictu-gc-plugin-conference.php:1631 ictu-gc-plugin-conference.php:1680
-#: ictu-gc-plugin-conference.php:1724 ictu-gc-plugin-conference.php:1767
-#: ictu-gc-plugin-conference.php:1810 ictu-gc-plugin-conference.php:1853
+#: ictu-gc-plugin-conference.php:1537 ictu-gc-plugin-conference.php:1580
+#: ictu-gc-plugin-conference.php:1623 ictu-gc-plugin-conference.php:1672
+#: ictu-gc-plugin-conference.php:1716 ictu-gc-plugin-conference.php:1759
+#: ictu-gc-plugin-conference.php:1802 ictu-gc-plugin-conference.php:1845
 msgid "Uploaded media"
 msgstr "Bijbehorende bestanden"
 
-#: ictu-gc-plugin-conference.php:1574 ictu-gc-plugin-conference.php:1576
+#: ictu-gc-plugin-conference.php:1566 ictu-gc-plugin-conference.php:1568
 msgctxt "keynotes type"
 msgid "Keynotes"
 msgstr "Presentaties"
 
-#: ictu-gc-plugin-conference.php:1575
+#: ictu-gc-plugin-conference.php:1567
 msgctxt "keynotes type"
 msgid "Keynote"
 msgstr "Presentatie"
 
-#: ictu-gc-plugin-conference.php:1577
+#: ictu-gc-plugin-conference.php:1569
 msgctxt "keynotes type"
 msgid "All keynotes"
 msgstr "Alle presentaties"
 
-#: ictu-gc-plugin-conference.php:1578 ictu-gc-plugin-conference.php:1579
+#: ictu-gc-plugin-conference.php:1570 ictu-gc-plugin-conference.php:1571
 msgctxt "keynotes type"
 msgid "Add new keynote"
 msgstr "Nieuwe presentatie toevoegen"
 
-#: ictu-gc-plugin-conference.php:1580
+#: ictu-gc-plugin-conference.php:1572
 msgctxt "keynotes type"
 msgid "Edit keynote"
 msgstr "Bewerk presentatie"
 
-#: ictu-gc-plugin-conference.php:1581
+#: ictu-gc-plugin-conference.php:1573
 msgctxt "keynotes type"
 msgid "New keynote"
 msgstr "Nieuwe presentatie"
 
-#: ictu-gc-plugin-conference.php:1582
+#: ictu-gc-plugin-conference.php:1574
 msgctxt "keynotes type"
 msgid "View keynote"
 msgstr "Bekijk presentatie"
 
-#: ictu-gc-plugin-conference.php:1583
+#: ictu-gc-plugin-conference.php:1575
 msgctxt "keynotes type"
 msgid "Search keynote"
 msgstr "Zoek presentatie"
 
-#: ictu-gc-plugin-conference.php:1584 ictu-gc-plugin-conference.php:1585
+#: ictu-gc-plugin-conference.php:1576 ictu-gc-plugin-conference.php:1577
 msgctxt "keynotes type"
 msgid "No keynotes found"
 msgstr "Geen presentaties gevonden"
 
-#: ictu-gc-plugin-conference.php:1592
+#: ictu-gc-plugin-conference.php:1584
 msgctxt "Stappen label"
 msgid "Keynotes"
-msgstr ""
+msgstr "Keynote"
 
-#: ictu-gc-plugin-conference.php:1617 ictu-gc-plugin-conference.php:1619
+#: ictu-gc-plugin-conference.php:1612
 msgctxt "speaker type"
-msgid "Speakers"
-msgstr ""
+msgid "All speakers"
+msgstr "Alle sprekers"
+
+#: ictu-gc-plugin-conference.php:1613 ictu-gc-plugin-conference.php:1614
+msgctxt "speaker type"
+msgid "Add new speaker"
+msgstr "Nieuwe spreker toevoegen"
+
+#: ictu-gc-plugin-conference.php:1615 ictu-gc-plugin-conference.php:1616
+msgctxt "speaker type"
+msgid "Edit speaker"
+msgstr "Bewerk spreker"
+
+#: ictu-gc-plugin-conference.php:1617
+msgctxt "speaker type"
+msgid "View speaker"
+msgstr "Bekijk spreker"
 
 #: ictu-gc-plugin-conference.php:1618
 msgctxt "speaker type"
-msgid "Speaker"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1620
-msgctxt "speaker type"
-msgid "All speakers"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1621 ictu-gc-plugin-conference.php:1622
-#, fuzzy
-#| msgctxt "Dossier"
-#| msgid "Add new topic"
-msgctxt "speaker type"
-msgid "Add new speaker"
-msgstr "Nieuw dossier toevoegen"
-
-#: ictu-gc-plugin-conference.php:1623 ictu-gc-plugin-conference.php:1624
-msgctxt "speaker type"
-msgid "Edit speaker"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1625
-msgctxt "speaker type"
-msgid "View speaker"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1626
-#, fuzzy
-#| msgctxt "Dossier"
-#| msgid "Search topic"
-msgctxt "speaker type"
 msgid "Search speaker"
-msgstr "Zoek dossier"
+msgstr "Zoek spreker"
 
-#: ictu-gc-plugin-conference.php:1627 ictu-gc-plugin-conference.php:1628
-#, fuzzy
-#| msgctxt "Dossier"
-#| msgid "No topic found"
+#: ictu-gc-plugin-conference.php:1619 ictu-gc-plugin-conference.php:1620
 msgctxt "speaker type"
 msgid "No speakers found"
-msgstr "Geen dossier gevonden"
+msgstr "Geen sprekers gevonden"
 
-#: ictu-gc-plugin-conference.php:1635
-msgctxt "Speakers label"
-msgid "Speakers"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1661 ictu-gc-plugin-conference.php:1666
-#: ictu-gc-plugin-conference.php:1668 ictu-gc-plugin-conference.php:1684
-#: ictu-gc-plugin-conference.php:1688
+#: ictu-gc-plugin-conference.php:1653 ictu-gc-plugin-conference.php:1658
+#: ictu-gc-plugin-conference.php:1660 ictu-gc-plugin-conference.php:1676
+#: ictu-gc-plugin-conference.php:1680
 msgctxt "timeblock taxonomy"
 msgid "Timeblocks"
-msgstr ""
+msgstr "Tijdsblokken"
 
-#: ictu-gc-plugin-conference.php:1662 ictu-gc-plugin-conference.php:1667
-msgctxt "timeblock taxonomy"
-msgid "Timeblock"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1669
-#, fuzzy
-#| msgctxt "Dossier"
-#| msgid "All topics"
+#: ictu-gc-plugin-conference.php:1661
 msgctxt "timeblock taxonomy"
 msgid "All timeblocks"
-msgstr "Alle dossiers"
+msgstr "Alle tijdsblokken"
 
-#: ictu-gc-plugin-conference.php:1670 ictu-gc-plugin-conference.php:1671
+#: ictu-gc-plugin-conference.php:1662 ictu-gc-plugin-conference.php:1663
 msgctxt "timeblock taxonomy"
 msgid "Add timeblock"
-msgstr ""
+msgstr "Tijdsblok toevoegen"
 
-#: ictu-gc-plugin-conference.php:1672
+#: ictu-gc-plugin-conference.php:1664
 msgctxt "timeblock taxonomy"
-msgid "Bewerk tijdsinschatting"
-msgstr ""
+msgid "Edit timeblock"
+msgstr "Bewerk tijdsblok"
 
-#: ictu-gc-plugin-conference.php:1673
+#: ictu-gc-plugin-conference.php:1665
 msgctxt "timeblock taxonomy"
-msgid "Nieuwe tijdsinschatting"
-msgstr ""
+msgid "New timeblock"
+msgstr "Nieuw tijdsblok"
 
-#: ictu-gc-plugin-conference.php:1674
+#: ictu-gc-plugin-conference.php:1666
 msgctxt "timeblock taxonomy"
-msgid "Bekijk tijdsinschatting"
-msgstr ""
+msgid "View timeblock"
+msgstr "Bekijk tijdsblok"
 
-#: ictu-gc-plugin-conference.php:1675
+#: ictu-gc-plugin-conference.php:1667
 msgctxt "timeblock taxonomy"
-msgid "Zoek tijdsinschatting"
-msgstr ""
+msgid "Search timeblock"
+msgstr "Zoek tijdsblok"
 
-#: ictu-gc-plugin-conference.php:1676
+#: ictu-gc-plugin-conference.php:1668 ictu-gc-plugin-conference.php:1669
 msgctxt "timeblock taxonomy"
-msgid "Geen tijdsinschattingen gevonden"
-msgstr ""
+msgid "No timeblocks found"
+msgstr "Geen tijdsblokken gevonden"
 
-#: ictu-gc-plugin-conference.php:1677
-msgctxt "timeblock taxonomy"
-msgid "Geen tijdsinschattingen gevonden in de prullenbak"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1705 ictu-gc-plugin-conference.php:1711
-msgctxt "session type taxonomy"
-msgid "Session type"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1706 ictu-gc-plugin-conference.php:1710
-#: ictu-gc-plugin-conference.php:1712 ictu-gc-plugin-conference.php:1728
-#: ictu-gc-plugin-conference.php:1732
+#: ictu-gc-plugin-conference.php:1698 ictu-gc-plugin-conference.php:1702
+#: ictu-gc-plugin-conference.php:1704 ictu-gc-plugin-conference.php:1720
+#: ictu-gc-plugin-conference.php:1724
 msgctxt "session type taxonomy"
 msgid "Session types"
-msgstr ""
+msgstr "Workshop-types"
 
-#: ictu-gc-plugin-conference.php:1713
+#: ictu-gc-plugin-conference.php:1705
 msgctxt "session type taxonomy"
 msgid "All session types"
-msgstr ""
+msgstr "Alle workshop-types"
 
-#: ictu-gc-plugin-conference.php:1714 ictu-gc-plugin-conference.php:1715
+#: ictu-gc-plugin-conference.php:1706 ictu-gc-plugin-conference.php:1707
 msgctxt "session type taxonomy"
 msgid "Add session type"
-msgstr ""
+msgstr "Voeg workshop-type toe"
 
-#: ictu-gc-plugin-conference.php:1716
+#: ictu-gc-plugin-conference.php:1708
 msgctxt "session type taxonomy"
 msgid "Edit session type"
-msgstr ""
+msgstr "Bewerk workshop-type"
 
-#: ictu-gc-plugin-conference.php:1717
+#: ictu-gc-plugin-conference.php:1709
 msgctxt "session type taxonomy"
 msgid "New session type"
-msgstr ""
+msgstr "Nieuw workshop-type"
 
-#: ictu-gc-plugin-conference.php:1718
+#: ictu-gc-plugin-conference.php:1710
 msgctxt "session type taxonomy"
 msgid "View session type"
-msgstr ""
+msgstr "Bekijk workshop-type"
 
-#: ictu-gc-plugin-conference.php:1719
+#: ictu-gc-plugin-conference.php:1711
 msgctxt "session type taxonomy"
 msgid "Search session type"
-msgstr ""
+msgstr "Zoek workshop-type"
 
-#: ictu-gc-plugin-conference.php:1720 ictu-gc-plugin-conference.php:1721
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "No documents found"
+#: ictu-gc-plugin-conference.php:1712 ictu-gc-plugin-conference.php:1713
 msgctxt "session type taxonomy"
 msgid "No session types found"
-msgstr "Geen documenten gevonden"
+msgstr "Geen workshop-types gevonden"
 
-#: ictu-gc-plugin-conference.php:1748 ictu-gc-plugin-conference.php:1753
-#: ictu-gc-plugin-conference.php:1755
+#: ictu-gc-plugin-conference.php:1740 ictu-gc-plugin-conference.php:1745
+#: ictu-gc-plugin-conference.php:1747
 msgctxt "session level taxonomy"
 msgid "Session levels"
-msgstr ""
+msgstr "Workshop-niveaus"
 
-#: ictu-gc-plugin-conference.php:1749 ictu-gc-plugin-conference.php:1754
-#: ictu-gc-plugin-conference.php:1775
-msgctxt "session level taxonomy"
-msgid "Session level"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1756
+#: ictu-gc-plugin-conference.php:1748
 msgctxt "session level taxonomy"
 msgid "All session levels"
-msgstr ""
+msgstr "Alle workshop-niveaus"
 
-#: ictu-gc-plugin-conference.php:1757 ictu-gc-plugin-conference.php:1758
+#: ictu-gc-plugin-conference.php:1749 ictu-gc-plugin-conference.php:1750
 msgctxt "session level taxonomy"
 msgid "Add session level"
-msgstr ""
+msgstr "Workshop-niveau toevoegen"
 
-#: ictu-gc-plugin-conference.php:1759
+#: ictu-gc-plugin-conference.php:1751
 msgctxt "session level taxonomy"
 msgid "Edit session level"
-msgstr ""
+msgstr "Bewerk workshop-niveau"
 
-#: ictu-gc-plugin-conference.php:1760
+#: ictu-gc-plugin-conference.php:1752
 msgctxt "session level taxonomy"
 msgid "New session level"
-msgstr ""
+msgstr "Nieuw workshop-niveau"
 
-#: ictu-gc-plugin-conference.php:1761
+#: ictu-gc-plugin-conference.php:1753
 msgctxt "session level taxonomy"
 msgid "View session level"
-msgstr ""
+msgstr "Bekijk workshop-niveau"
 
-#: ictu-gc-plugin-conference.php:1762
+#: ictu-gc-plugin-conference.php:1754
 msgctxt "session level taxonomy"
 msgid "Search session level"
-msgstr ""
+msgstr "Zoek workshop-niveau"
 
-#: ictu-gc-plugin-conference.php:1763 ictu-gc-plugin-conference.php:1764
+#: ictu-gc-plugin-conference.php:1755 ictu-gc-plugin-conference.php:1756
 msgctxt "session level taxonomy"
 msgid "No search session levels found"
-msgstr ""
+msgstr "Geen workshop-niveaus gevonden"
 
-#: ictu-gc-plugin-conference.php:1771
-msgctxt "Digibeter label"
-msgid "Session level"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1791 ictu-gc-plugin-conference.php:1796
-#: ictu-gc-plugin-conference.php:1798
+#: ictu-gc-plugin-conference.php:1783 ictu-gc-plugin-conference.php:1788
+#: ictu-gc-plugin-conference.php:1790
 msgctxt "session location taxonomy"
 msgid "Session locations"
-msgstr ""
+msgstr "Zalen"
 
-#: ictu-gc-plugin-conference.php:1792 ictu-gc-plugin-conference.php:1797
-#: ictu-gc-plugin-conference.php:1818
-msgctxt "session location taxonomy"
-msgid "Session location"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1799
+#: ictu-gc-plugin-conference.php:1791
 msgctxt "session location taxonomy"
 msgid "All session locations"
-msgstr ""
+msgstr "Alle zalen"
 
-#: ictu-gc-plugin-conference.php:1800 ictu-gc-plugin-conference.php:1801
+#: ictu-gc-plugin-conference.php:1792 ictu-gc-plugin-conference.php:1793
 msgctxt "session location taxonomy"
 msgid "Add session location"
-msgstr ""
+msgstr "Zaal toevoegen"
 
-#: ictu-gc-plugin-conference.php:1802
+#: ictu-gc-plugin-conference.php:1794
 msgctxt "session location taxonomy"
 msgid "Edit session location"
-msgstr ""
+msgstr "Bewerk zaal"
 
-#: ictu-gc-plugin-conference.php:1803
+#: ictu-gc-plugin-conference.php:1795
 msgctxt "session location taxonomy"
 msgid "New session location"
-msgstr ""
+msgstr "Nieuwe zaal"
 
-#: ictu-gc-plugin-conference.php:1804
+#: ictu-gc-plugin-conference.php:1796
 msgctxt "session location taxonomy"
 msgid "View session location"
-msgstr ""
+msgstr "Bekijk zaal"
 
-#: ictu-gc-plugin-conference.php:1805
+#: ictu-gc-plugin-conference.php:1797
 msgctxt "session location taxonomy"
 msgid "Search session location"
-msgstr ""
+msgstr "Zoek zaal"
 
-#: ictu-gc-plugin-conference.php:1806 ictu-gc-plugin-conference.php:1807
+#: ictu-gc-plugin-conference.php:1798 ictu-gc-plugin-conference.php:1799
 msgctxt "session location taxonomy"
 msgid "No search session locations found"
-msgstr ""
+msgstr "Geen zalen gevonden"
 
-#: ictu-gc-plugin-conference.php:1814
-msgctxt "Digibeter label"
-msgid "Session location"
-msgstr ""
-
-#: ictu-gc-plugin-conference.php:1834 ictu-gc-plugin-conference.php:1839
-#: ictu-gc-plugin-conference.php:1841
+#: ictu-gc-plugin-conference.php:1826 ictu-gc-plugin-conference.php:1831
+#: ictu-gc-plugin-conference.php:1833
 msgctxt "session level taxonomy"
 msgid "Countries"
-msgstr ""
+msgstr "Landen"
 
-#: ictu-gc-plugin-conference.php:1835 ictu-gc-plugin-conference.php:1840
-#: ictu-gc-plugin-conference.php:1861
+#: ictu-gc-plugin-conference.php:1827 ictu-gc-plugin-conference.php:1832
+#: ictu-gc-plugin-conference.php:1849 ictu-gc-plugin-conference.php:1853
 msgctxt "session level taxonomy"
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
-#: ictu-gc-plugin-conference.php:1842
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "All documents"
+#: ictu-gc-plugin-conference.php:1834
 msgctxt "session level taxonomy"
 msgid "All countries"
-msgstr "Alle documenten"
+msgstr "Alle landen"
 
-#: ictu-gc-plugin-conference.php:1843 ictu-gc-plugin-conference.php:1844
+#: ictu-gc-plugin-conference.php:1835 ictu-gc-plugin-conference.php:1836
 msgctxt "session level taxonomy"
 msgid "Add country"
-msgstr ""
+msgstr "Land toevoegen"
 
-#: ictu-gc-plugin-conference.php:1845
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "Edit document"
+#: ictu-gc-plugin-conference.php:1837
 msgctxt "session level taxonomy"
 msgid "Edit country"
-msgstr "Bewerk document"
+msgstr "Bewerk land"
 
-#: ictu-gc-plugin-conference.php:1846
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "New document"
+#: ictu-gc-plugin-conference.php:1838
 msgctxt "session level taxonomy"
 msgid "New country"
-msgstr "Nieuw document"
+msgstr "Land toevoegen"
 
-#: ictu-gc-plugin-conference.php:1847
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "View document"
+#: ictu-gc-plugin-conference.php:1839
 msgctxt "session level taxonomy"
 msgid "View country"
-msgstr "Bekijk document"
+msgstr "Bekijk land"
 
-#: ictu-gc-plugin-conference.php:1848
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "Search document"
+#: ictu-gc-plugin-conference.php:1840
 msgctxt "session level taxonomy"
 msgid "Search country"
-msgstr "Zoek document"
+msgstr "Zoek land"
 
-#: ictu-gc-plugin-conference.php:1849 ictu-gc-plugin-conference.php:1850
-#, fuzzy
-#| msgctxt "document type"
-#| msgid "No documents found"
+#: ictu-gc-plugin-conference.php:1841 ictu-gc-plugin-conference.php:1842
 msgctxt "session level taxonomy"
 msgid "No countries found"
-msgstr "Geen documenten gevonden"
-
-#: ictu-gc-plugin-conference.php:1857
-msgctxt "Digibeter label"
-msgid "Country"
-msgstr ""
+msgstr "Geen landen gevonden"
 
 #. Plugin Name of the plugin/theme
-#, fuzzy
-#| msgid "ICTU / WP Register post types and taxonomies"
 msgid "ICTU / Gebruiker Centraal / Conference post types and taxonomies"
-msgstr "ICTU / WP Custom post types & custom taxonomieën"
+msgstr ""
+"ICTU / Gebruiker Centraal / Conferentie - custom post types & custom "
+"taxonomieën"
 
 #. Plugin URI of the plugin/theme
 msgid ""
@@ -533,16 +459,12 @@ msgid ""
 msgstr ""
 
 #. Description of the plugin/theme
-#, fuzzy
-#| msgid ""
-#| "Plugin for digitaleoverheid.nl to register custom post types and custom "
-#| "taxonomies"
 msgid ""
 "Plugin for conference.gebruikercentraal.nl to register custom post types and "
 "custom taxonomies"
 msgstr ""
-"Plugin voor digitaleoverheid.nl voor het registeren van custom post types en "
-"taxonomieën"
+"Plugin voor conference.gebruikercentraal.nl to voor custom post types & "
+"custom taxonomieën"
 
 #. Author of the plugin/theme
 msgid "Paul van Buuren"
@@ -551,6 +473,43 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "https://wbvb.nl/"
 msgstr ""
+
+#, fuzzy
+#~| msgctxt "ictu-gcconf-posttypes"
+#~| msgid "Location"
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Location"
+#~ msgstr "Zaal"
+
+#, fuzzy
+#~| msgctxt "ictu-gcconf-posttypes"
+#~| msgid "Level"
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Level"
+#~ msgstr "Niveau"
+
+#, fuzzy
+#~| msgctxt "ictu-gcconf-posttypes"
+#~| msgid "Type"
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Speakers"
+#~ msgstr "Sprekers"
+
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Speaker"
+#~ msgstr "Spreker"
+
+#~ msgctxt "ictu-gc-plugin-conference"
+#~ msgid "Time"
+#~ msgstr "Tijd"
+
+#~ msgctxt "Speakers label"
+#~ msgid "Speakers"
+#~ msgstr "Sprekers"
 
 #~ msgctxt "Dossier"
 #~ msgid "Topics"

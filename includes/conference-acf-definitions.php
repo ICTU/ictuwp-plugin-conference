@@ -1,15 +1,15 @@
 <?php
 
 /*
-// Gebruiker Centraal - conference-acf-definitions.php
+// Conference Plugin (Gebruiker Centraal) - conference-acf-definitions.php
 // ----------------------------------------------------------------------------------
 // ACF definities voor conference plugin
 // ----------------------------------------------------------------------------------
 // @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   1.0.1
-// @desc.     Live at Oct 15 2019.
+// @version   1.1.1
+// @desc.     Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 
@@ -20,8 +20,6 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 	
 		if( function_exists('acf_add_local_field_group') ):
 
-//if ( 22 === 33 ) {
-	
 			//------------------------------------------------------------------------------------------------
 			// blocks constellation
 			acf_add_local_field_group(array(
@@ -376,7 +374,7 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 				'key' => 'group_5d933fd1c6977',
 				'title' => 'Speaker / speakers for this session or keynote',
 				'fields' => array(
-
+/*
 					array(
 						'key' => 'field_5d933fd673c87',
 						'label' => 'NIET GEBRUIKEN',
@@ -404,7 +402,7 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 						'max' => '',
 						'return_format' => 'id',
 					),
-					
+*/					
 					array(
 						'key' => 'field_5da0567590bed',
 						'label' => 'Speakers',

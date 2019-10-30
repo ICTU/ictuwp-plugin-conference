@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.0.1
- * Version description: Live at Oct 15 2019.
+ * Version:             1.1.1
+ * Version description: Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,14 +32,14 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.0.1' );
+define( 'ICTU_GC_CONF_VERSION',		'1.1.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
-  define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'document'
+  define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
 }
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SESSION' ) ) {
-  define( 'ICTU_GCCONF_CPT_SESSION', 'session' );   // slug for custom taxonomy 'citaat'
+  define( 'ICTU_GCCONF_CPT_SESSION', 'session' );   // slug for custom taxonomy 'session' (i.e. workshop)
 }
 
 if ( ! defined( 'ICTU_GCCONF_CPT_KEYNOTE' ) ) {
@@ -47,19 +47,19 @@ if ( ! defined( 'ICTU_GCCONF_CPT_KEYNOTE' ) ) {
 }
 
 if ( ! defined( 'ICTU_GCCONF_CT_TIMESLOT' ) ) {
-  define( 'ICTU_GCCONF_CT_TIMESLOT', 'timeslot' );  // slug for custom taxonomy 'tijd'
+  define( 'ICTU_GCCONF_CT_TIMESLOT', 'timeslot' );  // slug for custom taxonomy 'timeslot'
 }
 
 if ( ! defined( 'ICTU_GCCONF_CT_LOCATION' ) ) {
-  define( 'ICTU_GCCONF_CT_LOCATION', 'location' );  // slug for custom taxonomy 'mankracht'
+  define( 'ICTU_GCCONF_CT_LOCATION', 'location' );  // slug for custom taxonomy 'location'
 }
 
 if ( ! defined( 'ICTU_GCCONF_CT_SESSIONTYPE' ) ) {
-  define( 'ICTU_GCCONF_CT_SESSIONTYPE', 'sessiontype' );  // slug for custom taxonomy 'mankracht'
+  define( 'ICTU_GCCONF_CT_SESSIONTYPE', 'sessiontype' );  // slug for custom taxonomy 'sessiontype'
 }
 
 if ( ! defined( 'ICTU_GCCONF_CT_LEVEL' ) ) {
-  define( 'ICTU_GCCONF_CT_LEVEL', 'expertise' );  // slug for custom taxonomy 'mankracht'
+  define( 'ICTU_GCCONF_CT_LEVEL', 'expertise' );  // slug for custom taxonomy 'expertise' (workshop level)
 }
 
 if ( ! defined( 'ICTU_GCCONF_CT_COUNTRY' ) ) {
@@ -72,10 +72,6 @@ if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
 
 define( 'CONF_DEBUG', false );
 // define( 'CONF_DEBUG', true );
-
-
-
-
 
 
 //========================================================================================================
@@ -98,39 +94,39 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
     /**
      * @var Conference plugin
      */
-    public $conferenceobject = null;
-  
-    /** ----------------------------------------------------------------------------------------------------
-     * Init
-     */
-    public static function init() {
-  
-      $conferenceobject = new self();
-  
-    }
-  
-    /** ----------------------------------------------------------------------------------------------------
-     * Constructor
-     */
-    public function __construct() {
-
-      $this->fn_ictu_gcconf_includes();
-      $this->fn_ictu_gcconf_setup_actions();
-
-    }
-  
-    /** ----------------------------------------------------------------------------------------------------
-     * Hook this plugins functions into WordPress
-     */
+	public $conferenceobject = null;
+	
+	/** ----------------------------------------------------------------------------------------------------
+	* Init
+	*/
+	public static function init() {
+	
+		$conferenceobject = new self();
+	
+	}
+	
+	/** ----------------------------------------------------------------------------------------------------
+	* Constructor
+	*/
+	public function __construct() {
+	
+		$this->fn_ictu_gcconf_includes();
+		$this->fn_ictu_gcconf_setup_actions();
+	
+	}
+	
+	/** ----------------------------------------------------------------------------------------------------
+	* Hook this plugins functions into WordPress
+	*/
 	private function fn_ictu_gcconf_includes() {
-		
-      require_once dirname( __FILE__ ) . '/includes/conference-acf-definitions.php';
-
-    }
-  
-    /** ----------------------------------------------------------------------------------------------------
-     * Hook this plugins functions into WordPress
-     */
+	
+		require_once dirname( __FILE__ ) . '/includes/conference-acf-definitions.php';
+	
+	}
+	
+	/** ----------------------------------------------------------------------------------------------------
+	* Hook this plugins functions into WordPress
+	*/
 	private function fn_ictu_gcconf_setup_actions() {
 		
 		add_action( 'init', array( $this, 'fn_ictu_gcconf_register_post_types' ) );
@@ -139,6 +135,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		add_action( 'plugins_loaded', array( $this, 'fn_ictu_gcconf_load_plugin_textdomain' ) );
 		add_action( 'init', array( $this, 'fn_ictu_gcconf_add_rewrite_rules' ) );
 
+		// make sure the breadcrumb is useful for our CPTs
 		add_filter( 'genesis_single_crumb',   array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
 		add_filter( 'genesis_page_crumb',     array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
 		add_filter( 'genesis_archive_crumb',  array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 ); 				
@@ -166,7 +163,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
      */
 	public function fn_ictu_gcconf_load_plugin_textdomain() {
 		
-		fn_ictu_gcconf_load_plugin_textdomain( 'ictu-gcconf-posttypes', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		fn_ictu_gcconf_load_plugin_textdomain( 'ictu-gc-plugin-conference', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		
 	}
 
@@ -178,14 +175,21 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	*/
 	function fn_ictu_gcconf_add_page_templates( $post_templates ) {
 	
-		$post_templates[$this->template_conf_overviewpage]				= _x( 'Conf. Overview page', "naam template",  'ictu-gcconf-posttypes' );    
+		$post_templates[$this->template_conf_overviewpage]				= _x( 'Conf. Overview page', "naam template",  'ictu-gc-plugin-conference' );    
 		return $post_templates;
 		
 	}
 
 	
-    /** ----------------------------------------------------------------------------------------------------
-	* custom loop
+	/** ----------------------------------------------------------------------------------------------------
+	* Add a custom loop, used by these CPTs:
+	* ICTU_GCCONF_CT_LOCATION
+	* ICTU_GCCONF_CT_SESSIONTYPE
+	* ICTU_GCCONF_CT_LEVEL
+	* ICTU_GCCONF_CT_COUNTRY
+	* ICTU_GCCONF_CT_TIMESLOT
+	*
+	* @return void
 	*/
 	function fn_ictu_gcconf_tax_loop(  ) {
 
@@ -250,10 +254,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 
     /** ----------------------------------------------------------------------------------------------------
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
+	* For the 'conf-overviewpage.php' template, add the extra content blocks
+	* type of blocks:
+	* - 'events' (events through the Events Manager plugin)
+	* - 'keynotes' 
+	* - 'speakers'
+	* - 'sessions'
+	*
+	* @return void
+	*/
      
 	public function fn_ictu_gcconf_frontend_template_append_blocks() {
 
@@ -344,10 +353,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								echo '<div class="meta">';
 								echo '<dl class="dl-time-location">';
 								if ( $times ) {
-									echo '<dt>' . _x( 'Time', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-times">' . $times . '</dd> ';	
+									echo '<dt>' . _x( 'Time', 'Event times', 'ictu-gc-plugin-conference' ) . '</dt><dd class="event-times">' . $times . '</dd> ';	
 								}	
 								if ( $town ) {
-									echo '<dt>' . _x( 'Location', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-location">' . $town . '</dd> ';	
+									echo '<dt>' . _x( 'Location', 'Event city', 'ictu-gc-plugin-conference' ) . '</dt><dd class="event-location">' . $town . '</dd> ';	
 								}	
 								echo '</dl>';
 								echo '</div>';
@@ -384,7 +393,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								'echo'		=> false
 							);
 
-//							echo '<h2>' . get_the_title( $post->ID ) . '</h2>';
 							echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 
 						endforeach;
@@ -447,8 +455,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 							        'session_location'	=> $block_sessions_session_location, 
 									
 								);
-							
-//								echo '<h2>' . get_the_title( $block_sessions_session->ID ) . '</h2>';
+
 								echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
 							
 							}
@@ -471,13 +478,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 	}
 
-
     //========================================================================================================
     /**
-     * Handles the front-end display. 
-     *
-     * @return void
-     */
+	* Adds the connected speaker(s) for a session or keynote
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	public function fn_ictu_gcconf_frontend_append_speakers( $args = [] ) {
 		
 		global $post;
@@ -486,7 +494,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	        'echo' 			=> true
 	    );
 
-	    $return = '<h2>fn_ictu_gcconf_frontend_append_speakers</h2>';
 	    $return = '';
 
 	    // Parse incoming $args into an array and merge it with $defaults
@@ -499,12 +506,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		$list_of_speakers = get_field( 'speaker_session_keynote_relations', $post->ID );
 
 		if ( ! $list_of_speakers ) {
+			// extra safety
 			$list_of_speakers = get_field( 'speakers', $post->ID );
 		}
 
 		if ( $list_of_speakers ) {
 			
-			$return .= '<div class="speakers"><h2 class="visuallyhidden">' . _x( 'Speakers', 'ictu-gcconf-posttypes' ) . '</h2>';
+			$return .= '<div class="speakers"><h2 class="visuallyhidden">' . _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' ) . '</h2>';
 
 			foreach( $list_of_speakers as $speaker ):
 
@@ -541,8 +549,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
     //========================================================================================================
 
     /**
-     * Register frontend styles
-     */
+	* Register frontend stylesheet. Dummy code to enable inline CSS in header should that be necessary
+	*
+	* @return void
+	*/
 	public function fn_ictu_gcconf_register_frontend_style_script( ) {
 	
 		global $post;
@@ -550,7 +560,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		$infooter = true;
 		
 		wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', array(), ICTU_GC_CONF_VERSION, 'all' );
-		
+		/*
 		$header_css     = '';
 		$acfid          = get_the_id();
 		$page_template  = get_post_meta( $acfid, '_wp_page_template', true );
@@ -568,6 +578,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		if ( $header_css ) {
 			wp_add_inline_style( ICTU_GC_CONF_ARCHIVE_CSS, $header_css );
 		}
+		*/
 
 		
     }
@@ -576,7 +587,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
     /**
     * Modify page content if using a specific page template.
-    */
+	*
+	* @return void
+	*/
 	public function fn_ictu_gcconf_frontend_use_page_template() {
 		
 		global $post;
@@ -637,11 +650,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			// append speaker image
 			add_action( 'genesis_entry_content', 		array( $this, 'fn_ictu_gcconf_frontend_speaker_featured_image' ), 6 ); 		
 
-			// Prepend job title
-			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_country' ), 7 ); 		
-					
-			// Prepend job title
-			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_jobtitle' ), 8 ); 		
+			// append speaker country info
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_country' ), 7 ); 			
 
 			// append weblinks
 			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_speaker_append_weblinks' ), 12 ); 		
@@ -677,12 +687,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
     /** ----------------------------------------------------------------------------------------------------
-     * Append country tax to speaker single
-     */
+     * Append country taxonomy to speaker single
+	*
+	* @return string $return 
+	*/
 	public function fn_ictu_gcconf_frontend_speaker_append_country() {
 		
 		global $post;
-
 
 		$return			= '';
 		$country		= '';
@@ -723,20 +734,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 	}
 
-
     /** ----------------------------------------------------------------------------------------------------
-     * Append job title to keynote single
-     */
-	public function fn_ictu_gcconf_frontend_speaker_append_jobtitle() {
-		
-		
-		
-	}
-
-
-    /** ----------------------------------------------------------------------------------------------------
-     * Append country tax to speaker single
-     */
+	* Append related keynotes or sessions to speaker single
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	public function fn_ictu_gcconf_frontend_speaker_append_links_sessions_keynotes( $args = [] ) {
 		
 		global $post;
@@ -762,9 +766,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			$titlea 			= '';		
 			$titlearray 		= array();		
-//			$keynotessessions 	= '<ul>';		
 			$keynotessessions 	= '<div class="archive-list grid">';
-
 			$objects 			= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 				
 			if ( $objects ) {
@@ -772,19 +774,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				foreach( $objects as $post):
 					
 					$posttype	= get_post_type($post );
-					
-//					$obj 		= get_post_type_object( $posttype );
-
-//					if ( isset( $titlearray[ $posttype ] ) ) {
-//						$titlearray[ $posttype ] = $obj->labels->name;
-//					}
-//					else {
-//						$obj = get_post_type_object( $posttype );
-//						$titlearray[ $posttype ] = $obj->labels->singular_name;
-//					}
-
-
-					$args2 = array( 
+					$args2 		= array( 
 						'ID'			=> get_the_ID(),
 						'titletag'		=> 'h3',
 						'echo'			=> false,
@@ -806,46 +796,25 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				endforeach;
 	
 			}			
-			
-//			if ( $titlearray ) {
-//				foreach( $titlearray as $key => $value ) {
-//					if ( $titlea ) {
-//						$titlea .= ' &amp; ' . strtolower( $value );
-//					}
-//					else {
-//						$titlea .= $value;
-//					}
-//				}
-//			}
 
-//			$keynotessessions .= '</ul>';
 			$keynotessessions .= '</div>';
-			
-//			if ( $titlea ) {
-//				$keynotessessions = '<h2>' . $titlea . ': </h2>' . $keynotessessions;
-//			}		
-			
 
 			wp_reset_postdata(); 			
 
 			$return .= $keynotessessions;		
 
-
 		}			
-
 
 		if( have_rows('speaker_links', $args['ID'] ) ):
 
 			$return .= '<div class="speaker-links">';		
+			
 			if ( $args['sectiontitle'] ) {
 
-//					$return .= '<' . $args['speakerlinks_sectiontitletag'] . '>' . $args['speakerlinks_sectiontitle'] . '</' . $args['speakerlinks_sectiontitletag'] . '>';		
 				$return .= '<' . $args['titletag'] . '>' . sprintf( __( 'Find %s on social media', 'gebruikercentraal' ), get_the_title( get_the_ID() )  ) . '</' . $args['titletag'] . '>';
 
 			}
-//			$return .= '<h3>' . sprintf . '</h3>';		
-//			$return .= '<h3>' . sprintf( __( 'Find %s on social media', 'gebruikercentraal' ), get_the_title( get_the_ID() )  ) . '</h3>';
-			
+
 			$return .= '<ul class="social-media">';		
 		
 			// loop through rows (sub repeater)
@@ -874,13 +843,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			return $return;
 		}
 
-		
 	}
 
 
     /** ----------------------------------------------------------------------------------------------------
-     * Append vaardigheden to keynote single
-     */
+	* Append any links / socmed profiles to speaker single
+	*
+	* @return void
+	*/
 	public function fn_ictu_gcconf_frontend_speaker_append_weblinks() {
 		
 		global $post;
@@ -890,28 +860,22 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
 
-    
-
-
     /** ----------------------------------------------------------------------------------------------------
-     * Post info: do not write any post info
-     */
+	* Post info: do not write any post info
+	*
+	* @return void
+	*/
     public function fn_ictu_gcconf_frontend_filter_postinfo() {
     
     	return '';
   
 	}
-    
 
     /** ----------------------------------------------------------------------------------------------------
-     * A new version of the_loop for keynotes
-     */
-
-		
-
-    /** ----------------------------------------------------------------------------------------------------
-     * COMMENT HERE
-     */
+	* Add rewrite rules if necessary (hint: not necessary for this plugin)
+	*
+	* @return void
+	*/
     public function fn_ictu_gcconf_add_rewrite_rules() {
     
     	return '';
@@ -919,9 +883,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
 
-    /** ----------------------------------------------------------------------------------------------------
-     * COMMENT HERE
-     */
+	/** ----------------------------------------------------------------------------------------------------
+	* Show speaker(s) for a keynote
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
     public function fn_ictu_gcconf_frontend_write_keynotecard( $args = [] ) {
 
 	    $defaults = array (
@@ -941,32 +909,31 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			return;
 		}
 
-		tralala_update( $args['ID'] );
+		fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
 		$section_title 		= get_the_title( $args['ID'] );
 		$title_id			= sanitize_title( $section_title );
 		$excerpt 			= get_the_excerpt( $args['ID'] );
 		$metainfo 			= '';
-//		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
-//dovardump( $list_of_speakers, 'juist' );
-		$list_of_speakers 	= get_field( 'speakers', $args['ID'] );
-//dovardump( $list_of_speakers, 'fout' );
+		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 		$speakernames 		= '';
 
 		if ( $list_of_speakers && $args['speakernames'] ) {
+
 			$speakercounter = 0;
 			$speakernames = '<dl class="dl-speaker-names keynote">';
 			$speakernames .= '<dt>';
 			
 			if ( count( $list_of_speakers ) > 1 ) {
-				$speakernames .= _x( 'Speakers', 'ictu-gcconf-posttypes' );
+				$speakernames .= _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' );
 			}
 			else {
-				$speakernames .= _x( 'Speaker', 'ictu-gcconf-posttypes' );
+				$speakernames .= _x( 'Speaker', 'speaker type' 'ictu-gc-plugin-conference' );
 			}
 			$speakernames .= '</dt>';
 			
 			foreach( $list_of_speakers as $speaker ):
+
 				$speakercounter++;
 				$countrynames = '';
 				$speakernames .= '<dd>';
@@ -993,6 +960,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				
 				$speakernames .= get_the_title( $speaker ) . $countrynames;		
 				$speakernames .= '</dd>';
+
 			endforeach;
 			
 			$speakernames .= '</dl>';
@@ -1005,6 +973,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		if ( $list_of_speakers && $args['speakerimage'] ) {
 
 			$return .= '<span class="speaker-image">';
+
 			foreach( $list_of_speakers as $speaker ):
 
 				if ( has_post_thumbnail( $speaker ) ) {
@@ -1049,10 +1018,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 	}
 
-
-    /** ----------------------------------------------------------------------------------------------------
-     * COMMENT HERE
-     */
+	/** ----------------------------------------------------------------------------------------------------
+	* Show speaker(s) for a session
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
     public function fn_ictu_gcconf_frontend_write_sessioncard( $args = [] ) {
 
 	    $defaults = array (
@@ -1074,16 +1046,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			return;
 		}
 
-		tralala_update( $args['ID'] );
+		fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
 		$time_term 			= get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
 		$location_term		= get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
 		
-//		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
-//dovardump( $list_of_speakers, 'juist' );
-		$list_of_speakers 	= get_field( 'speakers', $args['ID'] );
-//dovardump( $list_of_speakers, 'fout' );
-
+		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 		$section_title 		= get_the_title( $args['ID'] );
 		$title_id			= sanitize_title( $section_title );
 
@@ -1093,10 +1061,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			
 			$metainfo .= '<dl class="dl-time-location">';
 			if ( $time_term ) {
-				$metainfo .= '<dt>' . _x( 'Time', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-times">' . $time_term->name . '</dd> ';	
+				$metainfo .= '<dt>' . _x( 'Timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ) . '</dt><dd class="event-times">' . $time_term->name . '</dd> ';	
 			}	
 			if ( $location_term ) {
-				$metainfo .= '<dt>' . _x( 'Location', 'ictu-gcconf-posttypes' ) . '</dt><dd class="event-location">' . $location_term->name . '</dd> ';	
+				$metainfo .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ) . '</dt><dd class="event-location">' . $location_term->name . '</dd> ';	
 			}	
 			$metainfo .= '</dl>';
 			
@@ -1108,10 +1076,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$metainfo .= '<dt>';
 			
 			if ( count( $list_of_speakers ) > 1 ) {
-				$metainfo .= _x( 'Speakers', 'ictu-gcconf-posttypes' );
+				$metainfo .= _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' );
 			}
 			else {
-				$metainfo .= _x( 'Speaker', 'ictu-gcconf-posttypes' );
+				$metainfo .= _x( 'Speaker', 'speaker type', 'ictu-gc-plugin-conference' );
 			}
 			$metainfo .= '</dt>';
 			
@@ -1127,7 +1095,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			
 			$metainfo .= '</dl>';
 		}
-
 
 		$return .= '<div class="card card--session" aria-labelledby="' . $title_id . '">';
 		$return .= '<' . $args['titletag'] . ' id="' . $title_id . '"><a href="' . get_permalink( $args['ID'] ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';
@@ -1151,9 +1118,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
 
-    /** ----------------------------------------------------------------------------------------------------
-     * COMMENT HERE
-     */
+	/** ----------------------------------------------------------------------------------------------------
+	* Show extra info about a speaker
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
     public function fn_ictu_gcconf_frontend_write_speakercard( $args = [] ) {
 
 	    $defaults = array (
@@ -1219,6 +1190,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$county_term			= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_COUNTRY );
 	
 			if ( $county_term && ! is_wp_error( $county_term ) ) { 
+
 				$country = '';
 				$countrycounter = 0;
 				
@@ -1247,17 +1219,19 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					
 					$return .= '</p>';
 				}
-
 			}	
-						
 		}
 		
 		if ( $args['fulldesc'] ) {
+
 			$excerpt 		= get_the_excerpt( $args['ID'] );
 			$return		   .= '<p class="excerpt">' . wp_strip_all_tags( $excerpt ) . '</p>';
+
 		}
 		else {
+			
 			$return		   .= '<p class="speaker-jobtitle">' . $jobtitle . '</p>';
+
 		}
 
 
@@ -1284,8 +1258,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	
 				$return .= '<div class="speaker-links">';		
 				if ( $args['speakerlinks_sectiontitle'] ) {
-//					$return .= '<' . $args['speakerlinks_sectiontitletag'] . '>' . $args['speakerlinks_sectiontitle'] . '</' . $args['speakerlinks_sectiontitletag'] . '>';		
+
 					$return .= '<' . $args['speakerlinks_sectiontitletag'] . '>' . sprintf( __( 'Find %s on social media', 'gebruikercentraal' ), get_the_title( get_the_ID() )  ) . '</' . $args['speakerlinks_sectiontitletag'] . '>';
+
 				}
 				
 				$return .= '<ul class="social-media speaker">';		
@@ -1325,9 +1300,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
     /** ----------------------------------------------------------------------------------------------------
-     * Add content to the content 
-     * \0/
-     */
+	* Show ALL available content for a certain posttype.
+	* First we check to see if the page we are looking at is 1 of the 3 pages in the site's theme
+	* settings designated to perform a special role ('themesettings_conference_speakers', etc)
+	* if this page has NO special blocks with selected content, then we will list all
+	* content for this particular content type
+	* \0/
+	*
+	* @return void
+	*/
 	public function fn_ictu_gcconf_frontend_template_content_for_noblocks_page( ) {
 
 
@@ -1351,32 +1332,37 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			$args = array();
 			
+			// what kind of content are we looking at?
 			if ( $speaker_page->ID === $the_id ) {
+				// it is the speaker page
 				$docheck	= true;	
 				$type		= ICTU_GCCONF_CPT_SPEAKER;
 			}
 			elseif ( $keynote_page->ID === $the_id ) {
+				// it is the keynote page
 				$docheck	= true;	
 				$type		= ICTU_GCCONF_CPT_KEYNOTE;
-
 			}
 			elseif ( $session_page->ID === $the_id ) {
+				// it is the session page
 				$docheck	= true;	
 				$type		= ICTU_GCCONF_CPT_SESSION;
 			}
 
 			if ( $docheck && !have_rows('blocks') ) {
+				// no content has been selected for this page, so list ALL published content for this CPT
 
 				$args = array(
-				    'post_type'             =>  $type,
+					'post_type'             =>  $type,
 					'posts_per_page'        =>  -1,
+					'post_status'     		=> 'publish',
 					'order'                 =>  'ASC',
 					'orderby'               =>  'post_title'
 				  );
 
-				$sidebarposts = new WP_query( $args );
+				$posts_for_cpt = new WP_query( $args );
 		
-				if ($sidebarposts->have_posts()) {
+				if ( $posts_for_cpt->have_posts() ) {
 
 					$colcount = 'grid--col-2';
 
@@ -1386,7 +1372,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 					echo '<div class="grid ' . $colcount . ' ' . $type . '">';
 					
-					while ( $sidebarposts->have_posts() ) : $sidebarposts->the_post();
+					while ( $posts_for_cpt->have_posts() ) : $posts_for_cpt->the_post();
 					
 						$postcounter++;
 
@@ -1394,8 +1380,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 							'ID'			=> $post->ID,
 							'titletag'		=> 'h2',
 						);
-						
-						//hiero
 
 						if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
 							
@@ -1432,9 +1416,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
 
     
-    /** ----------------------------------------------------------------------------------------------------
-     * Prepends a title before the content
-     */
+	/** ----------------------------------------------------------------------------------------------------
+	* Add a speaker image before the content
+	*
+	* @return void
+	*/
     public function fn_ictu_gcconf_frontend_speaker_featured_image() {
 	    
 	    global $post;
@@ -1452,8 +1438,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
     
     /** ----------------------------------------------------------------------------------------------------
-     * Prepends a title before the content
-     */
+	* Adds meta info  to session or keynot
+	*
+	* @return void
+	*/
     public function fn_ictu_gcconf_frontend_sessionkeynote_location_time() {
 	    
 	    global $post;
@@ -1469,41 +1457,41 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$metainfo .= '<dl class="dl-time-location">';
 
 			if ( $time_term && ! is_wp_error( $time_term ) ) {
-				$metainfo .= '<dt>' . _x( 'Time', 'ictu-gcconf-posttypes' ) . '</dt>';
+				$metainfo .= '<dt>' . _x( 'Time', 'Event times', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $time_term as $term ) {
+				    
 				    $parentname = '';
-				    /*
-				    if( $term->parent ) {
-					    $parent = get_term( $term->parent, ICTU_GCCONF_CT_TIMESLOT );
-					    if ( $parent ) {
-						    $parentname = $parent->name . ' - ';
-					    }
-				    }
-				    */
 					$metainfo .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+					
 			    }
 				
 			}	
 			if ( $location_term && ! is_wp_error( $location_term ) ) {
-				$metainfo .= '<dt>' . _x( 'Location', 'ictu-gcconf-posttypes' ) . '</dt>';
+				$metainfo .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $location_term as $term ) {
+				    
 					$metainfo .= '<dd class="event-location">' . $term->name . '</dd> ';	
+					
 			    }
 			}	
 			if ( $session_level && ! is_wp_error( $session_level ) ) {
-				$metainfo .= '<dt>' . _x( 'Level', 'ictu-gcconf-posttypes' ) . '</dt>';
+				$metainfo .= '<dt>' . _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $session_level as $term ) {
+				    
 					$metainfo .= '<dd class="event-level">' . $term->name . '</dd> ';	
+					
 			    }
 			}	
 			if ( $session_type && ! is_wp_error( $session_type ) ) {
-				$metainfo .= '<dt>' . _x( 'Type', 'ictu-gcconf-posttypes' ) . '</dt>';
+				$metainfo .= '<dt>' . _x( 'Session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $session_type as $term ) {
+				    
 					$metainfo .= '<dd class="event-type">' . $term->name . '</dd> ';	
+
 			    }
 			}	
 			$metainfo .= '</dl>';
@@ -1511,7 +1499,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		}
 
 		if ( $metainfo ) {
+
 			echo '<div class="meta">' . $metainfo . '</div>';
+
 		}
 
 
@@ -1520,33 +1510,35 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 
     /** ----------------------------------------------------------------------------------------------------
-     * Do actually register the post types we need
-     */
+	* Do actually register the post types we need
+	*
+	* @return void
+	*/
     public function fn_ictu_gcconf_register_post_types() {
       
       // ---------------------------------------------------------------------------------------------------
       // custom post type voor 'keynote'
 
     	$labels = array(
-    		"name"                  => _x( 'Sessions', 'session type', 'ictu-gcconf-posttypes' ),
-    		"singular_name"         => _x( 'Session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"menu_name"             => _x( 'Sessions', 'session type', 'ictu-gcconf-posttypes' ),
-    		"all_items"             => _x( 'All sessions', 'session type', 'ictu-gcconf-posttypes' ),
-    		"add_new"               => _x( 'Add new session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"add_new_item"          => _x( 'Add new session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"edit_item"             => _x( 'Edit session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"new_item"              => _x( 'New session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"view_item"             => _x( 'View session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"search_items"          => _x( 'Search session', 'session type', 'ictu-gcconf-posttypes' ),
-    		"not_found"             => _x( 'No sessions found', 'session type', 'ictu-gcconf-posttypes' ),
-    		"not_found_in_trash"    => _x( 'No sessions found', 'session type', 'ictu-gcconf-posttypes' ),
-    		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-    		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+    		"name"                  => _x( 'Sessions', 'session type', 'ictu-gc-plugin-conference' ),
+    		"singular_name"         => _x( 'Session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"menu_name"             => _x( 'Sessions', 'session type', 'ictu-gc-plugin-conference' ),
+    		"all_items"             => _x( 'All sessions', 'session type', 'ictu-gc-plugin-conference' ),
+    		"add_new"               => _x( 'Add new session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"add_new_item"          => _x( 'Add new session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"edit_item"             => _x( 'Edit session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"new_item"              => _x( 'New session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"view_item"             => _x( 'View session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"search_items"          => _x( 'Search session', 'session type', 'ictu-gc-plugin-conference' ),
+    		"not_found"             => _x( 'No sessions found', 'session type', 'ictu-gc-plugin-conference' ),
+    		"not_found_in_trash"    => _x( 'No sessions found', 'session type', 'ictu-gc-plugin-conference' ),
+    		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+    		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
     		);
     
     	$args = array(
-			"label"                 => _x( 'Sessions', 'session type', 'ictu-gcconf-posttypes' ),
+			"label"                 => _x( 'Sessions', 'session type', 'ictu-gc-plugin-conference' ),
 			"labels"              => $labels,
 			"menu_icon"           => "dashicons-analytics",      	
 			"description"         => "",
@@ -1571,25 +1563,25 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // custom post type voor 'keynote'
 
     	$labels = array(
-    		"name"                  => _x( 'Keynotes', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"singular_name"         => _x( 'Keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"menu_name"             => _x( 'Keynotes', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"all_items"             => _x( 'All keynotes', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"add_new"               => _x( 'Add new keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"add_new_item"          => _x( 'Add new keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"edit_item"             => _x( 'Edit keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"new_item"              => _x( 'New keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"view_item"             => _x( 'View keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"search_items"          => _x( 'Search keynote', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"not_found"             => _x( 'No keynotes found', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"not_found_in_trash"    => _x( 'No keynotes found', 'keynotes type', 'ictu-gcconf-posttypes' ),
-    		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-    		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+    		"name"                  => _x( 'Keynotes', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"singular_name"         => _x( 'Keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"menu_name"             => _x( 'Keynotes', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"all_items"             => _x( 'All keynotes', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"add_new"               => _x( 'Add new keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"add_new_item"          => _x( 'Add new keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"edit_item"             => _x( 'Edit keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"new_item"              => _x( 'New keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"view_item"             => _x( 'View keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"search_items"          => _x( 'Search keynote', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"not_found"             => _x( 'No keynotes found', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"not_found_in_trash"    => _x( 'No keynotes found', 'keynotes type', 'ictu-gc-plugin-conference' ),
+    		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+    		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
     		);
     
     	$args = array(
-    		"label"                 => _x( 'Keynotes', 'Stappen label', 'ictu-gcconf-posttypes' ),
+    		"label"                 => _x( 'Keynotes', 'Stappen label', 'ictu-gc-plugin-conference' ),
     		"labels"              => $labels,
 			"menu_icon"           => "dashicons-admin-network",      	
     		"description"         => "",
@@ -1614,25 +1606,25 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // custom post type voor 'speakers'
     	$labels = array(
-    		"name"                  => _x( 'Speakers', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"singular_name"         => _x( 'Speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"menu_name"             => _x( 'Speakers', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"all_items"             => _x( 'All speakers', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"add_new"               => _x( 'Add new speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"add_new_item"          => _x( 'Add new speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"edit_item"             => _x( 'Edit speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"new_item"              => _x( 'Edit speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"view_item"             => _x( 'View speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"search_items"          => _x( 'Search speaker', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"not_found"             => _x( 'No speakers found', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"not_found_in_trash"    => _x( 'No speakers found', 'speaker type', 'ictu-gcconf-posttypes' ),
-    		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-    		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+    		"name"                  => _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"singular_name"         => _x( 'Speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"menu_name"             => _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"all_items"             => _x( 'All speakers', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"add_new"               => _x( 'Add new speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"add_new_item"          => _x( 'Add new speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"edit_item"             => _x( 'Edit speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"new_item"              => _x( 'Edit speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"view_item"             => _x( 'View speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"search_items"          => _x( 'Search speaker', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"not_found"             => _x( 'No speakers found', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"not_found_in_trash"    => _x( 'No speakers found', 'speaker type', 'ictu-gc-plugin-conference' ),
+    		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+    		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+    		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
     		);
     
     	$args = array(
-			"label"                 => _x( 'Speakers', 'Speakers label', 'ictu-gcconf-posttypes' ),
+			"label"                 => _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' ),
 			"labels"              => $labels,
 			"menu_icon"           => "dashicons-businessperson",      		
 			"description"         => "",
@@ -1658,34 +1650,34 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // Timeblocks taxonomie voor keynotes & sessions
       	$labels = array(
-      		"name"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Timeblock', 'timeblock taxonomy', 'ictu-gcconf-posttypes' )
+      		"name"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' )
       		);
       
       	$labels = array(
-      		"name"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Timeblock', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"menu_name"             => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"all_items"             => _x( 'All timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new"               => _x( 'Add timeblock', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new_item"          => _x( 'Add timeblock', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"edit_item"             => _x( 'Bewerk tijdsinschatting', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"new_item"              => _x( 'Nieuwe tijdsinschatting', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"view_item"             => _x( 'Bekijk tijdsinschatting', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"search_items"          => _x( 'Zoek tijdsinschatting', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found"             => _x( 'Geen tijdsinschattingen gevonden', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found_in_trash"    => _x( 'Geen tijdsinschattingen gevonden in de prullenbak', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
-      		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-      		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+      		"name"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"menu_name"             => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"all_items"             => _x( 'All timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new"               => _x( 'Add timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new_item"          => _x( 'Add timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"edit_item"             => _x( 'Edit timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"new_item"              => _x( 'New timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"view_item"             => _x( 'View timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"search_items"          => _x( 'Search timeblock', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found"             => _x( 'No timeblocks found', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found_in_trash"    => _x( 'No timeblocks found', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
+      		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+      		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
       		);
   
       	$args = array(
-      		"label"                 => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"                 => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
       		"labels"              => $labels,
       		"public"              => true,
       		"hierarchical"        => true,
-      		"label"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"                  => _x( 'Timeblocks', 'timeblock taxonomy', 'ictu-gc-plugin-conference' ),
       		"show_ui"             => true,
       		"show_in_menu"        => true,
       		"show_in_nav_menus"   => true,
@@ -1702,34 +1694,34 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // Kosten taxonomie voor methode
       	$labels = array(
-      		"name"                  => _x( 'Session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session types', 'session type taxonomy', 'ictu-gcconf-posttypes' )
+      		"name"                  => _x( 'Session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session types', 'session type taxonomy', 'ictu-gc-plugin-conference' )
       		);
       
       	$labels = array(
-      		"name"                  => _x( 'Session types', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"menu_name"             => _x( 'Session types', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"all_items"             => _x( 'All session types', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new"               => _x( 'Add session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new_item"          => _x( 'Add session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"edit_item"             => _x( 'Edit session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"new_item"              => _x( 'New session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"view_item"             => _x( 'View session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"search_items"          => _x( 'Search session type', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found"             => _x( 'No session types found', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found_in_trash"    => _x( 'No session types found', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
-      		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-      		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+      		"name"                  => _x( 'Session types', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"menu_name"             => _x( 'Session types', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"all_items"             => _x( 'All session types', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new"               => _x( 'Add session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new_item"          => _x( 'Add session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"edit_item"             => _x( 'Edit session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"new_item"              => _x( 'New session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"view_item"             => _x( 'View session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"search_items"          => _x( 'Search session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found"             => _x( 'No session types found', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found_in_trash"    => _x( 'No session types found', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
+      		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+      		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
       		);
   
       	$args = array(
-      		"label"                 => _x( 'Session types', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"                 => _x( 'Session types', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
       		"labels"              => $labels,
       		"public"              => true,
       		"hierarchical"        => true,
-      		"label"                  => _x( 'Session types', 'session type taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"                  => _x( 'Session types', 'session type taxonomy', 'ictu-gc-plugin-conference' ),
       		"show_ui"             => true,
       		"show_in_menu"        => true,
       		"show_in_nav_menus"   => true,
@@ -1745,34 +1737,34 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // Expertise taxonomie voor methode
       	$labels = array(
-      		"name"                  => _x( 'Session levels', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session level', 'session level taxonomy', 'ictu-gcconf-posttypes' )
+      		"name"                  => _x( 'Session levels', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' )
       		);
       
       	$labels = array(
-      		"name"                  => _x( 'Session levels', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"menu_name"             => _x( 'Session levels', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"all_items"             => _x( 'All session levels', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new"               => _x( 'Add session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new_item"          => _x( 'Add session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"edit_item"             => _x( 'Edit session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"new_item"              => _x( 'New session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"view_item"             => _x( 'View session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"search_items"          => _x( 'Search session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found"             => _x( 'No search session levels found', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found_in_trash"    => _x( 'No search session levels found', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-      		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+      		"name"                  => _x( 'Session levels', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"menu_name"             => _x( 'Session levels', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"all_items"             => _x( 'All session levels', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new"               => _x( 'Add session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new_item"          => _x( 'Add session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"edit_item"             => _x( 'Edit session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"new_item"              => _x( 'New session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"view_item"             => _x( 'View session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"search_items"          => _x( 'Search session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found"             => _x( 'No search session levels found', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found_in_trash"    => _x( 'No search session levels found', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+      		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
       		);
   
       	$args = array(
-      		"label"               => _x( 'Session level', 'Digibeter label', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
       		"labels"              => $labels,
       		"public"              => true,
       		"hierarchical"        => true,
-      		"label"               => _x( 'Session level', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
       		"show_ui"             => true,
       		"show_in_menu"        => true,
       		"show_in_nav_menus"   => true,
@@ -1788,34 +1780,34 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // Expertise taxonomie voor methode
       	$labels = array(
-      		"name"                  => _x( 'Session locations', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session location', 'session location taxonomy', 'ictu-gcconf-posttypes' )
+      		"name"                  => _x( 'Session locations', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' )
       		);
       
       	$labels = array(
-      		"name"                  => _x( 'Session locations', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"menu_name"             => _x( 'Session locations', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"all_items"             => _x( 'All session locations', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new"               => _x( 'Add session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new_item"          => _x( 'Add session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"edit_item"             => _x( 'Edit session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"new_item"              => _x( 'New session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"view_item"             => _x( 'View session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"search_items"          => _x( 'Search session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found"             => _x( 'No search session locations found', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found_in_trash"    => _x( 'No search session locations found', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
-      		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-      		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+      		"name"                  => _x( 'Session locations', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"menu_name"             => _x( 'Session locations', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"all_items"             => _x( 'All session locations', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new"               => _x( 'Add session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new_item"          => _x( 'Add session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"edit_item"             => _x( 'Edit session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"new_item"              => _x( 'New session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"view_item"             => _x( 'View session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"search_items"          => _x( 'Search session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found"             => _x( 'No search session locations found', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found_in_trash"    => _x( 'No search session locations found', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
+      		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+      		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
       		);
   
       	$args = array(
-      		"label"               => _x( 'Session location', 'Digibeter label', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
       		"labels"              => $labels,
       		"public"              => true,
       		"hierarchical"        => true,
-      		"label"               => _x( 'Session location', 'session location taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ),
       		"show_ui"             => true,
       		"show_in_menu"        => true,
       		"show_in_nav_menus"   => true,
@@ -1831,34 +1823,34 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
       // ---------------------------------------------------------------------------------------------------
       // Expertise taxonomie voor methode
       	$labels = array(
-      		"name"                  => _x( 'Countries', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Country', 'session level taxonomy', 'ictu-gcconf-posttypes' )
+      		"name"                  => _x( 'Countries', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Country', 'session level taxonomy', 'ictu-gc-plugin-conference' )
       		);
       
       	$labels = array(
-      		"name"                  => _x( 'Countries', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"singular_name"         => _x( 'Country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"menu_name"             => _x( 'Countries', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"all_items"             => _x( 'All countries', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new"               => _x( 'Add country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"add_new_item"          => _x( 'Add country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"edit_item"             => _x( 'Edit country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"new_item"              => _x( 'New country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"view_item"             => _x( 'View country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"search_items"          => _x( 'Search country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found"             => _x( 'No countries found', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"not_found_in_trash"    => _x( 'No countries found', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
-      		"featured_image"        => __( 'Featured image', 'ictu-gcconf-posttypes' ),
-      		"archives"              => __( 'Archives', 'ictu-gcconf-posttypes' ),
-      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gcconf-posttypes' ),
+      		"name"                  => _x( 'Countries', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"singular_name"         => _x( 'Country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"menu_name"             => _x( 'Countries', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"all_items"             => _x( 'All countries', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new"               => _x( 'Add country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"add_new_item"          => _x( 'Add country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"edit_item"             => _x( 'Edit country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"new_item"              => _x( 'New country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"view_item"             => _x( 'View country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"search_items"          => _x( 'Search country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found"             => _x( 'No countries found', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"not_found_in_trash"    => _x( 'No countries found', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
+      		"featured_image"        => __( 'Featured image', 'ictu-gc-plugin-conference' ),
+      		"archives"              => __( 'Archives', 'ictu-gc-plugin-conference' ),
+      		"uploaded_to_this_item" => __( 'Uploaded media', 'ictu-gc-plugin-conference' ),
       		);
   
       	$args = array(
-      		"label"               => _x( 'Country', 'Digibeter label', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
       		"labels"              => $labels,
       		"public"              => true,
       		"hierarchical"        => true,
-      		"label"               => _x( 'Country', 'session level taxonomy', 'ictu-gcconf-posttypes' ),
+      		"label"               => _x( 'Country', 'session level taxonomy', 'ictu-gc-plugin-conference' ),
       		"show_ui"             => true,
       		"show_in_menu"        => true,
       		"show_in_nav_menus"   => true,
@@ -1886,8 +1878,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 
     /** ----------------------------------------------------------------------------------------------------
-     * filter the breadcrumb
-     */
+	* filter the breadcrumb
+	*
+	*
+	* @param string $crumb
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	public function fn_ictu_gcconf_filter_breadcrumb( $crumb = '', $args = '' ) {
 		
 		global $post;
@@ -1937,20 +1935,28 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	}
     
     /** ----------------------------------------------------------------------------------------------------
-     * add extra class to page template .entry
-     */
+	* add extra class .inleiding to page template .entry
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	function fn_ictu_gcconf_add_class_inleiding_to_entry( $attributes ) {
+		
 		$attributes['class'] .= ' inleiding';
 		return $attributes;
+		
 	}
 	
     
     /** ----------------------------------------------------------------------------------------------------
-     * add extra class to page template .entry
-     */
+	* add extra class .speaker-bio to page template .entry
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	function fn_ictu_gcconf_add_class_speakerbio_to_entry( $attributes ) {
+		
 		$attributes['class'] .= ' speaker-bio';
 		return $attributes;
+
 	}
 	
 	
@@ -2091,7 +2097,7 @@ add_filter('acf/update_value/name=speaker_session_keynote_relations', 'bidirecti
 
 //========================================================================================================
 
-function tralala_update( $postid ) {
+function fn_ictu_gcconf_extra_update_speaker_relationfield( $postid ) {
 
 	$return = '';
 	$list_of_speakers 			= get_field( 'speaker_session_keynote_relations', $postid );
@@ -2118,7 +2124,7 @@ function tralala_update( $postid ) {
 
 	if ( ! $list_of_speakers ) {
 
-		$return = '<h1>tralala_update: ' . get_the_title( $postid ) . '</h1><ul>';
+		$return = '<h1>fn_ictu_gcconf_extra_update_speaker_relationfield: ' . get_the_title( $postid ) . '</h1><ul>';
 		
 		$list_of_speakers = get_field( 'speakers', $postid );
 		
@@ -2146,7 +2152,7 @@ function tralala_update( $postid ) {
 	}
 	else {
 
-		$return = '<h1>tralala_update: GEEN update</h1><br><ul>';
+		$return = '<h1>fn_ictu_gcconf_extra_update_speaker_relationfield: GEEN update</h1><br><ul>';
 		
 		foreach( $list_of_speakers as $speaker ):
 			

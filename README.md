@@ -8,9 +8,10 @@
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-1.0.1 - Live at Oct 15 2019.
+1.1.1 - Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
 
 ## Version history
+* 1.1.1 - Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
 * 1.0.1 - Live at Oct 15 2019.
 * 0.0.1 - created readme.md
 
@@ -20,12 +21,12 @@
 ## To do
 
 * Code comments
-	- [ ] Alle functies voorzien van comments en input / output vars
+	- [x] Alle functies voorzien van comments en input / output vars
 	- [ ] CSS / Less ordenen
 * Vertalingen
-	- [ ] Alle tekststrings vertaalbaar
-	- [ ] Engelse vertaling
-	- [ ] Nederlandse vertaling
+	- [x] Alle tekststrings vertaalbaar
+	- [x] Engelse vertaling
+	- [x] Nederlandse vertaling
 * Speaker - single
 	- [x] foto speaker niet netjes desktop
 * Keynote - single

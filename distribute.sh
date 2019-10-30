@@ -31,7 +31,7 @@ rm '/shared-paul-files/Webs/temp/package.json'
 # remove the .pot
 rm '/shared-paul-files/Webs/temp/languages/ictu-gc-plugin-conference.pot'
 
-# copy files to /wp-content/languages/themes
+# copy files to /wp-content/languages/plugins
 rsync -ah '/shared-paul-files/Webs/temp/languages/' '/shared-paul-files/Webs/ICTU/Gebruiker Centraal/development/wp-content/languages/plugins/'
 
 # languages erics server
