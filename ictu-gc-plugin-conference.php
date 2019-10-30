@@ -928,7 +928,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$speakernames .= _x( 'Speakers', 'speaker type', 'ictu-gc-plugin-conference' );
 			}
 			else {
-				$speakernames .= _x( 'Speaker', 'speaker type' 'ictu-gc-plugin-conference' );
+				$speakernames .= _x( 'Speaker', 'speaker type', 'ictu-gc-plugin-conference' );
 			}
 			$speakernames .= '</dt>';
 			
