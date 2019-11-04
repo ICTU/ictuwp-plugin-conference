@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.1.1
- * Version description: Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
+ * Version:             1.1.2
+ * Version description: Show times for keynotes.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.1.1' );
+define( 'ICTU_GC_CONF_VERSION',		'1.1.2' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -914,9 +914,43 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		$section_title 		= get_the_title( $args['ID'] );
 		$title_id			= sanitize_title( $section_title );
 		$excerpt 			= get_the_excerpt( $args['ID'] );
-		$metainfo 			= '';
+		$metainfo_time		= '';
 		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 		$speakernames 		= '';
+
+		$time_term			= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
+		$location_term		= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
+		
+
+		if ( $time_term || $location_term ) {
+			
+			$metainfo_time = '<dl class="dl-time-location">';
+
+			if ( $time_term && ! is_wp_error( $time_term ) ) {
+				$metainfo_time .= '<dt>' . _x( 'Time', 'Event times', 'ictu-gc-plugin-conference' ) . '</dt>';
+
+			    foreach ( $time_term as $term ) {
+				    
+				    $parentname = '';
+					$metainfo_time .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+					
+			    }
+
+			}	
+			if ( $location_term && ! is_wp_error( $location_term ) ) {
+				$metainfo_time .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
+
+			    foreach ( $location_term as $term ) {
+				    
+					$metainfo_time .= '<dd class="event-location">' . $term->name . '</dd> ';	
+					
+			    }
+
+			}	
+			
+			$metainfo_time .= '</dl>';
+			
+		}
 
 		if ( $list_of_speakers && $args['speakernames'] ) {
 
@@ -990,8 +1024,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			
 			$return .= '</span>';
 			$return .= '<span class="speaker-bio">';
-			if ( $speakernames ) {
-				$return .= '<div class="meta">' . $speakernames . '</div>';
+			if ( $speakernames || $metainfo_time ) {
+				$return .= '<div class="meta">' . $speakernames . $metainfo_time . '</div>';
 			}
 			$return .= wp_strip_all_tags( $excerpt );
 			$return .= '</span>';
@@ -1003,9 +1037,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$return .= '</span>';
 		}
 
-		if ( $metainfo ) {
-			$return .= '<div class="meta">' . $metainfo . '</div>';
-		}
 		
 		$return .= '</div>' .  "\n\n\n";		
   
@@ -1994,98 +2025,102 @@ if (! function_exists( 'gc_wbvb_breadcrumbstring' ) ) {
 
 //========================================================================================================
 
-function bidirectional_acf_update_value( $value, $post_id, $field  ) {
+if (! function_exists( 'bidirectional_acf_update_value' ) ) {
 
-	// vars
-	$field_name   = $field['name'];
-	$field_key    = $field['key'];
-	$global_name  = 'is_updating_' . $field_name;
+	function bidirectional_acf_update_value( $value, $post_id, $field  ) {
 	
-	$debugstring = 'bidirectional_acf_update_value';
+		// vars
+		$field_name   = $field['name'];
+		$field_key    = $field['key'];
+		$global_name  = 'is_updating_' . $field_name;
+		
+		$debugstring = 'bidirectional_acf_update_value';
+		
+		$debugstring .= "value='" . implode( ", ", $value ) . "'";
+		$debugstring .= ", post_id='" . $post_id . "'";
+		$debugstring .= " (type=" . get_post_type( $post_id ) . ")";
+		$debugstring .= ", field_key='" . $field_key . "'";
+		$debugstring .= ", field_name='" . $field_name . "'";
 	
-	$debugstring .= "value='" . implode( ", ", $value ) . "'";
-	$debugstring .= ", post_id='" . $post_id . "'";
-	$debugstring .= " (type=" . get_post_type( $post_id ) . ")";
-	$debugstring .= ", field_key='" . $field_key . "'";
-	$debugstring .= ", field_name='" . $field_name . "'";
-
-	// bail early if this filter was triggered from the update_field() function called within the loop below
-	// - this prevents an inifinte loop
-	if( !empty($GLOBALS[ $global_name ]) ) return $value;
-
-	// set global variable to avoid inifite loop
-	// - could also remove_filter() then add_filter() again, but this is simpler
-	$GLOBALS[ $global_name ] = 1;
-
-	// loop over selected posts and add this $post_id
-	if( is_array($value) ) {
-
-		foreach( $value as $post_id2 ) {
-
-			// load existing related posts
-			$value2 = get_field($field_name, $post_id2, false);
-			
-			
-			// allow for selected posts to not contain a value
-			if( empty($value2) ) {
+		// bail early if this filter was triggered from the update_field() function called within the loop below
+		// - this prevents an inifinte loop
+		if( !empty($GLOBALS[ $global_name ]) ) return $value;
+	
+		// set global variable to avoid inifite loop
+		// - could also remove_filter() then add_filter() again, but this is simpler
+		$GLOBALS[ $global_name ] = 1;
+	
+		// loop over selected posts and add this $post_id
+		if( is_array($value) ) {
+	
+			foreach( $value as $post_id2 ) {
+	
+				// load existing related posts
+				$value2 = get_field($field_name, $post_id2, false);
 				
-				$value2 = array();
+				
+				// allow for selected posts to not contain a value
+				if( empty($value2) ) {
+					
+					$value2 = array();
+					
+				}
+	
+				// bail early if the current $post_id is already found in selected post's $value2
+				if( in_array($post_id, $value2) ) continue;
+	
+				// append the current $post_id to the selected post's 'related_posts' value
+				$value2[] = $post_id;
+	
+				// update the selected post's value (use field's key for performance)
+				update_field($field_key, $value2, $post_id2);
 				
 			}
-
-			// bail early if the current $post_id is already found in selected post's $value2
-			if( in_array($post_id, $value2) ) continue;
-
-			// append the current $post_id to the selected post's 'related_posts' value
-			$value2[] = $post_id;
-
-			// update the selected post's value (use field's key for performance)
-			update_field($field_key, $value2, $post_id2);
+		
+		}
+		
+		
+		// find posts which have been removed
+		$old_value = get_field($field_name, $post_id, false);
+		
+		if( is_array($old_value) ) {
+			
+			foreach( $old_value as $post_id2 ) {
+				
+				// bail early if this value has not been removed
+				if( is_array($value) && in_array($post_id2, $value) ) continue;
+				
+				
+				// load existing related posts
+				$value2 = get_field($field_name, $post_id2, false);
+				
+				
+				// bail early if no value
+				if( empty($value2) ) continue;
+				
+				
+				// find the position of $post_id within $value2 so we can remove it
+				$pos = array_search($post_id, $value2);
+				
+				
+				// remove
+				unset( $value2[ $pos] );
+				
+				
+				// update the un-selected post's value (use field's key for performance)
+				update_field($field_key, $value2, $post_id2);
+				
+			}
 			
 		}
 	
+	  // reset global varibale to allow this filter to function as per normal
+	  $GLOBALS[ $global_name ] = 0;
+	
+	  // return
+	  return $value;
+	    
 	}
-	
-	
-	// find posts which have been removed
-	$old_value = get_field($field_name, $post_id, false);
-	
-	if( is_array($old_value) ) {
-		
-		foreach( $old_value as $post_id2 ) {
-			
-			// bail early if this value has not been removed
-			if( is_array($value) && in_array($post_id2, $value) ) continue;
-			
-			
-			// load existing related posts
-			$value2 = get_field($field_name, $post_id2, false);
-			
-			
-			// bail early if no value
-			if( empty($value2) ) continue;
-			
-			
-			// find the position of $post_id within $value2 so we can remove it
-			$pos = array_search($post_id, $value2);
-			
-			
-			// remove
-			unset( $value2[ $pos] );
-			
-			
-			// update the un-selected post's value (use field's key for performance)
-			update_field($field_key, $value2, $post_id2);
-			
-		}
-		
-	}
-
-  // reset global varibale to allow this filter to function as per normal
-  $GLOBALS[ $global_name ] = 0;
-
-  // return
-  return $value;
     
 }
 
