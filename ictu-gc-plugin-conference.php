@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.1.2
- * Version description: Show times for keynotes.
+ * Version:             1.1.3
+ * Version description: Better layout for terms in meta information.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.1.2' );
+define( 'ICTU_GC_CONF_VERSION',		'1.1.3' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -923,6 +923,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		
 
 		if ( $time_term || $location_term ) {
+
+			$time_term_counter = 0;
+			$location_term_counter = 0;
 			
 			$metainfo_time = '<dl class="dl-time-location">';
 
@@ -930,9 +933,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$metainfo_time .= '<dt>' . _x( 'Time', 'Event times', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $time_term as $term ) {
-				    
+				    $time_term_counter++;
 				    $parentname = '';
-					$metainfo_time .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+				    if ( $location_term_counter > 1 ) {
+						$metainfo_time .= '<dd class="event-times">, ' . $parentname . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo_time .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+				    }
 					
 			    }
 
@@ -941,8 +949,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$metainfo_time .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $location_term as $term ) {
-				    
-					$metainfo_time .= '<dd class="event-location">' . $term->name . '</dd> ';	
+				    $location_term_counter++;
+				    if ( $location_term_counter > 1 ) {
+						$metainfo_time .= '<dd class="event-location">, ' . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo_time .= '<dd class="event-location">' . $term->name . '</dd> ';	
+				    }
 					
 			    }
 
@@ -1488,40 +1501,68 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$metainfo .= '<dl class="dl-time-location">';
 
 			if ( $time_term && ! is_wp_error( $time_term ) ) {
+				$time_term_counter = 0;
 				$metainfo .= '<dt>' . _x( 'Time', 'Event times', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $time_term as $term ) {
-				    
+				    $time_term_counter++;
 				    $parentname = '';
-					$metainfo .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+
+				    if ( $time_term_counter > 1 ) {
+						$metainfo .= '<dd class="event-times">, ' . $parentname . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';	
+				    }
 					
 			    }
 				
 			}	
 			if ( $location_term && ! is_wp_error( $location_term ) ) {
+				$location_term_counter = 0;
 				$metainfo .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $location_term as $term ) {
+				    $location_term_counter++;
 				    
-					$metainfo .= '<dd class="event-location">' . $term->name . '</dd> ';	
+				    if ( $location_term_counter > 1 ) {
+						$metainfo .= '<dd class="event-location">, ' . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo .= '<dd class="event-location">' . $term->name . '</dd> ';	
+				    }
 					
 			    }
 			}	
 			if ( $session_level && ! is_wp_error( $session_level ) ) {
+				$location_term_counter = 0;
 				$metainfo .= '<dt>' . _x( 'Session level', 'session level taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $session_level as $term ) {
+				    $location_term_counter++;
+				    if ( $location_term_counter > 1 ) {
+						$metainfo .= '<dd class="event-level">, ' . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo .= '<dd class="event-level">' . $term->name . '</dd> ';	
+				    }
 				    
-					$metainfo .= '<dd class="event-level">' . $term->name . '</dd> ';	
 					
 			    }
 			}	
 			if ( $session_type && ! is_wp_error( $session_type ) ) {
+				$location_term_counter = 0;
 				$metainfo .= '<dt>' . _x( 'Session type', 'session type taxonomy', 'ictu-gc-plugin-conference' ) . '</dt>';
 
 			    foreach ( $session_type as $term ) {
+				    $location_term_counter++;
+				    if ( $location_term_counter > 1 ) {
+						$metainfo .= '<dd class="event-type">, ' . $term->name . '</dd> ';	
+				    }
+				    else {
+						$metainfo .= '<dd class="event-type">' . $term->name . '</dd> ';	
+				    }
 				    
-					$metainfo .= '<dd class="event-type">' . $term->name . '</dd> ';	
 
 			    }
 			}	
@@ -2208,6 +2249,30 @@ function fn_ictu_gcconf_extra_update_speaker_relationfield( $postid ) {
 	}		
 
 }		
+
+//========================================================================================================
+
+function fn_ictu_gcconf_footer_disable_tuesday() { 
+?>
+	<script>
+	jQuery(document).ready(function(){
+	    //put your js code here
+
+		if ( jQuery( "#days2" ).length ) {
+		    jQuery( "#days2" ).attr('disabled','disabled');
+		}
+	    
+		if ( jQuery( "#separator-days2" ).length ) {
+		    jQuery( "#separator-days2" ).addClass('disabled');
+		}
+	    
+	})
+	</script>
+
+<?php 
+}
+ 
+//add_action('wp_footer', 'fn_ictu_gcconf_footer_disable_tuesday'); 
 
 //========================================================================================================
 
