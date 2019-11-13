@@ -2272,7 +2272,7 @@ function fn_ictu_gcconf_footer_disable_tuesday() {
 <?php 
 }
  
-//add_action('wp_footer', 'fn_ictu_gcconf_footer_disable_tuesday'); 
+add_action('wp_footer', 'fn_ictu_gcconf_footer_disable_tuesday'); 
 
 //========================================================================================================
 
