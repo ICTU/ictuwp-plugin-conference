@@ -8,9 +8,10 @@
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-1.1.3 - Better layout for terms in meta information.
+1.2.1 - Extra fields for information per session / keynote
 
 ## Version history
+* 1.2.1 - Extra fields for information per session / keynote
 * 1.1.3 - Better layout for terms in meta information.
 * 1.1.2 - Show times for keynotes.
 * 1.1.1 - Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')

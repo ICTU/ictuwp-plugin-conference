@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.1.3
- * Version description: Better layout for terms in meta information.
+ * Version:             1.2.1
+ * Version description: Extra fields for information per session / keynote
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.1.3' );
+define( 'ICTU_GC_CONF_VERSION',		'1.2.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -68,6 +68,11 @@ if ( ! defined( 'ICTU_GCCONF_CT_COUNTRY' ) ) {
 
 if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
   define( 'SPEAKER_IMG_SIZE', 'speaker-image-size' );
+}
+
+if ( ! defined( 'CONF_SHOW_DATETIMES' ) ) {
+//  define( 'CONF_SHOW_DATETIMES', true );
+  define( 'CONF_SHOW_DATETIMES', false );
 }
 
 define( 'CONF_DEBUG', false );
@@ -486,6 +491,91 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	*
 	* @return void ($args['echo'] = true) or $return (HTML)
 	*/
+	public function fn_ictu_gcconf_frontend_append_links( $args = [] ) {
+		
+		global $post;
+
+	    $defaults = array (
+	        'echo' 			=> true,
+	        'showfoto' 		=> false
+	    );
+
+	    $return = '';
+
+	    // Parse incoming $args into an array and merge it with $defaults
+	    $args = wp_parse_args( $args, $defaults );
+
+		if ( ! $post->ID ) {
+			return;
+		}
+
+//		$extra_info_repeater = get_field( 'extra_info_repeater', $post->ID );
+
+		if( have_rows( 'extra_info_repeater', $post->ID ) ) {
+			
+			$return = '<div class="links"><h2 class="visuallyhidden">' . _x( 'Links', 'extra links for type', 'ictu-gc-plugin-conference' ) . '</h2>';
+
+
+		 	// loop through the rows of data
+		    while ( have_rows('extra_info_repeater', $post->ID) ) : the_row();
+		
+		        // display a sub field value
+		        $url 		= get_sub_field('extra_info_repeater_url');
+		        $desc		= get_sub_field('extra_info_repeater_shortdescription');
+		        $type		= get_sub_field('extra_info_repeater_type');
+		        $linktext	= get_sub_field('extra_info_repeater_linktext');
+		        
+
+				if ( 'video' === $type && $url ) {
+					$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
+					$return .= '<div class="videoWrapper">';
+					$return .= wp_oembed_get( $url );
+					if ( $desc ) {
+						$return .= '<p>' . $desc . '</p>';
+					}
+					$return .= '</div>';
+				}
+				else {
+					if ( $url && $linktext ) {
+						if ( $desc ) {
+							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
+						}
+						else {
+							$return .= '<p class="' . $type . '"><a href="' . $url . '">' . $linktext . '</a></p>';
+						}
+					}
+				}
+
+		        
+		
+		    endwhile;
+
+
+			$return .= '</div>';
+			
+		}
+		
+		if ( $args['showfoto'] ) {
+			
+		}
+
+		if ( $args['echo'] ) {
+			echo $return;
+		}
+		else {
+			return $return;
+		}
+
+	}
+
+    //========================================================================================================
+    /**
+	* Adds the connected speaker(s) for a session or keynote
+	*
+	* @param array $args
+	*
+	* @return void ($args['echo'] = true) or $return (HTML)
+	*/
 	public function fn_ictu_gcconf_frontend_append_speakers( $args = [] ) {
 		
 		global $post;
@@ -665,7 +755,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_sessionkeynote_location_time' ), 8 );
 			
-			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 12 ); 			
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_links' ), 12 ); 			
+	
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 14 ); 			
 	
 		}
 		elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
@@ -675,7 +767,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_sessionkeynote_location_time' ), 8 );
 			
-			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 12 ); 			
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_links' ), 12 ); 			
+	
+			add_action( 'genesis_entry_content',  		array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 14 ); 			
 	
 		}
 
@@ -918,10 +1012,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 		$speakernames 		= '';
 
-		$time_term			= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
-		$location_term		= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
-		
-
+		if ( CONF_SHOW_DATETIMES ) {
+			$time_term			= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
+			$location_term		= wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
+		}
+		else {
+			$time_term			= '';
+			$location_term		= '';
+		}
+				
 		if ( $time_term || $location_term ) {
 
 			$time_term_counter = 0;
@@ -1092,8 +1191,16 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 		fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
-		$time_term 			= get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
-		$location_term		= get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
+
+		if ( CONF_SHOW_DATETIMES ) {
+			$time_term 			= get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
+			$location_term		= get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
+		}
+		else {
+			$time_term			= '';
+			$location_term		= '';
+		}
+
 		
 		$list_of_speakers 	= get_field( 'speaker_session_keynote_relations', $args['ID'] );
 		$section_title 		= get_the_title( $args['ID'] );
@@ -1490,11 +1597,19 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	    
 	    global $post;
 
-		$time_term 							= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_TIMESLOT );
-		$location_term						= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_LOCATION );
 		$session_type						= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_SESSIONTYPE );
 		$session_level						= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_LEVEL );
 		$metainfo 							= '';
+
+		if ( CONF_SHOW_DATETIMES ) {
+			$time_term 						= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_TIMESLOT );
+			$location_term					= wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_LOCATION );
+		}
+		else {
+			$time_term			= '';
+			$location_term		= '';
+		}
+		
 
 		if ( $time_term || $location_term || $session_type || $session_level ) {
 			

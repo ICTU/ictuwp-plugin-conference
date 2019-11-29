@@ -5,12 +5,12 @@
 // ----------------------------------------------------------------------------------
 // ACF definities voor conference plugin
 // ----------------------------------------------------------------------------------
-// @package   ictu-gc-plugin-conference
-// @author    Paul van Buuren
-// @license   GPL-2.0+
-// @version   1.1.1
-// @desc.     Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
-// @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
+// @package   		ictu-gc-plugin-conference
+// @author    		Paul van Buuren
+// @license   		GPL-2.0+
+// @version			1.2.1
+// @description		Extra fields for information per session / keynote
+// @link			https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 
 
@@ -740,8 +740,167 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 			));
 
 
+			acf_add_local_field_group(array(
+				'key' => 'group_5de10c8cc1188',
+				'title' => 'Velden voor verslag',
+				'fields' => array(
+					array(
+						'key' => 'field_5de10cb8379d1',
+						'label' => 'Links',
+						'name' => 'extra_info_repeater',
+						'type' => 'repeater',
+						'instructions' => 'Een link naar een video of een geschreven verslag, blog, etc. Als je hier de URL invoert voor een video op Vimeo en je selecteert \'video\' als type, dan maakt het systeem er een embedded video van.',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'collapsed' => 'field_5de10f0f379d3',
+						'min' => 0,
+						'max' => 0,
+						'layout' => 'row',
+						'button_label' => 'Add new link',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_5de10d31379d2',
+								'label' => 'URL',
+								'name' => 'extra_info_repeater_url',
+								'type' => 'url',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => 'https://example.com/page',
+							),
+							array(
+								'key' => 'field_5de10f0f379d3',
+								'label' => 'Link-tekst',
+								'name' => 'extra_info_repeater_linktext',
+								'type' => 'text',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => 'Link',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'maxlength' => '',
+							),
+							array(
+								'key' => 'field_5de10f46379d4',
+								'label' => 'Type',
+								'name' => 'extra_info_repeater_type',
+								'type' => 'radio',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'choices' => array(
+									'video' => 'Video',
+									'website' => 'Blog',
+									'presentation' => 'Link to presentation',
+								),
+								'allow_null' => 0,
+								'other_choice' => 0,
+								'default_value' => 'website',
+								'layout' => 'vertical',
+								'return_format' => 'value',
+								'save_other_choice' => 0,
+							),
+							array(
+								'key' => 'field_5de1157e802b6',
+								'label' => 'Korte beschrijving',
+								'name' => 'extra_info_repeater_shortdescription',
+								'type' => 'textarea',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'maxlength' => '',
+								'rows' => '',
+								'new_lines' => '',
+							),
+						),
+					),
+/*					
+					array(
+						'key' => 'field_5de11136b431f',
+						'label' => 'Foto\'s',
+						'name' => 'extra_info_images',
+						'type' => 'image',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'return_format' => 'array',
+						'preview_size' => 'medium',
+						'library' => 'all',
+						'min_width' => '',
+						'min_height' => '',
+						'min_size' => '',
+						'max_width' => '',
+						'max_height' => '',
+						'max_size' => '',
+						'mime_types' => '',
+					),
+*/					
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'post_type',
+							'operator' => '==',
+							'value' => 'session',
+						),
+					),
+					array(
+						array(
+							'param' => 'post_type',
+							'operator' => '==',
+							'value' => 'keynote',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => true,
+				'description' => '',
+			));
+
 
 		endif;
+
     }
+    
 }    
     
