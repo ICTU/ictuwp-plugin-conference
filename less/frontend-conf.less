@@ -7,13 +7,13 @@
 // @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   1.2.1
-// @desc.     Extra fields for information per session / keynote
+// @version   1.2.2
+// @desc.     Display extra fields per session / keynote.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 
 
-<!--                 frontend.css - v1.2.1                      -->
+<!--                 frontend.css - v1.2.2                      -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->
@@ -63,6 +63,7 @@ Imports
 
 
 /*
+Variables
 ---------------------------------------------------------------------------------------------------- */
 
 @speaker_maxwidth: 			140px;
@@ -79,6 +80,26 @@ Imports
 
 @pijltje: 					( 1.25 * @gutter );
 @transform: 				( ( -1 * @pijltje ) + 3px );
+
+
+
+@gc_a11y_green:				#148839; // ook wel 'GC Green - Accessible'
+@gc_a11y_green_dark_1:		#0b732c; // ook wel 'GC Green - Darker'
+@gc_a11y_green_dark_2:		darken( @gc_a11y_green_dark_1, 10% );
+@gc_a11y_green_light_1:		pink; // lighten( @gc_a11y_green, 10% );
+@gc_a11y_green_light_2:		#E0F6E7; // voor hover 
+
+/*
+Mixins
+---------------------------------------------------------------------------------------------------- */
+
+.icon_replace_filler(@src, @fill-old, @fill-new) {
+    @data-uri:          data-uri('image/svg+xml;charset=UTF-8', "@{src}");
+    @replace-default:   escape('fill="@{fill-old}"');
+    @replace-new:       escape('fill="@{fill-new}"');
+    @replacesrc1:       replace("@{data-uri}", @replace-default, @replace-new, "g");
+    background-image: e(@replacesrc1);
+}
 
 /*
 ---------------------------------------------------------------------------------------------------- */
@@ -727,3 +748,39 @@ h2, h3, h4, h5 {
 	
 }
 
+.extra-links {
+
+	clear: both;
+	float: none;
+	overflow: hidden;
+
+	ul&, ul& li {
+		list-style: none;
+		padding-left: 0;
+		margin-left: 0;
+	}
+	
+	&.video, li.video,
+	&.presentation, li.presentation,
+	&.download, li.download,
+	&.website, li.website {
+		background-repeat: no-repeat;
+		background-position: left center;
+		padding-left: 2.5rem;
+		background-size: 1.75rem 1.75rem;
+	}
+	
+	&.video, li.video {
+		.icon_replace_filler('../images/icon-video.svg', '#fff', @gc_a11y_green );
+	}
+	&.presentation, li.presentation {
+		.icon_replace_filler('../images/icon-presentation.svg', '#fff', @gc_a11y_green );
+	}
+	&.download, li.download {
+		.icon_replace_filler('../images/icon-download.svg', '#fff', @gc_a11y_green );
+	}
+	&.website, li.website {
+		.icon_replace_filler('../images/icon-website.svg', '#fff', @gc_a11y_green );
+	}
+	
+}

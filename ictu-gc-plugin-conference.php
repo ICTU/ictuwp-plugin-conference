@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.2.1
- * Version description: Extra fields for information per session / keynote
+ * Version:             1.2.2
+ * Version description: Display extra fields per session / keynote.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.2.1' );
+define( 'ICTU_GC_CONF_VERSION',		'1.2.2' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -509,11 +509,27 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			return;
 		}
 
-//		$extra_info_repeater = get_field( 'extra_info_repeater', $post->ID );
-
 		if( have_rows( 'extra_info_repeater', $post->ID ) ) {
-			
+
 			$return = '<div class="links"><h2 class="visuallyhidden">' . _x( 'Links', 'extra links for type', 'ictu-gc-plugin-conference' ) . '</h2>';
+
+			$count = count( get_field( 'extra_info_repeater', $post->ID ) );
+			
+			$itemtag 		= 'p';
+			$start_listtag	= '';
+			$end_listtag 	= '';
+			$extraclass 	= ' extra-links';
+			
+			if ( $count > 1 ) {
+//				$itemtag 		= 'li';
+//				$start_listtag	= '<ul>';
+//				$end_listtag 	= '</ul>';
+//				$extraclass 	= '';
+
+//				$return .= '<ul class="extra-links">';
+
+			}
+			
 
 
 		 	// loop through the rows of data
@@ -524,6 +540,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		        $desc		= get_sub_field('extra_info_repeater_shortdescription');
 		        $type		= get_sub_field('extra_info_repeater_type');
 		        $linktext	= get_sub_field('extra_info_repeater_linktext');
+		        
+		        $download_attribute = '';
+		        
+				if ( 'download' === $type && $url ) {
+					// only actually works for same origin URLs but oh well
+			        $download_attribute = ' download';
+				}		        
 		        
 
 				if ( 'video' === $type && $url ) {
@@ -541,7 +564,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
 						}
 						else {
-							$return .= '<p class="' . $type . '"><a href="' . $url . '">' . $linktext . '</a></p>';
+							$return .= '<p class="extra-links ' . $type . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></p>';
 						}
 					}
 				}
@@ -550,6 +573,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		
 		    endwhile;
 
+			$return .= $end_listtag;
 
 			$return .= '</div>';
 			
@@ -1149,6 +1173,72 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$return .= '</span>';
 		}
 
+
+
+		
+		//fn_ictu_gcconf_frontend_append_links
+		if( have_rows( 'extra_info_repeater', $args['ID'] ) ) {
+			
+			$count = count( get_field( 'extra_info_repeater', $args['ID'] ) );
+			
+			$itemtag 		= 'p';
+			$start_listtag	= '';
+			$end_listtag 	= '';
+			$extraclass 	= ' extra-links';
+			
+			if ( $count > 1 ) {
+				$itemtag 		= 'li';
+				$start_listtag	= '<ul>';
+				$end_listtag 	= '</ul>';
+				$extraclass 	= '';
+
+				$return .= '<ul class="extra-links">';
+
+			}
+
+		 	// loop through the rows of data
+		    while ( have_rows('extra_info_repeater', $args['ID']) ) : the_row();
+		
+		        // display a sub field value
+		        $url 		= get_sub_field('extra_info_repeater_url');
+		        $desc		= get_sub_field('extra_info_repeater_shortdescription');
+		        $type		= get_sub_field('extra_info_repeater_type');
+		        $linktext	= get_sub_field('extra_info_repeater_linktext');
+		        
+		        $download_attribute = '';
+		        
+				if ( 'download' === $type && $url ) {
+			        $download_attribute = ' download';
+				}		        
+
+//				if ( 'video' === $type && $url ) {
+//					$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
+//					$return .= '<div class="videoWrapper">';
+//					$return .= wp_oembed_get( $url );
+//					if ( $desc ) {
+//						$return .= '<p>' . $desc . '</p>';
+//					}
+//					$return .= '</div>';
+//				}
+//				else {
+					if ( $url && $linktext ) {
+//						if ( $desc ) {
+//							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
+//						}
+//						else {
+							$return .= '<' . $itemtag . ' class="' . $type . $extraclass . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
+//						}
+					}
+//					}
+
+		    endwhile;
+
+			$return .= $end_listtag;
+
+		}
+
+
+
 		
 		$return .= '</div>' .  "\n\n\n";		
   
@@ -1256,7 +1346,67 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		
 		$excerpt = get_the_excerpt( $args['ID'] );
 		$return .= wp_strip_all_tags( $excerpt );
+
 		
+		//fn_ictu_gcconf_frontend_append_links
+		if( have_rows( 'extra_info_repeater', $args['ID'] ) ) {
+			
+			$count = count( get_field( 'extra_info_repeater', $args['ID'] ) );
+			
+			$itemtag 		= 'p';
+			$start_listtag	= '';
+			$end_listtag 	= '';
+			
+			if ( $count > 1 ) {
+				$itemtag 		= 'li';
+				$start_listtag	= '<ul>';
+				$end_listtag 	= '</ul>';
+
+				$return .= '<ul>';
+
+			}
+
+		 	// loop through the rows of data
+		    while ( have_rows('extra_info_repeater', $args['ID']) ) : the_row();
+		
+		        // display a sub field value
+		        $url 		= get_sub_field('extra_info_repeater_url');
+		        $desc		= get_sub_field('extra_info_repeater_shortdescription');
+		        $type		= get_sub_field('extra_info_repeater_type');
+		        $linktext	= get_sub_field('extra_info_repeater_linktext');
+
+		        $download_attribute = '';
+		        
+				if ( 'download' === $type && $url ) {
+			        $download_attribute = ' download';
+				}		        
+
+//				if ( 'video' === $type && $url ) {
+//					$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
+//					$return .= '<div class="videoWrapper">';
+//					$return .= wp_oembed_get( $url );
+//					if ( $desc ) {
+//						$return .= '<p>' . $desc . '</p>';
+//					}
+//					$return .= '</div>';
+//				}
+//				else {
+					if ( $url && $linktext ) {
+//						if ( $desc ) {
+//							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
+//						}
+//						else {
+							$return .= '<' . $itemtag . ' class="extra-links ' . $type . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
+//						}
+					}
+//					}
+
+		    endwhile;
+
+			$return .= $end_listtag;
+
+		}
+
 		$return .= '</div>';		
   
 		if ( $args['echo'] ) {
@@ -1577,7 +1727,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	    global $post;
 
 		if ( has_post_thumbnail( $post ) ) {
-			echo '<span class="speaker-image">';
+		echo '<span class="speaker-image">';
 			echo get_the_post_thumbnail( $post, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
 			echo '</span>';
 		}
