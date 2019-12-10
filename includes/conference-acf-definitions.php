@@ -8,8 +8,8 @@
 // @package   		ictu-gc-plugin-conference
 // @author    		Paul van Buuren
 // @license   		GPL-2.0+
-// @version			1.2.2
-// @description		Display extra fields per session / keynote.
+// @version			1.2.3.1
+// @description		Modified layout for extra fields per session / keynote.
 // @link			https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 

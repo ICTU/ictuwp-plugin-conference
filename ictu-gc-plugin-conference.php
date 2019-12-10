@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.2.2
- * Version description: Display extra fields per session / keynote.
+ * Version:             1.2.3.1
+ * Version description: Modified layout for extra fields per session / keynote.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.2.2' );
+define( 'ICTU_GC_CONF_VERSION',		'1.2.3.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -1356,13 +1356,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$itemtag 		= 'p';
 			$start_listtag	= '';
 			$end_listtag 	= '';
+			$extraclass 	= ' extra-links';
 			
 			if ( $count > 1 ) {
 				$itemtag 		= 'li';
 				$start_listtag	= '<ul>';
 				$end_listtag 	= '</ul>';
+				$extraclass 	= '';
 
-				$return .= '<ul>';
+				$return .= '<ul class="extra-links">';
 
 			}
 
@@ -1396,7 +1398,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 //							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
 //						}
 //						else {
-							$return .= '<' . $itemtag . ' class="extra-links ' . $type . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
+							$return .= '<' . $itemtag . ' class="' . $type . $extraclass . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
 //						}
 					}
 //					}
@@ -1631,7 +1633,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$session_page	= get_field('themesettings_conference_sessions', 'option');
 			$postcounter 	= 0;
 
-			$args = array();
+			$args = array(
+				'posts_per_page'        =>  -1,
+				'post_status'     		=> 'publish',
+				'order'                 =>  'ASC',
+				'orderby'               =>  'post_title'
+			  );
+			
 			
 			// what kind of content are we looking at?
 			if ( $speaker_page->ID === $the_id ) {
@@ -1653,13 +1661,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			if ( $docheck && !have_rows('blocks') ) {
 				// no content has been selected for this page, so list ALL published content for this CPT
 
-				$args = array(
-					'post_type'             =>  $type,
-					'posts_per_page'        =>  -1,
-					'post_status'     		=> 'publish',
-					'order'                 =>  'ASC',
-					'orderby'               =>  'post_title'
-				  );
+			$args['post_type'] = $type;
+
+//hiero
+
+//echo '<pre>';
+//var_dump( $args );
+//echo '</pre>';
+
 
 				$posts_for_cpt = new WP_query( $args );
 		

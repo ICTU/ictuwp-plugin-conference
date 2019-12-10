@@ -7,13 +7,13 @@
 // @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   1.2.2
-// @desc.     Display extra fields per session / keynote.
+// @version   1.2.3.1
+// @desc.     Modified layout for extra fields per session / keynote.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 
 
-<!--                 frontend.css - v1.2.2                      -->
+<!--                 frontend.css - v1.2.3.1                      -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->
@@ -665,9 +665,11 @@ dl.dl-time-location {
 
 				.speaker-image {
 					max-width: @speaker_maxwidth;
+					margin-bottom: 1rem;
 				}
 				.speaker-bio {
 					padding-left: 1rem;
+					margin-bottom: 1rem;
 					max-width: ~"calc(100% - @{speaker_maxwidth})";
 				}
 			}
@@ -753,6 +755,16 @@ h2, h3, h4, h5 {
 	clear: both;
 	float: none;
 	overflow: hidden;
+	
+	a {
+		font-family: @montserrat_semibold;
+		.font-size( 18 );
+	}
+
+	p&,
+	ul& {
+		margin-top: 2rem;
+	}
 
 	ul&, ul& li {
 		list-style: none;
@@ -760,27 +772,74 @@ h2, h3, h4, h5 {
 		margin-left: 0;
 	}
 	
+	p&,
+	ul& {
+		margin-top: 1rem;
+		
+		li {
+			border-top: 1px solid #D1DFE3;
+			border-bottom: 1px solid #D1DFE3;
+		}
+
+		a {
+			display: block;
+			padding-top: .25rem;
+			padding-bottom: .25rem;
+			margin-top: .25rem;
+			margin-bottom: .25rem;
+		}
+	}
+	
+	p& {
+		border-top: 1px solid #D1DFE3;
+		border-bottom: 1px solid #D1DFE3;
+	}
+	
+
+	ul& li {
+		& + li {
+			border-top-style: none;
+		}
+	}
+
 	&.video, li.video,
 	&.presentation, li.presentation,
 	&.download, li.download,
 	&.website, li.website {
-		background-repeat: no-repeat;
-		background-position: left center;
-		padding-left: 2.5rem;
-		background-size: 1.75rem 1.75rem;
+		a {
+			background-repeat: no-repeat;
+			background-position: .55rem 1rem;
+			padding: .5rem 1rem .5rem 3rem;
+			background-size: 1.75rem 1.75rem;
+		}
 	}
 	
 	&.video, li.video {
-		.icon_replace_filler('../images/icon-video.svg', '#fff', @gc_a11y_green );
+		a {
+			.icon_replace_filler('../images/icon-video.svg', '#25b34b', '#25b34b' );
+		}
 	}
 	&.presentation, li.presentation {
-		.icon_replace_filler('../images/icon-presentation.svg', '#fff', @gc_a11y_green );
+		a {
+			.icon_replace_filler('../images/icon-link.svg', '#25b34b', '#25b34b' );
+		}
 	}
 	&.download, li.download {
-		.icon_replace_filler('../images/icon-download.svg', '#fff', @gc_a11y_green );
+		a {
+			.icon_replace_filler('../images/icon-download.svg', '#25b34b', '#25b34b' );
+		}
 	}
 	&.website, li.website {
-		.icon_replace_filler('../images/icon-website.svg', '#fff', @gc_a11y_green );
+		a {
+			.icon_replace_filler('../images/icon-blog.svg', '#25b34b', '#25b34b' );
+		}
 	}
-	
+}
+
+.card {
+	.extra-links {
+		a {
+			font-size: 90%;
+		}
+	}
 }
