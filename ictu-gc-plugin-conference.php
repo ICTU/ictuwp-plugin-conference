@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             1.2.3.1
- * Version description: Modified layout for extra fields per session / keynote.
+ * Version:             1.3.1
+ * Version description: Extra page-template with option to select posts.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS',	'ictu-gcconf-archive-css' );  
 define( 'ICTU_GC_CONF_BASE_URL',    trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL',	trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION',		'1.2.3.1' );
+define( 'ICTU_GC_CONF_VERSION',		'1.3.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
   define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -151,6 +151,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		// add a page temlate name
 		$this->templates 						= array();
 		$this->template_conf_overviewpage 		= 'conf-overviewpage.php';
+		$this->template_conf_contenttypepage 	= 'conf-contenttypepage.php';
 		
 		// add the page template to the templates list
 		add_filter( 'theme_page_templates',   array( $this, 'fn_ictu_gcconf_add_page_templates' ) );
@@ -181,6 +182,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 	function fn_ictu_gcconf_add_page_templates( $post_templates ) {
 	
 		$post_templates[$this->template_conf_overviewpage]				= _x( 'Conf. Overview page', "naam template",  'ictu-gc-plugin-conference' );    
+		$post_templates[$this->template_conf_contenttypepage]			= _x( 'Conf. Contenttype page', "naam template",  'ictu-gc-plugin-conference' );    
 		return $post_templates;
 		
 	}
@@ -674,26 +676,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		$infooter = true;
 		
 		wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', array(), ICTU_GC_CONF_VERSION, 'all' );
-		/*
-		$header_css     = '';
-		$acfid          = get_the_id();
-		$page_template  = get_post_meta( $acfid, '_wp_page_template', true );
-		
-		if ( !is_admin() && ( $this->template_conf_overviewpage == $page_template ) ) {
-			
-			if( have_rows('home_template_keynotes') ):
-
-				
-			endif; 
-			
-		}
-
-
-		if ( $header_css ) {
-			wp_add_inline_style( ICTU_GC_CONF_ARCHIVE_CSS, $header_css );
-		}
-		*/
-
 		
     }
 
@@ -722,6 +704,21 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			// 
 			add_action( 'genesis_after_entry_content',	array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 ); 			
+
+			// add extra class, to make the title BIGGERDER
+			add_filter( 'genesis_attr_entry', 	  		array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
+
+		}
+		elseif ( $this->template_conf_contenttypepage == $page_template ) {
+			
+			remove_filter( 'genesis_post_title_output', 'gc_wbvb_sharebuttons_for_page_top', 15 );
+
+			//* Force full-width-content layout
+			add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
+
+			// 
+			add_action( 'genesis_after_entry_content',	array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 ); 			
+
 			// add extra class, to make the title BIGGERDER
 			add_filter( 'genesis_attr_entry', 	  		array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
 
@@ -1625,22 +1622,20 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		}
 		elseif ( is_page( ) ) {
 			
-			$the_id 		= $post->ID;
-			$type 			= '';
-			$docheck 		= false;
-			$speaker_page 	= get_field('themesettings_conference_speakers', 'option');
-			$keynote_page 	= get_field('themesettings_conference_keynotes', 'option');
-			$session_page	= get_field('themesettings_conference_sessions', 'option');
-			$postcounter 	= 0;
+			$the_id 			= $post->ID;
+			$type 				= '';
+			$docheck 			= false;
+			$postcounter 		= 0;
+			$colcount 			= 'grid--col-2';
+			$speaker_page 		= get_field('themesettings_conference_speakers', 'option');
+			$keynote_page 		= get_field('themesettings_conference_keynotes', 'option');
+			$session_page		= get_field('themesettings_conference_sessions', 'option');
+			$userselectedposts	= get_field( 'template_conf_contenttypepage_filter', $the_id );
+			
+			if ( ! 'filter_ja' == $userselectedposts ) {
+				$userselectedposts = 'filter_nee';
+			}
 
-			$args = array(
-				'posts_per_page'        =>  -1,
-				'post_status'     		=> 'publish',
-				'order'                 =>  'ASC',
-				'orderby'               =>  'post_title'
-			  );
-			
-			
 			// what kind of content are we looking at?
 			if ( $speaker_page->ID === $the_id ) {
 				// it is the speaker page
@@ -1658,63 +1653,115 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$type		= ICTU_GCCONF_CPT_SESSION;
 			}
 
-			if ( $docheck && !have_rows('blocks') ) {
-				// no content has been selected for this page, so list ALL published content for this CPT
+			if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+				$colcount = 'grid--col-3';
+			}					
+			
+			// later toegevoegd: de mogelijkheid om te kiezen welke posts (speakers, sessions, keynotes) op
+			// deze pagina getoond worden.
+			// als 'template_conf_contenttypepage_filter' op 'filter_ja' staat, dan laten we alleen de 
+			// posts zien die de gebruiker heeft geselecteerd. Anders laten we alle posts zien, in de standaard
+			// volgorde, namelijk alfabetisch op titel
 
-			$args['post_type'] = $type;
+			if ( 'filter_ja' == $userselectedposts ) {
 
-//hiero
+				$posts = get_field('template_conf_contenttypepage_select_posts', $the_id );
 
-//echo '<pre>';
-//var_dump( $args );
-//echo '</pre>';
-
-
-				$posts_for_cpt = new WP_query( $args );
-		
-				if ( $posts_for_cpt->have_posts() ) {
-
-					$colcount = 'grid--col-2';
-
-					if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
-						$colcount = 'grid--col-3';
-					}					
-
+				if( $posts ):
+				
 					echo '<div class="grid ' . $colcount . ' ' . $type . '">';
-					
-					while ( $posts_for_cpt->have_posts() ) : $posts_for_cpt->the_post();
-					
-						$postcounter++;
-
+				
+					foreach( $posts as $post):
+						setup_postdata($post);
+				
+						$currentposttype = get_post_type( $post );
 						$args = array( 
 							'ID'			=> $post->ID,
 							'titletag'		=> 'h2',
 						);
-
-						if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+				
+						if ( $currentposttype === ICTU_GCCONF_CPT_SPEAKER ) {
 							
 							echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
 							
 						}
-						elseif ( $type === ICTU_GCCONF_CPT_KEYNOTE ) {
-
+						elseif ( $currentposttype === ICTU_GCCONF_CPT_KEYNOTE ) {
+				
 							echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 							
 						}
 						else {
-
+				
 							echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
 							
 						}
-
-					endwhile;
+					
+					endforeach;
 					
 					echo '</div>';
+					
+					wp_reset_postdata();
 				
-				}					
+				endif;
 				
-				wp_reset_query();
-				
+			} 
+			else {
+
+				$args = array(
+					'posts_per_page'        =>  -1,
+					'post_status'     		=> 'publish',
+					'order'                 =>  'ASC',
+					'orderby'               =>  'post_title'
+				  );
+
+	
+				if ( $docheck && !have_rows('blocks') ) {
+					// no content has been selected for this page, so list ALL published content for this CPT
+	
+					$args['post_type'] = $type;
+		
+					$posts_for_cpt = new WP_query( $args );
+			
+					if ( $posts_for_cpt->have_posts() ) {
+
+	
+						echo '<div class="grid ' . $colcount . ' ' . $type . '">';
+						
+						while ( $posts_for_cpt->have_posts() ) : $posts_for_cpt->the_post();
+						
+							$postcounter++;
+							
+							$currentposttype = get_post_type( $post );
+							$args = array( 
+								'ID'			=> $post->ID,
+								'titletag'		=> 'h2',
+							);
+	
+							if ( $currentposttype === ICTU_GCCONF_CPT_SPEAKER ) {
+								
+								echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
+								
+							}
+							elseif ( $currentposttype === ICTU_GCCONF_CPT_KEYNOTE ) {
+	
+								echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
+								
+							}
+							else {
+	
+								echo $this->fn_ictu_gcconf_frontend_write_sessioncard( $args );
+								
+							}
+	
+						endwhile;
+						
+						echo '</div>';
+					
+					}					
+					
+					wp_reset_query();
+					
+				}
 			}
 		
 		}

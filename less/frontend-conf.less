@@ -7,13 +7,13 @@
 // @package   ictu-gc-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   1.2.3.1
-// @desc.     Modified layout for extra fields per session / keynote.
+// @version   1.3.1
+// @desc.     Extra page-template with option to select posts.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 
 
-<!--                 frontend.css - v1.2.3.1                      -->
+<!--                 frontend.css - v1.3.1                      -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->
@@ -111,8 +111,11 @@ body {
 	}
 }
 
-.page-template-conf-overviewpage .content .entry-content {
-	min-height: 0;
+.page-template-conf-contenttypepage,
+.page-template-conf-overviewpage {
+	.content .entry-content {
+		min-height: 0;
+	}
 }
 
 .section-block {
