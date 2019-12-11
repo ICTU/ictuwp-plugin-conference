@@ -8,9 +8,15 @@
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-1.1.1 - Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
+1.3.1 - Extra page-template with option to select posts.
 
 ## Version history
+* 1.3.1 - Extra page-template with option to select posts.
+* 1.2.3 - Modified layout for extra fields per session / keynote.
+* 1.2.2 - Display extra fields per session / keynote.
+* 1.2.1 - Extra fields for information per session / keynote
+* 1.1.3 - Better layout for terms in meta information.
+* 1.1.2 - Show times for keynotes.
 * 1.1.1 - Translations updated. Removed obsolete relationship field for speakers (now: 'speaker_session_keynote_relations')
 * 1.0.1 - Live at Oct 15 2019.
 * 0.0.1 - created readme.md
