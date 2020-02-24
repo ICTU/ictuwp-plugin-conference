@@ -1,0 +1,14 @@
+{
+  "name": "ictu/ictuwp-plugin-conference",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0",
+  "description": "Extra mogelijkheden voor contentinvoer tbv een GC conferentie-site",
+  "homepage": "https://www.digitaleoverheid.nl",
+  "authors": [
+    {
+      "name": "Paul van Buuren",
+      "email": "paul@wbvb.nl",
+      "homepage": "https://wbvb.nl"
+    }
+  ]
+}
