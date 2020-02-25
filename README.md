@@ -8,9 +8,10 @@
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-1.3.1 - Extra page-template with option to select posts.
+2.0.1 - Renamed the plugin. Better ACF check.
 
 ## Version history
+* 2.0.1 - Renamed the plugin. Better ACF check.
 * 1.3.1 - Extra page-template with option to select posts.
 * 1.2.3 - Modified layout for extra fields per session / keynote.
 * 1.2.2 - Display extra fields per session / keynote.

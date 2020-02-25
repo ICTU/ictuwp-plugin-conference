@@ -16,9 +16,10 @@
 
 if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 
+
 	function fn_ictu_gcconf_initialize_acf_fields() {
 	
-		if( function_exists('acf_add_local_field_group') ):
+		if( function_exists('acf_add_local_field_group') ) {
 
 			//------------------------------------------------------------------------------------------------
 			// blocks constellation
@@ -567,7 +568,6 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 							),
 						),
 					),
-
 					array(
 						'key' => 'field_5da0567590bee',
 						'label' => 'Keynotes or sessions',
@@ -597,8 +597,6 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 						'max' => '',
 						'return_format' => 'object',
 					),
-
-					
 				),
 				'location' => array(
 					array(
@@ -740,6 +738,8 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 			));
 
 
+			//------------------------------------------------------------------------------------------------
+			// Velden voor versla
 			acf_add_local_field_group(array(
 				'key' => 'group_5de10c8cc1188',
 				'title' => 'Velden voor verslag',
@@ -898,95 +898,94 @@ if( ! function_exists('fn_ictu_gcconf_initialize_acf_fields') ) {
 				'description' => '',
 			));
 
-
-		endif;
-
-    }
-
-	
-	acf_add_local_field_group(array(
-		'key' => 'group_5df00a354531d',
-		'title' => 'Keynotes, sessies of sprekers',
-		'fields' => array(
-			array(
-				'key' => 'field_5df00baa46e03',
-				'label' => 'Alles tonen of alleen een selectie?',
-				'name' => 'template_conf_contenttypepage_filter',
-				'type' => 'radio',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
+			acf_add_local_field_group(array(
+				'key' => 'group_5df00a354531d',
+				'title' => 'Keynotes, sessies of sprekers',
+				'fields' => array(
+					array(
+						'key' => 'field_5df00baa46e03',
+						'label' => 'Alles tonen of alleen een selectie?',
+						'name' => 'template_conf_contenttypepage_filter',
+						'type' => 'radio',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'filter_nee' => 'Toon alles',
+							'filter_ja' => 'Toon alleen wat ik hieronder selecteer',
+						),
+						'allow_null' => 0,
+						'other_choice' => 0,
+						'default_value' => '',
+						'layout' => 'vertical',
+						'return_format' => 'value',
+						'save_other_choice' => 0,
+					),
+					array(
+						'key' => 'field_5df00a7cee7ac',
+						'label' => 'Selecteer',
+						'name' => 'template_conf_contenttypepage_select_posts',
+						'type' => 'relationship',
+						'instructions' => 'Selecteer keynotes, sessies of sprekers en zet ze op de juist volgorde op de pagina',
+						'required' => 0,
+						'conditional_logic' => array(
+							array(
+								array(
+									'field' => 'field_5df00baa46e03',
+									'operator' => '==',
+									'value' => 'filter_ja',
+								),
+							),
+						),
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'post_type' => array(
+							0 => 'session',
+							1 => 'speaker',
+							2 => 'keynote',
+						),
+						'taxonomy' => '',
+						'filters' => array(
+							0 => 'search',
+							1 => 'post_type',
+							2 => 'taxonomy',
+						),
+						'elements' => '',
+						'min' => 1,
+						'max' => '',
+						'return_format' => 'object',
+					),
 				),
-				'choices' => array(
-					'filter_nee' => 'Toon alles',
-					'filter_ja' => 'Toon alleen wat ik hieronder selecteer',
-				),
-				'allow_null' => 0,
-				'other_choice' => 0,
-				'default_value' => '',
-				'layout' => 'vertical',
-				'return_format' => 'value',
-				'save_other_choice' => 0,
-			),
-			array(
-				'key' => 'field_5df00a7cee7ac',
-				'label' => 'Selecteer',
-				'name' => 'template_conf_contenttypepage_select_posts',
-				'type' => 'relationship',
-				'instructions' => 'Selecteer keynotes, sessies of sprekers en zet ze op de juist volgorde op de pagina',
-				'required' => 0,
-				'conditional_logic' => array(
+				'location' => array(
 					array(
 						array(
-							'field' => 'field_5df00baa46e03',
+							'param' => 'page_template',
 							'operator' => '==',
-							'value' => 'filter_ja',
+							'value' => 'conf-contenttypepage.php',
 						),
 					),
 				),
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'post_type' => array(
-					0 => 'session',
-					1 => 'speaker',
-					2 => 'keynote',
-				),
-				'taxonomy' => '',
-				'filters' => array(
-					0 => 'search',
-					1 => 'post_type',
-					2 => 'taxonomy',
-				),
-				'elements' => '',
-				'min' => 1,
-				'max' => '',
-				'return_format' => 'object',
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param' => 'page_template',
-					'operator' => '==',
-					'value' => 'conf-contenttypepage.php',
-				),
-			),
-		),
-		'menu_order' => 0,
-		'position' => 'acf_after_title',
-		'style' => 'default',
-		'label_placement' => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen' => '',
-		'active' => true,
-		'description' => '',
-	));
+				'menu_order' => 0,
+				'position' => 'acf_after_title',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => true,
+				'description' => '',
+			));
+
+		} // if( function_exists('acf_add_local_field_group') ) {
+
+
+    } //	function fn_ictu_gcconf_initialize_acf_fields() {
 	
 }    
