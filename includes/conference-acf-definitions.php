@@ -5,11 +5,11 @@
 // ----------------------------------------------------------------------------------
 // ACF definities voor conference plugin
 // ----------------------------------------------------------------------------------
-// @package   		ictu-gc-plugin-conference
+// @package   		ictuwp-plugin-conference
 // @author    		Paul van Buuren
 // @license   		GPL-2.0+
-// @version			1.3.1
-// @description		Extra page-template with option to select posts.
+// @version   		2.0.2
+// @desc.     		Renamed packages, checked translation.
 // @link			https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  */
 
