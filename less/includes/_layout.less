@@ -1,0 +1,66 @@
+// Layout for blockquote on frontpage
+
+.home.page-template-default {
+  blockquote {
+    float: left;
+    width: 55%;
+
+    + p {
+      margin-top: 4rem;
+
+      + h2 {
+        clear: both;
+      }
+    }
+  }
+}
+
+.archive-list .card--keynote .speaker-bio {
+  padding-left: 0;
+  width: 100%;
+}
+
+
+.grid.speakers {
+  margin-top: 3rem;
+}
+
+@speakergridmargin: 9rem;
+
+.grid--col-3.speakers {
+  @media @desktop {
+    > div,
+    > div:first-child {
+      width: ~"calc(33.333% - @{speakergridmargin})";
+      margin-left: @speakergridmargin / 2;
+      margin-right: @speakergridmargin / 2;
+    }
+  }
+}
+
+.section-block {
+  h2 {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  header {
+    border-top: .1rem solid @border_color;
+    .gc-inner-container;
+    margin-top: 2rem;
+    padding-top: 2rem;
+  }
+
+  + .section-block {
+    margin-top: 5rem;
+  }
+}
+
+.grid > .card--speaker {
+  margin-top: 8rem;
+}
