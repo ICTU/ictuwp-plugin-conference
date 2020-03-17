@@ -22,3 +22,6 @@ config.codekit3
 
 node_modules
 ictu-gc-plugin-conference.code-workspace
+
+.idea
+.idea/*
