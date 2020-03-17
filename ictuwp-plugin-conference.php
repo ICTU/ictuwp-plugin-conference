@@ -2640,27 +2640,23 @@ function fn_ictu_gcconf_extra_update_speaker_relationfield($postid) {
 
 //========================================================================================================
 
-function fn_ictu_gcconf_footer_disable_tuesday() {
-    ?>
-  <script>
-    jQuery(document).ready(function () {
-      //put your js code here
+function fn_ictu_gcconf_footer_disable_tuesday() { ?>
+    <script>
+        jQuery(document).ready(function () {
+          //put your js code here
+            if (jQuery("#days2").length) {
+                jQuery("#days2").attr('disabled', 'disabled');
+            }
 
-      if (jQuery("#days2").length) {
-        jQuery("#days2").attr('disabled', 'disabled');
-      }
-
-      if (jQuery("#separator-days2").length) {
-        jQuery("#separator-days2").addClass('disabled');
-      }
-
-    })
+            if (jQuery("#separator-days2").length) {
+              jQuery("#separator-days2").addClass('disabled');
+            }
+        })
   </script>
 
-    <?php
-}
+<?php }
 
 add_action('wp_footer', 'fn_ictu_gcconf_footer_disable_tuesday');
 
 //========================================================================================================
-
+    
