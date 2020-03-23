@@ -102,12 +102,22 @@ Mixins
   padding-left: 0;
   width: 100%;
 }
+.entry-content .extra-links {
+  margin: 2rem 0 0;
+  padding: 0;
+}
+.entry-content .extra-links li {
+  list-style: none;
+  margin: 0;
+}
 .grid.speakers {
   margin-top: 3rem;
 }
 @media only screen and (min-width: 800px) {
   .grid--col-3.speakers > div,
-  .grid--col-3.speakers > div:first-child {
+  .grid--col-3.speakers > div:first-child,
+  .grid--col-3.speakers > section,
+  .grid--col-3.speakers > section:first-child {
     width: calc(33.333% - 9rem);
     margin-left: 4.5rem;
     margin-right: 4.5rem;
@@ -126,11 +136,31 @@ Mixins
   max-width: 770px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2rem;
+  margin-top: 3rem;
   padding-top: 2rem;
+}
+@media only screen and (min-width: 650px) {
+  .section-block + .section-block header {
+    margin-top: 5rem;
+  }
+}
+@media only screen and (min-width: 800px) {
+  .section-block + .section-block header {
+    margin-top: 8rem;
+  }
 }
 .grid > .card--speaker {
   margin-top: 8rem;
+}
+.archive.category .archive-list .entry.teaser {
+  -webkit-box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+.archive.category .taxonomy-description {
+  background: #FFF;
+  -webkit-box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  padding: 3rem;
 }
 .single .author-box {
   display: -webkit-box;
@@ -182,6 +212,23 @@ Mixins
     margin-top: 8rem;
   }
 }
+.single-speaker .archive-list + .card {
+  margin-top: 3rem;
+}
+@media only screen and (min-width: 650px) {
+  .single-speaker .entry-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .single-speaker .entry-content > .speaker-image {
+    width: 14rem;
+  }
+  .single-speaker .entry-content > .speaker-bio {
+    width: calc(100% - 14rem);
+    padding-left: 3rem;
+  }
+}
 .card dl {
   width: 100%;
 }
@@ -193,38 +240,55 @@ Mixins
   content: "";
   clear: both;
 }
-.card--keynote .card__content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+.card.card--keynote {
+  padding: 2rem;
 }
-.card--keynote .card__title {
-  width: 100%;
-  margin-bottom: 2rem;
+@media only screen and (min-width: 800px) {
+  .card.card--keynote {
+    padding: 2rem 3rem;
+  }
 }
-.card--keynote .card__image {
-  -webkit-box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-  width: 8rem;
-  height: auto;
+.card.card--keynote .speaker-bio {
+  display: block;
 }
-.card--keynote .speaker-bio {
-  width: calc(100% - 8rem);
-  padding-left: 2rem;
+.card.card--keynote .extra-links {
+  margin: auto 0 0;
+  padding-top: 2rem;
 }
-.card--keynote .dl-speaker-names {
-  width: 100%;
+.card.card--keynote .meta-data {
   margin-bottom: 1.6rem;
+}
+.card.card--keynote .card__title + .speaker-bio {
+  margin-top: 1.6rem;
+}
+@media only screen and (min-width: 650px) {
+  .card.card--keynote.l-with-image .l-content-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-bottom: 2rem;
+    margin-top: 1.6rem;
+  }
+  .card.card--keynote.l-with-image .card__image {
+    width: 14rem;
+  }
+  .card.card--keynote.l-with-image .speaker-bio {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    width: calc(100% - 14rem);
+    padding-left: 2rem;
+  }
+}
+@media only screen and (min-width: 800px) {
+  .card.card--keynote.l-with-image .speaker-bio {
+    padding-left: 3rem;
+  }
 }
 .card--speaker {
   text-align: center;
 }
-.card--speaker .thumbnail.alignleft {
+.card--speaker .thumbnail.alignleft,
+.card--speaker .card__image {
   max-height: none;
   width: 14rem;
   margin-top: -5rem;
@@ -233,7 +297,8 @@ Mixins
   position: absolute;
   z-index: 10;
 }
-.card--speaker .speaker-info {
+.card--speaker .speaker-info,
+.card--speaker .card__content {
   z-index: 5;
   position: relative;
   padding: 13rem 3rem 3rem;
@@ -241,10 +306,13 @@ Mixins
   overflow: hidden;
 }
 .card--speaker .speaker-info:before,
-.card--speaker .speaker-info:after {
+.card--speaker .card__content:before,
+.card--speaker .speaker-info:after,
+.card--speaker .card__content:after {
   z-index: -1;
 }
-.card--speaker .speaker-info:before {
+.card--speaker .speaker-info:before,
+.card--speaker .card__content:before {
   position: absolute;
   content: " ";
   background: #f2ebe4;
@@ -258,7 +326,8 @@ Mixins
   -webkit-transform: rotate(1deg);
           transform: rotate(1deg);
 }
-.card--speaker .speaker-info:after {
+.card--speaker .speaker-info:after,
+.card--speaker .card__content:after {
   position: absolute;
   content: " ";
   background: #f2ebe4;
@@ -270,10 +339,12 @@ Mixins
   margin-left: -1000rem;
   margin-right: -1000rem;
 }
-.card--speaker .speaker-info:after {
+.card--speaker .speaker-info:after,
+.card--speaker .card__content:after {
   display: none;
 }
-.card--speaker .speaker-info:before {
+.card--speaker .speaker-info:before,
+.card--speaker .card__content:before {
   top: 0;
   margin: -2rem -2rem 0;
   height: 10rem;
@@ -303,86 +374,20 @@ Mixins
   color: #4f7781;
   margin-top: 0.8rem;
 }
-.card--authorbox {
-  padding-top: 8.4375rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  border-color: #f9f6f3;
-  position: relative;
-  display: unset;
-  display: block;
-  overflow: hidden;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+.card.card--session {
+  padding: 1rem 2rem 2rem;
 }
-.card--authorbox .btn--arrow {
-  border-color: #f9f6f3;
+.card.card--session .meta-data {
+  margin-top: 0.5rem;
+  padding-top: 0;
 }
-.card--authorbox * {
-  z-index: 1;
-  position: relative;
-}
-.card--authorbox .speaker-country-jobtitle {
-  margin-top: 0;
-}
-.card--authorbox:after,
-.card--authorbox:before {
-  content: ' ';
-  display: block;
-  position: absolute;
-  z-index: 1;
-}
-.card--authorbox:before {
-  left: 0;
-  right: 1rem;
-  top: 5.625rem;
-  bottom: 1rem;
-  background: #f9f6f3;
-  -webkit-box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-          box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-}
-.card--authorbox:after {
-  background: transparent;
-  width: 1px;
-  height: 1px;
-  border-top: 3.75rem solid transparent;
-  border-right: 3.75rem solid transparent;
-  border-left: 3.75rem solid transparent;
-  border-bottom: 3.75rem solid #f9f6f3;
-  top: 0;
-  left: 4.875rem;
-  -webkit-transform: translateY(-0.9375rem);
-          transform: translateY(-0.9375rem);
-}
-.card--authorbox .speaker-thumbnail {
-  max-width: 140px;
-}
-@media only screen and (max-width: 650px) {
-  .card--authorbox .speaker-info {
-    display: block;
-    float: none;
-    clear: both;
-  }
+.card.card--session .extra-links {
+  margin: auto 0 0;
 }
 @media only screen and (min-width: 650px) {
-  .card--authorbox .speaker-info {
-    display: inline-block;
-    float: left;
-    clear: none;
-    max-width: calc(98% - 140px);
-    padding-left: 2rem;
+  .card.card--session {
+    padding: 1rem 3rem 3rem;
   }
-}
-.card--authorbox:nth-child(odd):after {
-  left: unset;
-  right: 4.875rem;
-}
-.card--authorbox:nth-child(odd) .speaker-thumbnail.alignleft {
-  float: right;
-  margin-left: 2rem;
-}
-.card--authorbox:nth-child(odd) .speaker-info {
-  max-width: calc(94% - 140px);
 }
 /*
 ---------------------------------------------------------------------------------------------------- */
@@ -627,44 +632,6 @@ dl.dl-time-location .thumbnail {
 }
 .separator.disabled label div:after {
   background: #dadada;
-}
-.extra-links {
-  clear: both;
-  float: none;
-  overflow: hidden;
-  list-style: none;
-}
-.entry-content .extra-links {
-  padding: 0;
-  margin: 0;
-}
-.entry-content .extra-links li {
-  list-style: none;
-}
-.entry-content .card .extra-links {
-  padding: 0 2rem;
-}
-@media only screen and (min-width: 800px) {
-  .entry-content .card .extra-links {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-}
-.extra-links + li {
-  border-top: 1px solid #D1DFE3;
-}
-.extra-links {
-  margin: auto 2rem 2rem;
-  padding: 0;
-}
-@media only screen and (min-width: 800px) {
-  .extra-links {
-    margin-left: 3rem;
-    margin-right: 3rem;
-  }
-}
-.extra-links .extra-link-item {
-  list-style: none;
 }
 span.extra-link-item {
   margin: auto 2rem 2rem;

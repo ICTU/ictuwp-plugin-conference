@@ -21,6 +21,16 @@
 }
 
 
+.entry-content .extra-links {
+  margin: 2rem 0 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+    margin: 0;
+  }
+}
+
 .grid.speakers {
   margin-top: 3rem;
 }
@@ -30,7 +40,9 @@
 .grid--col-3.speakers {
   @media @desktop {
     > div,
-    > div:first-child {
+    > div:first-child,
+    > section,
+    > section:first-child {
       width: ~"calc(33.333% - @{speakergridmargin})";
       margin-left: @speakergridmargin / 2;
       margin-right: @speakergridmargin / 2;
@@ -52,11 +64,34 @@
   header {
     border-top: .1rem solid @border_color;
     .gc-inner-container;
-    margin-top: 2rem;
+    margin-top: 3rem;
     padding-top: 2rem;
+  }
+
+  + .section-block header {
+    @media @tablet {
+      margin-top: 5rem;
+    }
+    @media @desktop {
+      margin-top: 8rem;
+    }
   }
 }
 
 .grid > .card--speaker {
   margin-top: 8rem;
+}
+
+.archive.category {
+  //background: none;
+
+  .archive-list .entry.teaser {
+    .gc-box-shadow;
+  }
+
+  .taxonomy-description {
+    background: @white;
+    .gc-box-shadow;
+    padding: 3rem;
+  }
 }

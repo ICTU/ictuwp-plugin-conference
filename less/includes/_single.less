@@ -41,3 +41,26 @@
     }
   }
 }
+
+.single-speaker {
+  .archive-list + .card {
+    margin-top: @gutter;
+  }
+}
+
+.single-speaker {
+  .entry-content {
+    @media @tablet {
+      display: flex;
+
+      > .speaker-image {
+        width: 14rem;
+      }
+
+      > .speaker-bio {
+        width: calc(100% - 14rem);
+        padding-left: @gutter;
+      }
+    }
+  }
+}
