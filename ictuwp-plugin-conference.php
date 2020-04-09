@@ -79,6 +79,33 @@ define( 'CONF_DEBUG', false );
 // define( 'CONF_DEBUG', true );
 
 
+/** ----------------------------------------------------------------------------------------------------
+ * Function for making metadata
+ */
+function cnf_make_meta( $meta ) {
+	$meta_data  = '';
+	$meta_items = '';
+
+	foreach ( $meta as $item ) {
+		if ( $item ) {
+			if ( is_array( $item ) && isset( $item['type'] ) ) {
+				//print_r($item);
+				$meta_items .= '<span class="meta_data meta-data--with-icon ' . $item['type'] . '">' . $item['name'] . '</span>';
+			} else {
+				$meta_items .= '<span class="meta_data">' . $item . '</span>';
+			}
+		}
+	}
+
+	if ( $meta_items ) {
+		$meta_data = '<div class="meta-data">';
+		$meta_data .= $meta_items;
+		$meta_data .= '</div>';
+	}
+
+	return $meta_data;
+}
+
 //========================================================================================================
 
 /**
@@ -351,7 +378,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								$town          = $my_em_event->output( '#_LOCATIONTOWN' );
 
 								echo '<div class="card no-image card--event" aria-labelledby="' . $title_id . '">';
-								echo '<' . $headertitle_tag . ' id="' . $title_id . '"><a href="' . get_permalink( $post->ID ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $headertitle_tag . '>';
+								echo '<' . $headertitle_tag . ' class="card__title"><a class="arrow-link" href="' . get_permalink( $post->ID ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span></a></' . $headertitle_tag . '>';
 
 								if ( $times || $town ) {
 
@@ -511,23 +538,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				$return = '<div class="links"><h2 class="visuallyhidden">' . _x( 'Links', 'extra links for type', 'ictuwp-plugin-conference' ) . '</h2>';
 
-				$count = count( get_field( 'extra_info_repeater', $post->ID ) );
-
-				$itemtag       = 'p';
-				$start_listtag = '';
-				$end_listtag   = '';
-				$extraclass    = ' extra-links';
+				$count     = count( get_field( 'extra_info_repeater', $post->ID ) );
+				$make_list = false;
 
 				if ( $count > 1 ) {
-//				$itemtag 		= 'li';
-//				$start_listtag	= '<ul>';
-//				$end_listtag 	= '</ul>';
-//				$extraclass 	= '';
-
-//				$return .= '<ul class="extra-links">';
-
+					$make_list = true;
 				}
-
 
 				// loop through the rows of data
 				while ( have_rows( 'extra_info_repeater', $post->ID ) ) : the_row();
@@ -538,36 +554,26 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$type     = get_sub_field( 'extra_info_repeater_type' );
 					$linktext = get_sub_field( 'extra_info_repeater_linktext' );
 
-					$download_attribute = '';
+					if ( $type && $url ) {
+						switch ( $type ) {
+							case 'video':
+								$return .= '<div class="video">';
+								$return .= '<h3 class="video__title"><a href="' . $url . '">' . $linktext . '</a></h3>';
+								$return .= '<div class="videoWrapper">';
+								$return .= wp_oembed_get( $url );
+								if ( $desc ) {
+									$return .= '<p>' . $desc . '</p>';
+								}
 
-					if ( 'download' === $type && $url ) {
-						// only actually works for same origin URLs but oh well
-						$download_attribute = ' download';
-					}
-
-
-					if ( 'video' === $type && $url ) {
-						$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
-						$return .= '<div class="videoWrapper">';
-						$return .= wp_oembed_get( $url );
-						if ( $desc ) {
-							$return .= '<p>' . $desc . '</p>';
-						}
-						$return .= '</div>';
-					} else {
-						if ( $url && $linktext ) {
-							if ( $desc ) {
-								$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
-							} else {
-								$return .= '<p class="extra-links ' . $type . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></p>';
-							}
+								$return .= '</div></div>';
+								break;
+							default:
+								$return .= '<a href="' . $url . '" class="extra-link extra-link--' . $type . '">' . $linktext . '</a>';
 						}
 					}
 
 
 				endwhile;
-
-				$return .= $end_listtag;
 
 				$return .= '</div>';
 
@@ -625,12 +631,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				foreach ( $list_of_speakers as $speaker ):
 
 					$args2 = array(
-						'ID'         => $speaker,
-						'titletag'   => 'h3',
-						'fulldesc'   => true,
-						'addcountry' => true,
-						'echo'       => false,
-						'cardcss'    => 'card--authorbox no-line'
+						'ID'   => $speaker,
+						'echo' => false,
+						'type' => 'author'
 					);
 
 					$return .= $this->fn_ictu_gcconf_frontend_write_speakercard( $args2 );
@@ -664,8 +667,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			global $post;
 
 			$infooter = true;
+			$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
 
-			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', array(), ICTU_GC_CONF_VERSION, 'all' );
+			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
 
 		}
 
@@ -825,6 +829,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$county_term    = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_COUNTRY );
 			$jobtitle       = get_field( 'speaker_jobtitle', $post->ID );
 
+			/*
+
 			if ( $county_term && ! is_wp_error( $county_term ) ) {
 
 				foreach ( $county_term as $term ) {
@@ -850,7 +856,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				}
 
 				$return .= '</p>';
-			}
+			}*/
 
 			echo $return;
 
@@ -1139,12 +1145,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			$return = '<div class="card card--keynote" aria-labelledby="' . $title_id . '">';
-			$return .= '<' . $args['titletag'] . ' id="' . $title_id . '"><a href="' . get_permalink( $args['ID'] ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';
+			$return = '<div class="card card--keynote' . ( $args['speakerimage'] ? ' l-with-image' : '' ) . '" aria-labelledby="' . $title_id . '">';
+			$return .= '<' . $args['titletag'] . ' class="card__title">';
+			$return .= '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></a></' . $args['titletag'] . '>';
 
 			if ( $list_of_speakers && $args['speakerimage'] ) {
 
-				$return .= '<span class="speaker-image">';
+				$return .= '<div class="l-content-wrapper"><div class="card__image">';
 
 				foreach ( $list_of_speakers as $speaker ):
 
@@ -1159,13 +1166,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				endforeach;
 
-				$return .= '</span>';
+				$return .= '</div>';
 				$return .= '<span class="speaker-bio">';
 				if ( $speakernames || $metainfo_time ) {
-					$return .= '<div class="meta">' . $speakernames . $metainfo_time . '</div>';
+					$return .= '<div class="meta-data">' . $speakernames . $metainfo_time . '</div>';
 				}
 				$return .= wp_strip_all_tags( $excerpt );
-				$return .= '</span>';
+				$return .= '</span></div>';
 
 			} else {
 				$return .= '<span class="speaker-bio">';
@@ -1177,23 +1184,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			//fn_ictu_gcconf_frontend_append_links
 			if ( have_rows( 'extra_info_repeater', $args['ID'] ) ) {
 
-				$count = count( get_field( 'extra_info_repeater', $args['ID'] ) );
-
-				$itemtag       = 'p';
-				$start_listtag = '';
-				$end_listtag   = '';
-				$extraclass    = ' extra-links';
+				$count     = count( get_field( 'extra_info_repeater', $args['ID'] ) );
+				$make_list = false;
 
 				if ( $count > 1 ) {
-					$itemtag       = 'li';
-					$start_listtag = '<ul>';
-					$end_listtag   = '</ul>';
-					$extraclass    = '';
-
-					$return .= '<ul class="extra-links">';
-
+					$make_list = true;
 				}
 
+				( $make_list ? $return .= '<ul class="extra-links">' : $return = '' );
 				// loop through the rows of data
 				while ( have_rows( 'extra_info_repeater', $args['ID'] ) ) : the_row();
 
@@ -1203,40 +1201,20 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$type     = get_sub_field( 'extra_info_repeater_type' );
 					$linktext = get_sub_field( 'extra_info_repeater_linktext' );
 
-					$download_attribute = '';
-
-					if ( 'download' === $type && $url ) {
-						$download_attribute = ' download';
-					}
-
-//				if ( 'video' === $type && $url ) {
-//					$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
-//					$return .= '<div class="videoWrapper">';
-//					$return .= wp_oembed_get( $url );
-//					if ( $desc ) {
-//						$return .= '<p>' . $desc . '</p>';
-//					}
-//					$return .= '</div>';
-//				}
-//				else {
 					if ( $url && $linktext ) {
-//						if ( $desc ) {
-//							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
-//						}
-//						else {
-						$return .= '<' . $itemtag . ' class="' . $type . $extraclass . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
-//						}
+						$link = '<a href="' . $url . '" class="extra-link extra-link--' . $type . '" >' . $linktext . '</a>';
+
+						( $make_list ? $return .= '<li class="extra-links__item">' . $link . '</li>' : $return .= $link );
 					}
-//					}
+
 
 				endwhile;
 
-				$return .= $end_listtag;
-
 			}
 
+			( $make_list ? $return .= '</ul>' : $return = '' );
 
-			$return .= '</div>' . "\n\n\n";
+			$return .= '</div>';
 
 			if ( $args['echo'] ) {
 				echo $return;
@@ -1276,7 +1254,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
-
 			if ( CONF_SHOW_DATETIMES ) {
 				$time_term     = get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
 				$location_term = get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
@@ -1290,55 +1267,41 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
 
-			$metainfo = '';
+			$metainfo = [];
 
-			if ( $time_term || $location_term ) {
-
-				$metainfo .= '<dl class="dl-time-location">';
-				if ( $time_term ) {
-					$metainfo .= '<dt>' . _x( 'Timeblock', 'timeblock taxonomy', 'ictuwp-plugin-conference' ) . '</dt><dd class="event-times">' . $time_term->name . '</dd> ';
-				}
-				if ( $location_term ) {
-					$metainfo .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictuwp-plugin-conference' ) . '</dt><dd class="event-location">' . $location_term->name . '</dd> ';
-				}
-				$metainfo .= '</dl>';
-
-			}
+			$metainfo[] = ( $time_term ? _x( 'Timeblock', 'timeblock taxonomy', 'ictuwp-plugin-conference' ) . $time_term->name : '' );
+			$metainfo[] = ( $time_term ? _x( 'Session location', 'session location taxonomy', 'ictuwp-plugin-conference' ) . $location_term->name : '' );
 
 			if ( $list_of_speakers && $args['speakernames'] ) {
-				$speakercounter = 0;
-				$metainfo       .= '<dl class="dl-speaker-names session">';
-				$metainfo       .= '<dt>';
+				$label    = _x( 'Speaker', 'speaker type', 'ictuwp-plugin-conference' );
+				$speakers = [];
 
 				if ( count( $list_of_speakers ) > 1 ) {
-					$metainfo .= _x( 'Speakers', 'speaker type', 'ictuwp-plugin-conference' );
-				} else {
-					$metainfo .= _x( 'Speaker', 'speaker type', 'ictuwp-plugin-conference' );
+					$label = _x( 'Speakers', 'speaker type', 'ictuwp-plugin-conference' );
 				}
-				$metainfo .= '</dt>';
 
 				foreach ( $list_of_speakers as $speaker ):
-					$speakercounter ++;
-					$metainfo .= '<dd>';
-					$metainfo .= get_the_title( $speaker );
-					if ( ( $speakercounter < count( $list_of_speakers ) ) && ( count( $list_of_speakers ) > 1 ) ) {
-						$metainfo .= ',&nbsp;';
-					}
-					$metainfo .= '</dd>';
+					$speakers[] = get_the_title( $speaker );
 				endforeach;
 
-				$metainfo .= '</dl>';
+
+				if ( $speakers ) {
+					$speakers            = implode( ', ', $speakers );
+					$metainfo[2]['name'] = ( $label ? '<label>' . $label . ':</label> ' : '' ) . $speakers;
+					$metainfo[2]['type'] = 'speaker';
+				}
 			}
 
 			$return .= '<div class="card card--session" aria-labelledby="' . $title_id . '">';
-			$return .= '<' . $args['titletag'] . ' id="' . $title_id . '"><a href="' . get_permalink( $args['ID'] ) . '">' . $section_title . '<span class="btn btn--arrow"></span></a></' . $args['titletag'] . '>';
+			$return .= '<' . $args['titletag'] . ' class="card__title">' .
+			           '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span></a></' . $args['titletag'] . '>';
 
 			if ( $metainfo ) {
-				$return .= '<div class="meta">' . $metainfo . '</div>';
+				$return .= cnf_make_meta( $metainfo );
 			}
 
 			$excerpt = get_the_excerpt( $args['ID'] );
-			$return  .= wp_strip_all_tags( $excerpt );
+			$return  .= '<p>' . wp_strip_all_tags( $excerpt ) . '</p>';
 
 
 			//fn_ictu_gcconf_frontend_append_links
@@ -1346,19 +1309,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				$count = count( get_field( 'extra_info_repeater', $args['ID'] ) );
 
-				$itemtag       = 'p';
-				$start_listtag = '';
-				$end_listtag   = '';
-				$extraclass    = ' extra-links';
+				$make_list = false;
 
 				if ( $count > 1 ) {
-					$itemtag       = 'li';
-					$start_listtag = '<ul>';
-					$end_listtag   = '</ul>';
-					$extraclass    = '';
+					$make_list = true;
 
 					$return .= '<ul class="extra-links">';
-
 				}
 
 				// loop through the rows of data
@@ -1372,33 +1328,16 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 					$download_attribute = '';
 
-					if ( 'download' === $type && $url ) {
-						$download_attribute = ' download';
+					if ( $url && $linktext ) {
+						$link   = '<a href="' . $url . '" class="extra-link extra-link--' . $type . '">' . $linktext . '</a>';
+						$return .= ( $make_list ? '<li>' . $link . '</li>' : $link );
 					}
 
-//				if ( 'video' === $type && $url ) {
-//					$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3>';
-//					$return .= '<div class="videoWrapper">';
-//					$return .= wp_oembed_get( $url );
-//					if ( $desc ) {
-//						$return .= '<p>' . $desc . '</p>';
-//					}
-//					$return .= '</div>';
-//				}
-//				else {
-					if ( $url && $linktext ) {
-//						if ( $desc ) {
-//							$return .= '<div><h3><a href="' . $url . '">' . $linktext . '</a></h3><p>' . $desc . '</p></div>';
-//						}
-//						else {
-						$return .= '<' . $itemtag . ' class="' . $type . $extraclass . '"><a href="' . $url . '"' . $download_attribute . '>' . $linktext . '</a></' . $itemtag . '>';
-//						}
-					}
-//					}
 
 				endwhile;
 
-				$return .= $end_listtag;
+				$return .= ( $make_list ? '</ul>' : '' );
+
 
 			}
 
@@ -1420,22 +1359,18 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public function fn_ictu_gcconf_frontend_write_speakercard( $args = [] ) {
+		public
+		function fn_ictu_gcconf_frontend_write_speakercard(
+			$args = []
+		) {
+			$return = '';
 
 			$defaults = array(
-				'ID'                           => 0,
-				'titletag'                     => 'h3',
-				'titlelink'                    => true,
-				'fulldesc'                     => false,
-				'addspeakerlinks'              => false,
-				'addcountry'                   => false,
-				'addkeynotessessions'          => false,
-				'echo'                         => true,
-				'cardcss'                      => 'card--speaker',
-				'speakerlinks_sectiontitletag' => '',
-				'speakerlinks_sectiontitle'    => ''
+				'ID'      => 0,
+				'echo'    => true,
+				'type'    => 'card',
+				'classes' => 'card card--speaker',
 			);
-			$return   = '';
 
 			// Parse incoming $args into an array and merge it with $defaults
 			$args = wp_parse_args( $args, $defaults );
@@ -1444,142 +1379,59 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-			$extraattr = array( 'class' => 'speaker-thumbnail thumbnail alignleft' );
+			/* Set vars */
+			$section_title = get_the_title( $args['ID'] );
+			$type          = $args['type'];
+			$is_author     = false;
 
-			$jobtitle = get_field( 'speaker_jobtitle', $args['ID'] );
-			$objects  = get_field( 'speaker_session_keynote_relations', $args['ID'] );
-
+			/* Set image */
 			if ( has_post_thumbnail( $args['ID'] ) ) {
-				$image = get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE, $extraattr );
+				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE ) . '</figure>';
 			} else {
 				$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
 				$randomid           = array_rand( $arr_speaker_images, 1 );
-				$image              = wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, $extraattr );
+				$image              = wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false );
 			}
-			$section_title = get_the_title( $args['ID'] );
-			$title_id      = sanitize_title( $section_title . '-' . $args['ID'] );
 
-			$return = '<div class="card ' . $args['cardcss'] . '" id="' . $title_id . '">' . $image;
-			$return .= '<div class="speaker-info">';
-			$return .= '<' . $args['titletag'] . '>';
+			/* Set metadata */
+			$meta_data  = '';
+			$meta_items = [];
 
-			if ( $args['titlelink'] ) {
-				$return .= '<a href="' . get_permalink( $args['ID'] ) . '">';
-				$return .= $section_title;
+			$meta_items[] = ( get_field( 'speaker_jobtitle', $args['ID'] ) ? get_field( 'speaker_jobtitle', $args['ID'] ) : '' );
+			$objects      = get_field( 'speaker_session_keynote_relations', $args['ID'] );
+			$county_term  = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_COUNTRY );
 
-				if ( 'card--authorbox no-line' === $args['cardcss'] ) {
-					$return .= '<span class="btn btn--arrow"></span>';
-				}
+			foreach ( $meta_items as $meta ) {
+				$meta_data .= '<span class="meta-data__item">' . $meta . '</span>';
+			}
 
-				$return .= '</a>';
+			// Overrides for author box
+
+			if ( $args['type'] === 'author' ) {
+				$is_author       = true;
+				$title_tag       = 'h2';
+				$excerpt         = ( get_the_excerpt( $args['ID'] ) ? '<p class="excerpt">' . wp_strip_all_tags( get_the_excerpt( $args['ID'] ) ) . '</p>' : '' );
+				$args['classes'] = 'author--box';
 			} else {
-				$return .= $section_title;
-			}
-			$return .= '</' . $args['titletag'] . '>';
-
-
-			if ( $args['addcountry'] ) {
-
-				$county_term = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_COUNTRY );
-
-				if ( $county_term && ! is_wp_error( $county_term ) ) {
-
-					$country        = '';
-					$countrycounter = 0;
-
-					foreach ( $county_term as $term ) {
-
-						$countrycounter ++;
-
-						if ( $countrycounter > 1 ) {
-							$country .= ', ';
-						}
-
-						$country .= $term->name;
-					}
-
-
-					if ( $jobtitle || $country ) {
-
-						$return .= '<p class="speaker-country-jobtitle">';
-
-						if ( $jobtitle && $country ) {
-							$return .= $jobtitle . ' - ' . $country;
-						} else {
-							$return .= $jobtitle . $country;
-						}
-
-						$return .= '</p>';
-					}
-				}
-			}
-
-			if ( $args['fulldesc'] ) {
-
-				$excerpt = get_the_excerpt( $args['ID'] );
-				$return  .= '<p class="excerpt">' . wp_strip_all_tags( $excerpt ) . '</p>';
-
-			} else {
-
-				$return .= '<p class="speaker-jobtitle">' . $jobtitle . '</p>';
-
+				$title_tag = 'h3';
+				$excerpt   = '';
 			}
 
 
-			if ( $args['addkeynotessessions'] ) {
+			$return = '<section class="' . $args['classes'] . ( $image ? ' l-has-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
 
-				$objects = get_field( 'speaker_session_keynote_relations', $args['ID'] );
-				$return  .= '<h3 class="visuallyhidden">Links</h3><ul>';
+			// Set image if there is any
+			$return .= ( $image ? $image : '' );
 
-				foreach ( $objects as $post ):
+			// Set section / card
+			$return .= '<div class="' . $type . '__content">';
+			$return .= '<' . $title_tag . ' class="' . $type . '__title"><a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '">' .
+			           '<span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span>' .
+			           '</a></' . $title_tag . '>';
+			$return .= ( $meta_data ? '<div class="meta-data">' . $meta_data . '</div>' : '' );
+			$return .= ( $excerpt ? $excerpt : '' );
+			$return .= '</div></section>';
 
-					$return .= '<li><a href="' . get_the_permalink( $post->ID ) . '">' . get_the_title( $post->ID ) . '</a></li>';
-
-				endforeach;
-
-				$return .= '</ul>';
-
-				wp_reset_postdata();
-
-			}
-
-			if ( $args['addspeakerlinks'] ) {
-
-				if ( have_rows( 'speaker_links', $args['ID'] ) ) {
-
-					$return .= '<div class="speaker-links">';
-					if ( $args['speakerlinks_sectiontitle'] ) {
-
-						$return .= '<' . $args['speakerlinks_sectiontitletag'] . '>' . sprintf( __( 'Find %s on social media', 'gebruikercentraal' ), get_the_title( get_the_ID() ) ) . '</' . $args['speakerlinks_sectiontitletag'] . '>';
-
-					}
-
-					$return .= '<ul class="social-media speaker">';
-
-					// loop through rows (sub repeater)
-					while ( have_rows( 'speaker_links', $args['ID'] ) ): the_row();
-
-						$speaker_link_url  = get_sub_field( 'speaker_link_url' );
-						$speaker_link_text = get_sub_field( 'speaker_link_text' );
-						$speaker_link_type = get_sub_field( 'speaker_link_type' );
-
-						if ( $speaker_link_url ) {
-							$return .= '<li><a href="' . $speaker_link_url . '" class="' . $speaker_link_type . '">';
-							$return .= $speaker_link_text . '</a></li>';
-						}
-
-					endwhile;
-
-					$return .= '</ul>';
-					$return .= '</div>';
-
-				}
-			}
-
-
-			$return .= '</div>';
-			$return .= '<span class="diagonal-bg-block">&nbsp;</<span>';
-			$return .= '</div>';
 
 			if ( $args['echo'] ) {
 				echo $return;
@@ -1599,7 +1451,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_frontend_template_content_for_noblocks_page() {
+		public
+		function fn_ictu_gcconf_frontend_template_content_for_noblocks_page() {
 
 
 			global $post;
@@ -1758,7 +1611,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_frontend_speaker_featured_image() {
+		public
+		function fn_ictu_gcconf_frontend_speaker_featured_image() {
 
 			global $post;
 
@@ -1778,7 +1632,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_frontend_sessionkeynote_location_time() {
+		public
+		function fn_ictu_gcconf_frontend_sessionkeynote_location_time() {
 
 			global $post;
 
@@ -1794,80 +1649,54 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$location_term = '';
 			}
 
+			$names    = [];
+			$metainfo = [];
 
-			if ( $time_term || $location_term || $session_type || $session_level ) {
+			if ( $time_term && ! is_wp_error( $time_term ) ) {
 
-				$metainfo .= '<dl class="dl-time-location">';
-
-				if ( $time_term && ! is_wp_error( $time_term ) ) {
-					$time_term_counter = 0;
-					$metainfo          .= '<dt>' . _x( 'Time', 'Event times', 'ictuwp-plugin-conference' ) . '</dt>';
-
-					foreach ( $time_term as $term ) {
-						$time_term_counter ++;
-						$parentname = '';
-
-						if ( $time_term_counter > 1 ) {
-							$metainfo .= '<dd class="event-times">, ' . $parentname . $term->name . '</dd> ';
-						} else {
-							$metainfo .= '<dd class="event-times">' . $parentname . $term->name . '</dd> ';
-						}
-
-					}
-
+				foreach ( $time_term as $term ) {
+					$names[] = $term->name;
 				}
-				if ( $location_term && ! is_wp_error( $location_term ) ) {
-					$location_term_counter = 0;
-					$metainfo              .= '<dt>' . _x( 'Session location', 'session location taxonomy', 'ictuwp-plugin-conference' ) . '</dt>';
 
-					foreach ( $location_term as $term ) {
-						$location_term_counter ++;
+				$metainfo[0]['name'] = implode( ', ', $names );
+				$metainfo[0]['type'] = 'time';
+			}
 
-						if ( $location_term_counter > 1 ) {
-							$metainfo .= '<dd class="event-location">, ' . $term->name . '</dd> ';
-						} else {
-							$metainfo .= '<dd class="event-location">' . $term->name . '</dd> ';
-						}
+			if ( $location_term && ! is_wp_error( $location_term ) ) {
 
-					}
+				foreach ( $location_term as $term ) {
+					$locations[] = $term->name;
 				}
-				if ( $session_level && ! is_wp_error( $session_level ) ) {
-					$location_term_counter = 0;
-					$metainfo              .= '<dt>' . _x( 'Session level', 'session level taxonomy', 'ictuwp-plugin-conference' ) . '</dt>';
 
-					foreach ( $session_level as $term ) {
-						$location_term_counter ++;
-						if ( $location_term_counter > 1 ) {
-							$metainfo .= '<dd class="event-level">, ' . $term->name . '</dd> ';
-						} else {
-							$metainfo .= '<dd class="event-level">' . $term->name . '</dd> ';
-						}
+				$metainfo[1]['name'] = implode( ', ', $names );
+				$metainfo[1]['type'] = 'time';
+			}
 
+			if ( $session_level && ! is_wp_error( $session_level ) ) {
+				$level = [];
 
-					}
+				foreach ( $session_level as $term ) {
+					$level[] = $term->name;
 				}
-				if ( $session_type && ! is_wp_error( $session_type ) ) {
-					$location_term_counter = 0;
-					$metainfo              .= '<dt>' . _x( 'Session type', 'session type taxonomy', 'ictuwp-plugin-conference' ) . '</dt>';
 
-					foreach ( $session_type as $term ) {
-						$location_term_counter ++;
-						if ( $location_term_counter > 1 ) {
-							$metainfo .= '<dd class="event-type">, ' . $term->name . '</dd> ';
-						} else {
-							$metainfo .= '<dd class="event-type">' . $term->name . '</dd> ';
-						}
+				$metainfo[2]['name'] = implode( ', ', $level );
+				$metainfo[2]['type'] = 'level';
+			}
 
+			if ( $session_type && ! is_wp_error( $session_type ) ) {
+				$type = [];
 
-					}
+				foreach ( $session_type as $term ) {
+					$type[] = $term->name;
 				}
-				$metainfo .= '</dl>';
 
+				$metainfo[3]['name'] = implode( ', ', $type );
+				$metainfo[3]['type'] = 'session-type';
 			}
 
 			if ( $metainfo ) {
 
-				echo '<div class="meta">' . $metainfo . '</div>';
+				echo cnf_make_meta( $metainfo );
 
 			}
 
@@ -1880,7 +1709,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_register_post_types() {
+		public
+		function fn_ictu_gcconf_register_post_types() {
 
 			// ---------------------------------------------------------------------------------------------------
 			// custom post type voor 'keynote'
@@ -2257,7 +2087,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public function fn_ictu_gcconf_filter_breadcrumb( $crumb = '', $args = '' ) {
+		public
+		function fn_ictu_gcconf_filter_breadcrumb(
+			$crumb = '', $args = ''
+		) {
 
 			global $post;
 

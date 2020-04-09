@@ -1,0 +1,148 @@
+@speakerpic_width: 10rem;
+
+
+.card {
+
+  dl {
+    width: 100%;
+  }
+
+  .meta-data {
+    .clearfix;
+    padding-top: 1rem;
+  }
+
+  &.card--keynote {
+    padding: 2rem;
+
+    @media @desktop {
+      padding: 2rem 3rem;
+    }
+
+    .speaker-bio {
+      display: block;
+    }
+
+    .extra-links {
+      margin: auto 0 0;
+      padding-top: 2rem;
+    }
+
+    .meta-data {
+      margin-bottom: 1.6rem;
+    }
+
+    .card__title + .speaker-bio {
+      margin-top: 1.6rem;
+    }
+
+    &.l-with-image {
+
+      @media @tablet {
+        .l-content-wrapper {
+          display: flex;
+          padding-bottom: 2rem;
+          margin-top: 1.6rem;
+        }
+
+        .card__image {
+          width: 14rem;
+        }
+
+        .speaker-bio {
+          box-sizing: border-box;
+          width: calc(100% - 14rem);
+          padding-left: 2rem;
+        }
+      }
+
+
+      @media @desktop {
+        .speaker-bio {
+          padding-left: 3rem;
+        }
+      }
+    }
+  }
+
+  &--speaker {
+    text-align: center;
+
+    .thumbnail.alignleft,
+    .card__image {
+      max-height: none;
+      width: 14rem;
+      margin-top: -5rem;
+      margin-left: -7rem;
+      left: 50%;
+      position: absolute;
+      z-index: 10;
+    }
+
+    .speaker-info,
+    .card__content {
+      .gc-rotated-bg();
+      position: relative;
+      padding: 13rem 3rem 3rem;
+      background: @white;
+      overflow: hidden;
+
+      &:after {
+        display: none;
+      }
+
+      &:before {
+        top: 0;
+        margin: -2rem -2rem 0;
+        height: 10rem;
+        transform: rotate(3deg);
+      }
+    }
+
+    .arrow-link__icon {
+      display: none;
+    }
+
+    .arrow-link__text {
+      width: 100%;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    .author-title {
+      margin: 0;
+      padding: 0;
+    }
+
+    .speaker-jobtitle {
+      font-size: @font_small;
+      color: @meta_color;
+      margin-top: .8rem;
+    }
+  }
+
+  &.card--session {
+    padding: 1rem 2rem 2rem;
+
+    .meta-data {
+      margin-top: .5rem;
+      padding-top: 0;
+    }
+
+    .extra-links {
+      margin: auto 0 0;
+    }
+
+    @media @tablet {
+      padding: 1rem 3rem 3rem;
+    }
+  }
+}

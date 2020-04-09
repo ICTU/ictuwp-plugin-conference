@@ -1,0 +1,66 @@
+.single {
+  .author-box {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+
+    .author-photo {
+      height: auto;
+      max-width: 140px;
+      max-height: none;
+    }
+
+    .author-title {
+      .gc-heading-teaser;
+      margin: 0;
+      padding: 0;
+    }
+
+    .speaker-info {
+      padding-left: @gutter;
+    }
+
+    .excerpt {
+      margin-top: 1.8rem;
+    }
+  }
+
+  a.cta {
+    float: none;
+  }
+
+  .contains-author-box .author-box {
+    margin-top: 5rem;
+  }
+
+  .speakers {
+    margin-top: 5rem;
+
+    @media @desktop {
+      margin-top: 8rem;
+    }
+  }
+}
+
+.single-speaker {
+  .archive-list + .card {
+    margin-top: @gutter;
+  }
+}
+
+.single-speaker {
+  .entry-content {
+    @media @tablet {
+      display: flex;
+
+      > .speaker-image {
+        width: 14rem;
+      }
+
+      > .speaker-bio {
+        width: calc(100% - 14rem);
+        padding-left: @gutter;
+      }
+    }
+  }
+}
