@@ -667,8 +667,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			global $post;
 
 			$infooter = true;
+			$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
 
-			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', array(), ICTU_GC_CONF_VERSION, 'all' );
+			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
 
 		}
 
