@@ -4,7 +4,7 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ICTU / Gebruiker Centraal / Conference post types and "
 "taxonomies\n"
-"POT-Creation-Date: 2020-03-03 14:20+0100\n"
+"POT-Creation-Date: 2020-04-14 22:51+0200\n"
 "PO-Revision-Date: 2019-10-15 18:08+0200\n"
 "Last-Translator: Paul van Buuren <paul@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
@@ -22,438 +22,434 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: ictuwp-plugin-conference.php:184
+#: ictuwp-plugin-conference.php:212
 msgctxt "naam template"
 msgid "Conf. Overview page"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:185
+#: ictuwp-plugin-conference.php:213
 msgctxt "naam template"
 msgid "Conf. Contenttype page"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:363 ictuwp-plugin-conference.php:1053
-#: ictuwp-plugin-conference.php:1826
+#: ictuwp-plugin-conference.php:388 ictuwp-plugin-conference.php:1067
 msgctxt "Event times"
 msgid "Time"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:366
+#: ictuwp-plugin-conference.php:391
 msgctxt "Event city"
 msgid "Location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:516
+#: ictuwp-plugin-conference.php:539
 msgctxt "extra links for type"
 msgid "Links"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:631 ictuwp-plugin-conference.php:1095
-#: ictuwp-plugin-conference.php:1317 ictuwp-plugin-conference.php:2002
-#: ictuwp-plugin-conference.php:2004 ictuwp-plugin-conference.php:2020
+#: ictuwp-plugin-conference.php:629 ictuwp-plugin-conference.php:1107
+#: ictuwp-plugin-conference.php:1280 ictuwp-plugin-conference.php:1805
+#: ictuwp-plugin-conference.php:1807 ictuwp-plugin-conference.php:1823
 msgctxt "speaker type"
 msgid "Speakers"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:929 ictuwp-plugin-conference.php:1562
+#: ictuwp-plugin-conference.php:941
 #, php-format
 msgid "Find %s on social media"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:972
+#: ictuwp-plugin-conference.php:986
 msgctxt "Header text speaker links"
 msgid "Links"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1069 ictuwp-plugin-conference.php:1305
-#: ictuwp-plugin-conference.php:1844 ictuwp-plugin-conference.php:2177
-#: ictuwp-plugin-conference.php:2182 ictuwp-plugin-conference.php:2199
-#: ictuwp-plugin-conference.php:2203
+#: ictuwp-plugin-conference.php:1082 ictuwp-plugin-conference.php:1273
+#: ictuwp-plugin-conference.php:1982 ictuwp-plugin-conference.php:1987
+#: ictuwp-plugin-conference.php:2004 ictuwp-plugin-conference.php:2008
 msgctxt "session location taxonomy"
 msgid "Session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1098 ictuwp-plugin-conference.php:1320
-#: ictuwp-plugin-conference.php:2003
+#: ictuwp-plugin-conference.php:1109 ictuwp-plugin-conference.php:1276
+#: ictuwp-plugin-conference.php:1806
 msgctxt "speaker type"
 msgid "Speaker"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1302 ictuwp-plugin-conference.php:2047
-#: ictuwp-plugin-conference.php:2052
+#: ictuwp-plugin-conference.php:1272 ictuwp-plugin-conference.php:1849
+#: ictuwp-plugin-conference.php:1854
 msgctxt "timeblock taxonomy"
 msgid "Timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1860 ictuwp-plugin-conference.php:2134
-#: ictuwp-plugin-conference.php:2139 ictuwp-plugin-conference.php:2156
-#: ictuwp-plugin-conference.php:2160
-msgctxt "session level taxonomy"
-msgid "Session level"
-msgstr ""
-
-#: ictuwp-plugin-conference.php:1876 ictuwp-plugin-conference.php:2090
-#: ictuwp-plugin-conference.php:2096
-msgctxt "session type taxonomy"
-msgid "Session type"
-msgstr ""
-
-#: ictuwp-plugin-conference.php:1916 ictuwp-plugin-conference.php:1918
-#: ictuwp-plugin-conference.php:1934
+#: ictuwp-plugin-conference.php:1719 ictuwp-plugin-conference.php:1721
+#: ictuwp-plugin-conference.php:1737
 msgctxt "session type"
 msgid "Sessions"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1917
+#: ictuwp-plugin-conference.php:1720
 msgctxt "session type"
 msgid "Session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1919
+#: ictuwp-plugin-conference.php:1722
 msgctxt "session type"
 msgid "All sessions"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1920 ictuwp-plugin-conference.php:1921
+#: ictuwp-plugin-conference.php:1723 ictuwp-plugin-conference.php:1724
 msgctxt "session type"
 msgid "Add new session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1922
+#: ictuwp-plugin-conference.php:1725
 msgctxt "session type"
 msgid "Edit session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1923
+#: ictuwp-plugin-conference.php:1726
 msgctxt "session type"
 msgid "New session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1924
+#: ictuwp-plugin-conference.php:1727
 msgctxt "session type"
 msgid "View session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1925
+#: ictuwp-plugin-conference.php:1728
 msgctxt "session type"
 msgid "Search session"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1926 ictuwp-plugin-conference.php:1927
+#: ictuwp-plugin-conference.php:1729 ictuwp-plugin-conference.php:1730
 msgctxt "session type"
 msgid "No sessions found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1928 ictuwp-plugin-conference.php:1971
-#: ictuwp-plugin-conference.php:2014 ictuwp-plugin-conference.php:2063
-#: ictuwp-plugin-conference.php:2107 ictuwp-plugin-conference.php:2150
-#: ictuwp-plugin-conference.php:2193 ictuwp-plugin-conference.php:2236
+#: ictuwp-plugin-conference.php:1731 ictuwp-plugin-conference.php:1774
+#: ictuwp-plugin-conference.php:1817 ictuwp-plugin-conference.php:1865
+#: ictuwp-plugin-conference.php:1912 ictuwp-plugin-conference.php:1955
+#: ictuwp-plugin-conference.php:1998 ictuwp-plugin-conference.php:2044
 msgid "Featured image"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1929 ictuwp-plugin-conference.php:1972
-#: ictuwp-plugin-conference.php:2015 ictuwp-plugin-conference.php:2064
-#: ictuwp-plugin-conference.php:2108 ictuwp-plugin-conference.php:2151
-#: ictuwp-plugin-conference.php:2194 ictuwp-plugin-conference.php:2237
+#: ictuwp-plugin-conference.php:1732 ictuwp-plugin-conference.php:1775
+#: ictuwp-plugin-conference.php:1818 ictuwp-plugin-conference.php:1866
+#: ictuwp-plugin-conference.php:1913 ictuwp-plugin-conference.php:1956
+#: ictuwp-plugin-conference.php:1999 ictuwp-plugin-conference.php:2045
 msgid "Archives"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1930 ictuwp-plugin-conference.php:1973
-#: ictuwp-plugin-conference.php:2016 ictuwp-plugin-conference.php:2065
-#: ictuwp-plugin-conference.php:2109 ictuwp-plugin-conference.php:2152
-#: ictuwp-plugin-conference.php:2195 ictuwp-plugin-conference.php:2238
+#: ictuwp-plugin-conference.php:1733 ictuwp-plugin-conference.php:1776
+#: ictuwp-plugin-conference.php:1819 ictuwp-plugin-conference.php:1867
+#: ictuwp-plugin-conference.php:1914 ictuwp-plugin-conference.php:1957
+#: ictuwp-plugin-conference.php:2000 ictuwp-plugin-conference.php:2046
 msgid "Uploaded media"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1959 ictuwp-plugin-conference.php:1961
+#: ictuwp-plugin-conference.php:1762 ictuwp-plugin-conference.php:1764
 msgctxt "keynotes type"
 msgid "Keynotes"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1960
+#: ictuwp-plugin-conference.php:1763
 msgctxt "keynotes type"
 msgid "Keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1962
+#: ictuwp-plugin-conference.php:1765
 msgctxt "keynotes type"
 msgid "All keynotes"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1963 ictuwp-plugin-conference.php:1964
+#: ictuwp-plugin-conference.php:1766 ictuwp-plugin-conference.php:1767
 msgctxt "keynotes type"
 msgid "Add new keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1965
+#: ictuwp-plugin-conference.php:1768
 msgctxt "keynotes type"
 msgid "Edit keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1966
+#: ictuwp-plugin-conference.php:1769
 msgctxt "keynotes type"
 msgid "New keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1967
+#: ictuwp-plugin-conference.php:1770
 msgctxt "keynotes type"
 msgid "View keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1968
+#: ictuwp-plugin-conference.php:1771
 msgctxt "keynotes type"
 msgid "Search keynote"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1969 ictuwp-plugin-conference.php:1970
+#: ictuwp-plugin-conference.php:1772 ictuwp-plugin-conference.php:1773
 msgctxt "keynotes type"
 msgid "No keynotes found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:1977
+#: ictuwp-plugin-conference.php:1780
 msgctxt "Stappen label"
 msgid "Keynotes"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2005
+#: ictuwp-plugin-conference.php:1808
 msgctxt "speaker type"
 msgid "All speakers"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2006 ictuwp-plugin-conference.php:2007
+#: ictuwp-plugin-conference.php:1809 ictuwp-plugin-conference.php:1810
 msgctxt "speaker type"
 msgid "Add new speaker"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2008 ictuwp-plugin-conference.php:2009
+#: ictuwp-plugin-conference.php:1811 ictuwp-plugin-conference.php:1812
 msgctxt "speaker type"
 msgid "Edit speaker"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2010
+#: ictuwp-plugin-conference.php:1813
 msgctxt "speaker type"
 msgid "View speaker"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2011
+#: ictuwp-plugin-conference.php:1814
 msgctxt "speaker type"
 msgid "Search speaker"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2012 ictuwp-plugin-conference.php:2013
+#: ictuwp-plugin-conference.php:1815 ictuwp-plugin-conference.php:1816
 msgctxt "speaker type"
 msgid "No speakers found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2046 ictuwp-plugin-conference.php:2051
-#: ictuwp-plugin-conference.php:2053 ictuwp-plugin-conference.php:2069
-#: ictuwp-plugin-conference.php:2073
+#: ictuwp-plugin-conference.php:1848 ictuwp-plugin-conference.php:1853
+#: ictuwp-plugin-conference.php:1855 ictuwp-plugin-conference.php:1871
+#: ictuwp-plugin-conference.php:1875
 msgctxt "timeblock taxonomy"
 msgid "Timeblocks"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2054
+#: ictuwp-plugin-conference.php:1856
 msgctxt "timeblock taxonomy"
 msgid "All timeblocks"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2055 ictuwp-plugin-conference.php:2056
+#: ictuwp-plugin-conference.php:1857 ictuwp-plugin-conference.php:1858
 msgctxt "timeblock taxonomy"
 msgid "Add timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2057
+#: ictuwp-plugin-conference.php:1859
 msgctxt "timeblock taxonomy"
 msgid "Edit timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2058
+#: ictuwp-plugin-conference.php:1860
 msgctxt "timeblock taxonomy"
 msgid "New timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2059
+#: ictuwp-plugin-conference.php:1861
 msgctxt "timeblock taxonomy"
 msgid "View timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2060
+#: ictuwp-plugin-conference.php:1862
 msgctxt "timeblock taxonomy"
 msgid "Search timeblock"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2061 ictuwp-plugin-conference.php:2062
+#: ictuwp-plugin-conference.php:1863 ictuwp-plugin-conference.php:1864
 msgctxt "timeblock taxonomy"
 msgid "No timeblocks found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2091 ictuwp-plugin-conference.php:2095
-#: ictuwp-plugin-conference.php:2097 ictuwp-plugin-conference.php:2113
-#: ictuwp-plugin-conference.php:2117
+#: ictuwp-plugin-conference.php:1895 ictuwp-plugin-conference.php:1901
+msgctxt "session type taxonomy"
+msgid "Session type"
+msgstr ""
+
+#: ictuwp-plugin-conference.php:1896 ictuwp-plugin-conference.php:1900
+#: ictuwp-plugin-conference.php:1902 ictuwp-plugin-conference.php:1918
+#: ictuwp-plugin-conference.php:1922
 msgctxt "session type taxonomy"
 msgid "Session types"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2098
+#: ictuwp-plugin-conference.php:1903
 msgctxt "session type taxonomy"
 msgid "All session types"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2099 ictuwp-plugin-conference.php:2100
+#: ictuwp-plugin-conference.php:1904 ictuwp-plugin-conference.php:1905
 msgctxt "session type taxonomy"
 msgid "Add session type"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2101
+#: ictuwp-plugin-conference.php:1906
 msgctxt "session type taxonomy"
 msgid "Edit session type"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2102
+#: ictuwp-plugin-conference.php:1907
 msgctxt "session type taxonomy"
 msgid "New session type"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2103
+#: ictuwp-plugin-conference.php:1908
 msgctxt "session type taxonomy"
 msgid "View session type"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2104
+#: ictuwp-plugin-conference.php:1909
 msgctxt "session type taxonomy"
 msgid "Search session type"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2105 ictuwp-plugin-conference.php:2106
+#: ictuwp-plugin-conference.php:1910 ictuwp-plugin-conference.php:1911
 msgctxt "session type taxonomy"
 msgid "No session types found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2133 ictuwp-plugin-conference.php:2138
-#: ictuwp-plugin-conference.php:2140
+#: ictuwp-plugin-conference.php:1938 ictuwp-plugin-conference.php:1943
+#: ictuwp-plugin-conference.php:1945
 msgctxt "session level taxonomy"
 msgid "Session levels"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2141
+#: ictuwp-plugin-conference.php:1939 ictuwp-plugin-conference.php:1944
+#: ictuwp-plugin-conference.php:1961 ictuwp-plugin-conference.php:1965
+msgctxt "session level taxonomy"
+msgid "Session level"
+msgstr ""
+
+#: ictuwp-plugin-conference.php:1946
 msgctxt "session level taxonomy"
 msgid "All session levels"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2142 ictuwp-plugin-conference.php:2143
+#: ictuwp-plugin-conference.php:1947 ictuwp-plugin-conference.php:1948
 msgctxt "session level taxonomy"
 msgid "Add session level"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2144
+#: ictuwp-plugin-conference.php:1949
 msgctxt "session level taxonomy"
 msgid "Edit session level"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2145
+#: ictuwp-plugin-conference.php:1950
 msgctxt "session level taxonomy"
 msgid "New session level"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2146
+#: ictuwp-plugin-conference.php:1951
 msgctxt "session level taxonomy"
 msgid "View session level"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2147
+#: ictuwp-plugin-conference.php:1952
 msgctxt "session level taxonomy"
 msgid "Search session level"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2148 ictuwp-plugin-conference.php:2149
+#: ictuwp-plugin-conference.php:1953 ictuwp-plugin-conference.php:1954
 msgctxt "session level taxonomy"
 msgid "No search session levels found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2176 ictuwp-plugin-conference.php:2181
-#: ictuwp-plugin-conference.php:2183
+#: ictuwp-plugin-conference.php:1981 ictuwp-plugin-conference.php:1986
+#: ictuwp-plugin-conference.php:1988
 msgctxt "session location taxonomy"
 msgid "Session locations"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2184
+#: ictuwp-plugin-conference.php:1989
 msgctxt "session location taxonomy"
 msgid "All session locations"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2185 ictuwp-plugin-conference.php:2186
+#: ictuwp-plugin-conference.php:1990 ictuwp-plugin-conference.php:1991
 msgctxt "session location taxonomy"
 msgid "Add session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2187
+#: ictuwp-plugin-conference.php:1992
 msgctxt "session location taxonomy"
 msgid "Edit session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2188
+#: ictuwp-plugin-conference.php:1993
 msgctxt "session location taxonomy"
 msgid "New session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2189
+#: ictuwp-plugin-conference.php:1994
 msgctxt "session location taxonomy"
 msgid "View session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2190
+#: ictuwp-plugin-conference.php:1995
 msgctxt "session location taxonomy"
 msgid "Search session location"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2191 ictuwp-plugin-conference.php:2192
+#: ictuwp-plugin-conference.php:1996 ictuwp-plugin-conference.php:1997
 msgctxt "session location taxonomy"
 msgid "No search session locations found"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2219 ictuwp-plugin-conference.php:2224
-#: ictuwp-plugin-conference.php:2226
+#: ictuwp-plugin-conference.php:2027 ictuwp-plugin-conference.php:2032
+#: ictuwp-plugin-conference.php:2034
 msgctxt "session level taxonomy"
 msgid "Countries"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2220 ictuwp-plugin-conference.php:2225
-#: ictuwp-plugin-conference.php:2242 ictuwp-plugin-conference.php:2246
+#: ictuwp-plugin-conference.php:2028 ictuwp-plugin-conference.php:2033
+#: ictuwp-plugin-conference.php:2050 ictuwp-plugin-conference.php:2054
 msgctxt "session level taxonomy"
 msgid "Country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2227
+#: ictuwp-plugin-conference.php:2035
 msgctxt "session level taxonomy"
 msgid "All countries"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2228 ictuwp-plugin-conference.php:2229
+#: ictuwp-plugin-conference.php:2036 ictuwp-plugin-conference.php:2037
 msgctxt "session level taxonomy"
 msgid "Add country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2230
+#: ictuwp-plugin-conference.php:2038
 msgctxt "session level taxonomy"
 msgid "Edit country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2231
+#: ictuwp-plugin-conference.php:2039
 msgctxt "session level taxonomy"
 msgid "New country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2232
+#: ictuwp-plugin-conference.php:2040
 msgctxt "session level taxonomy"
 msgid "View country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2233
+#: ictuwp-plugin-conference.php:2041
 msgctxt "session level taxonomy"
 msgid "Search country"
 msgstr ""
 
-#: ictuwp-plugin-conference.php:2234 ictuwp-plugin-conference.php:2235
+#: ictuwp-plugin-conference.php:2042 ictuwp-plugin-conference.php:2043
 msgctxt "session level taxonomy"
 msgid "No countries found"
 msgstr ""
