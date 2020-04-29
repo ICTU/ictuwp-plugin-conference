@@ -1411,14 +1411,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$is_author       = true;
 				$title_tag       = 'h2';
 				$excerpt         = ( get_the_excerpt( $args['ID'] ) ? '<p class="excerpt">' . wp_strip_all_tags( get_the_excerpt( $args['ID'] ) ) . '</p>' : '' );
-				$args['classes'] = 'author--box';
+				$args['classes'] = 'author author--box';
 			} else {
 				$title_tag = 'h3';
 				$excerpt   = '';
 			}
 
 
-			$return = '<section class="' . $args['classes'] . ( $image ? ' l-has-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
+			$return = '<section class="' . $args['classes'] . ( $image ? ' l-with-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
 
 			// Set image if there is any
 			$return .= ( $image ? $image : '' );
