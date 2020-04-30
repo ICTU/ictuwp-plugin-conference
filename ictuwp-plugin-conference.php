@@ -9,7 +9,7 @@
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
  * Version:             2.0.3
- * Version description: Further integration with GC-theme. Better cards HTML. 
+ * Version description: Further integration with GC-theme. Better cards HTML.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -666,7 +666,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			$infooter = true;
+			$infooter     = true;
 			$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
 
 			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
