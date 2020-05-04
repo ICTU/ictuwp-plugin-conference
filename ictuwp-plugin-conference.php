@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.0.2
- * Version description: Renamed packages, checked translation.
+ * Version:             2.0.3
+ * Version description: Further integration with GC-theme. Better cards HTML.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.0.2' );
+define( 'ICTU_GC_CONF_VERSION', '2.0.3' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
 	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -666,7 +666,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			$infooter = true;
+			$infooter     = true;
 			$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
 
 			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
@@ -1411,14 +1411,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$is_author       = true;
 				$title_tag       = 'h2';
 				$excerpt         = ( get_the_excerpt( $args['ID'] ) ? '<p class="excerpt">' . wp_strip_all_tags( get_the_excerpt( $args['ID'] ) ) . '</p>' : '' );
-				$args['classes'] = 'author--box';
+				$args['classes'] = 'author author--box';
 			} else {
 				$title_tag = 'h3';
 				$excerpt   = '';
 			}
 
 
-			$return = '<section class="' . $args['classes'] . ( $image ? ' l-has-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
+			$return = '<section class="' . $args['classes'] . ( $image ? ' l-with-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
 
 			// Set image if there is any
 			$return .= ( $image ? $image : '' );

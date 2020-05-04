@@ -8,9 +8,10 @@
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.0.2 - Renamed packages, checked translation.
+2.0.3 - Further integration with GC-theme. Better cards HTML. 
 
 ## Version history
+* 2.0.3 - Further integration with GC-theme. Better cards HTML. 
 * 2.0.2 - Renamed packages, checked translation.
 * 2.0.1 - Renamed the plugin. Better ACF check.
 * 1.3.1 - Extra page-template with option to select posts.
