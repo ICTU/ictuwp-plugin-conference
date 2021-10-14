@@ -164,7 +164,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			add_action( 'init', array( $this, 'fn_ictu_gcconf_register_post_types' ) );
 			add_action( 'init', 'fn_ictu_gcconf_initialize_acf_fields' );
 
-			add_action( 'plugins_loaded', array( $this, 'fn_ictu_gcconf_load_plugin_textdomain' ) );
 			add_action( 'init', array( $this, 'fn_ictu_gcconf_add_rewrite_rules' ) );
 
 			// make sure the breadcrumb is useful for our CPTs
@@ -191,14 +190,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 		}
 
-		/** ----------------------------------------------------------------------------------------------------
-		 * Initialise translations
-		 */
-		public function fn_ictu_gcconf_load_plugin_textdomain() {
-
-			fn_ictu_gcconf_load_plugin_textdomain( 'ictuwp-plugin-conference', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
-		}
 
 		/** ----------------------------------------------------------------------------------------------------
 		 * Hides the custom post template for pages on WordPress 4.6 and older
@@ -408,7 +399,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 						endif;
 
 					} // -----------------------------------------------------------------------------------------
-                    elseif ( 'keynotes' === $block_extra_type ) {
+					elseif ( 'keynotes' === $block_extra_type ) {
 
 						$posts = get_sub_field( 'block_keynotes' );
 
@@ -433,7 +424,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 						endif;
 
 					} // -----------------------------------------------------------------------------------------
-                    elseif ( 'speakers' === $block_extra_type ) {
+					elseif ( 'speakers' === $block_extra_type ) {
 
 						$posts = get_sub_field( 'block_speakers' );
 
@@ -462,7 +453,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 						endif;
 
 					} // -----------------------------------------------------------------------------------------
-                    elseif ( 'sessions' === $block_extra_type ) {
+					elseif ( 'sessions' === $block_extra_type ) {
 
 						if ( have_rows( 'block_sessions' ) ):
 
@@ -1294,7 +1285,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			$return .= '<div class="card card--session" aria-labelledby="' . $title_id . '">';
 			$return .= '<' . $args['titletag'] . ' class="card__title">' .
-			           '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span></a></' . $args['titletag'] . '>';
+					   '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span></a></' . $args['titletag'] . '>';
 
 			if ( $metainfo ) {
 				$return .= cnf_make_meta( $metainfo );
@@ -1426,8 +1417,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			// Set section / card
 			$return .= '<div class="' . $type . '__content">';
 			$return .= '<' . $title_tag . ' class="' . $type . '__title"><a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '">' .
-			           '<span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span>' .
-			           '</a></' . $title_tag . '>';
+					   '<span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span>' .
+					   '</a></' . $title_tag . '>';
 			$return .= ( $meta_data ? '<div class="meta-data">' . $meta_data . '</div>' : '' );
 			$return .= ( $excerpt ? $excerpt : '' );
 			$return .= '</div></section>';
@@ -2391,20 +2382,20 @@ function fn_ictu_gcconf_extra_update_speaker_relationfield( $postid ) {
 
 function fn_ictu_gcconf_footer_disable_tuesday() {
 	?>
-    <script>
-        jQuery(document).ready(function () {
-            //put your js code here
+	<script>
+		jQuery(document).ready(function () {
+			//put your js code here
 
-            if (jQuery("#days2").length) {
-                jQuery("#days2").attr('disabled', 'disabled');
-            }
+			if (jQuery("#days2").length) {
+				jQuery("#days2").attr('disabled', 'disabled');
+			}
 
-            if (jQuery("#separator-days2").length) {
-                jQuery("#separator-days2").addClass('disabled');
-            }
+			if (jQuery("#separator-days2").length) {
+				jQuery("#separator-days2").addClass('disabled');
+			}
 
-        })
-    </script>
+		})
+	</script>
 
 	<?php
 }
@@ -2412,3 +2403,17 @@ function fn_ictu_gcconf_footer_disable_tuesday() {
 add_action( 'wp_footer', 'fn_ictu_gcconf_footer_disable_tuesday' );
 
 //========================================================================================================
+
+/**
+ * Load plugin textdomain.
+ */
+add_action( 'init', 'fn_ictu_gcconf_load_plugin_textdomain' );
+
+function fn_ictu_gcconf_load_plugin_textdomain() {
+
+	load_plugin_textdomain( 'ictuwp-plugin-conference', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+
+}
+
+//========================================================================================================
+
