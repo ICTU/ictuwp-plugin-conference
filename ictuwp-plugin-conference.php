@@ -189,8 +189,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 */
 		function fn_ictu_gcconf_add_page_templates( $post_templates ) {
 
-			$post_templates[ $this->template_conf_overviewpage ]    = _x( 'Conf. Overview page', "naam template", 'ictuwp-plugin-conference' );
-			$post_templates[ $this->template_conf_contenttypepage ] = _x( 'Conf. Contenttype page', "naam template", 'ictuwp-plugin-conference' );
+			$post_templates[ $this->template_conf_overviewpage ]    = _x( 'Conferentie programmapagina', "naam template", 'ictuwp-plugin-conference' );
+			$post_templates[ $this->template_conf_contenttypepage ] = _x( 'Conferentie overzicht contenttype', "naam template", 'ictuwp-plugin-conference' );
 
 			return $post_templates;
 
