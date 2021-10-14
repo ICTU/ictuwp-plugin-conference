@@ -142,17 +142,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 */
 		public function __construct() {
 
-			$this->fn_ictu_gcconf_includes();
 			$this->fn_ictu_gcconf_setup_actions();
-
-		}
-
-		/** ----------------------------------------------------------------------------------------------------
-		 * Hook this plugins functions into WordPress
-		 */
-		private function fn_ictu_gcconf_includes() {
-
-			require_once dirname( __FILE__ ) . '/includes/conference-acf-definitions.php';
 
 		}
 
@@ -162,7 +152,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		private function fn_ictu_gcconf_setup_actions() {
 
 			add_action( 'init', array( $this, 'fn_ictu_gcconf_register_post_types' ) );
-			add_action( 'init', 'fn_ictu_gcconf_initialize_acf_fields' );
 
 			add_action( 'init', array( $this, 'fn_ictu_gcconf_add_rewrite_rules' ) );
 
@@ -2417,3 +2406,40 @@ function fn_ictu_gcconf_load_plugin_textdomain() {
 
 //========================================================================================================
 
+/**
+ * Have the ACF (advanced custom fields) plugin read the settings from this plugin's acf-json folder
+ *
+ * @since    1.0.0
+ */
+function fn_ictu_gcconf_add_acf_folder( $paths ) {
+
+	// append path
+	$paths[] = plugin_dir_path( __FILE__ ) . 'acf-json';
+
+	// return
+	return $paths;
+
+}
+
+add_filter( 'acf/settings/load_json', 'fn_ictu_gcconf_add_acf_folder' );
+
+//========================================================================================================
+
+/**
+ * Have the ACF (advanced custom fields) plugin save settings to a json file in this plugin's acf-json folder
+ *
+ * @since    1.0.0
+ */
+function fn_ictu_gcconf_acf_json_save_point( $path ) {
+
+	// update path
+	$path = plugin_dir_path( __FILE__ ) . 'acf-json';
+
+	// return
+	return $path;
+
+}
+
+add_filter( 'acf/settings/save_json', 'fn_ictu_gcconf_acf_json_save_point' );
+
+//========================================================================================================
