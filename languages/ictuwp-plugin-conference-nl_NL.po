@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ICTU / Gebruiker Centraal / Conference post types and "
 "taxonomies\n"
 "POT-Creation-Date: 2021-10-14 17:14+0200\n"
-"PO-Revision-Date: 2021-10-14 17:14+0200\n"
+"PO-Revision-Date: 2021-10-14 17:37+0200\n"
 "Last-Translator: Paul van Buuren <poedit@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
 "Language: nl_NL\n"
@@ -153,52 +153,52 @@ msgstr "Bijbehorende bestanden"
 #: ictuwp-plugin-conference.php:1762 ictuwp-plugin-conference.php:1764
 msgctxt "keynotes type"
 msgid "Keynotes"
-msgstr "Presentaties"
+msgstr "Keynotes"
 
 #: ictuwp-plugin-conference.php:1763
 msgctxt "keynotes type"
 msgid "Keynote"
-msgstr "Presentatie"
+msgstr "Keynote"
 
 #: ictuwp-plugin-conference.php:1765
 msgctxt "keynotes type"
 msgid "All keynotes"
-msgstr "Alle presentaties"
+msgstr "Alle keynotes"
 
 #: ictuwp-plugin-conference.php:1766 ictuwp-plugin-conference.php:1767
 msgctxt "keynotes type"
 msgid "Add new keynote"
-msgstr "Nieuwe presentatie toevoegen"
+msgstr "Nieuwe keynote toevoegen"
 
 #: ictuwp-plugin-conference.php:1768
 msgctxt "keynotes type"
 msgid "Edit keynote"
-msgstr "Bewerk presentatie"
+msgstr "Bewerk keynote"
 
 #: ictuwp-plugin-conference.php:1769
 msgctxt "keynotes type"
 msgid "New keynote"
-msgstr "Nieuwe presentatie"
+msgstr "Nieuwe keynote"
 
 #: ictuwp-plugin-conference.php:1770
 msgctxt "keynotes type"
 msgid "View keynote"
-msgstr "Bekijk presentatie"
+msgstr "Bekijk keynote"
 
 #: ictuwp-plugin-conference.php:1771
 msgctxt "keynotes type"
 msgid "Search keynote"
-msgstr "Zoek presentatie"
+msgstr "Zoek keynote"
 
 #: ictuwp-plugin-conference.php:1772 ictuwp-plugin-conference.php:1773
 msgctxt "keynotes type"
 msgid "No keynotes found"
-msgstr "Geen presentaties gevonden"
+msgstr "Geen keynotes gevonden"
 
 #: ictuwp-plugin-conference.php:1780
 msgctxt "Stappen label"
 msgid "Keynotes"
-msgstr "Keynote"
+msgstr "Keynotes"
 
 #: ictuwp-plugin-conference.php:1808
 msgctxt "speaker type"
