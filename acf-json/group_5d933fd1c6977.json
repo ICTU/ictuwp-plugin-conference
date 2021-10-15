@@ -32,7 +32,7 @@
         },
         {
             "key": "field_5da0567590bed",
-            "label": "Speakers (2)",
+            "label": "Workshop of keynote",
             "name": "speaker_session_keynote_relations",
             "type": "relationship",
             "instructions": "",
@@ -83,5 +83,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634279466
+    "modified": 1634283254
 }
