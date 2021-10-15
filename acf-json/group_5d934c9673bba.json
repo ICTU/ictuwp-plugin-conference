@@ -45,7 +45,7 @@
                     "label": "Time",
                     "name": "block_time",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Format: uu:mm - uu:mm",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -341,5 +341,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634279442
+    "modified": 1634283222
 }
