@@ -7,13 +7,13 @@
 // @package   ictuwp-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   2.0.3
-// @desc.     Further integration with GC-theme. Better cards HTML. 
+// @version   2.0.4
+// @desc.     Small CSS changes to adapt to 2021 styling of old theme.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 
 
-<!--                 frontend.css - v2.0.3                      -->
+<!--                 frontend.css - v2.0.4                      -->
 <!--                                                            -->
 <!--                                                            -->
 <!-- ========================================================   -->
@@ -48,15 +48,15 @@
 <!--                                                            -->
 <!-- ========================================================   -->
 <!--                                                            -->
-	
+
 
 
 */
 /*
 Imports
 ---------------------------------------------------------------------------------------------------- */
-@import "../../../themes/gebruiker-centraal/less/abstracts/_variables";
-@import "../../../themes/gebruiker-centraal/less/abstracts/_mixins";
+@import "../../../themes/ictuwp-theme-gebruikercentraal/less/abstracts/_variables";
+@import "../../../themes/ictuwp-theme-gebruikercentraal/less/abstracts/_mixins";
 
 @import "mixins.less";
 
@@ -105,11 +105,27 @@ body {
 
 .page-template-conf-contenttypepage,
 .page-template-conf-overviewpage {
+
   .content .entry-content {
     min-height: 0;
   }
 }
 
+
+.page-template-conf-contenttypepage {
+  // template met overzicht van sprekers, workshop etc.
+  .entry-content {
+    max-width: @contentmaxwidth;
+  }
+}
+
+.page-template-conf-overviewpage {
+  // template voor overzicht met agenda
+
+  .entry-content {
+    max-width: @max-width-inner;
+  }
+}
 
 .speaker-thumbnail {
   display: inline-block;
@@ -130,6 +146,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   max-width: @contentmaxwidth;
+
   .entry {
     padding-left: 0;
     padding-right: 0;
@@ -162,6 +179,7 @@ body {
     padding-top: 0;
     margin-top: 0;
   }
+
   &.flexblock {
     box-shadow: 3px 3px 0px rgba(#000, 0.2);
     border: 1px solid @gc_cardbordergrey;
@@ -186,6 +204,7 @@ body {
 
   .social-media li {
     margin-right: 1rem;
+
     a {
       .font-size(12);
 
@@ -213,11 +232,11 @@ body {
 
 section.has-time {
 
-  @media only screen and (min-width: @break_tablet ) {
-    .section-content {
-      padding-left: ( @datebadge_width + @datebadge_margin_right );
-    }
-  }
+//  @media only screen and (min-width: @break_tablet ) {
+//    .section-content {
+//      padding-left: ( @datebadge_width + @datebadge_margin_right );
+//    }
+//  }
 
   .date-badge {
     background: @gc_a11y_green;
@@ -247,10 +266,22 @@ section.has-time {
     }
   }
 
-  header {
-    margin-left: ( -1 * ( @datebadge_width + @datebadge_margin_right ) );
-    padding-left: ( @datebadge_width + @datebadge_margin_right );
+
+  @media @desktop-xl {
+    header {
+      //    margin-left: ( -1 * ( @datebadge_width + @datebadge_margin_right ) );
+      //    padding-left: ( @datebadge_width + @datebadge_margin_right );
+      h2 {
+        position: relative;
+
+        .date-badge {
+          position: absolute;
+          right: 100%;
+        }
+      }
+    }
   }
+
 }
 
 .card {
@@ -283,6 +314,7 @@ section.has-time {
     margin-left: 0;
     margin-right: 0;
   }
+
   .card {
     margin-right: .25rem;
     margin-left: .25rem;
@@ -302,6 +334,7 @@ dl.dl-time-location {
     margin: 0;
     padding: 0;
   }
+
   dd {
     /*
             & + dd {
@@ -314,6 +347,7 @@ dl.dl-time-location {
             }
     */
   }
+
   dt {
     .visuallyhidden();
   }
@@ -329,6 +363,7 @@ dl.dl-time-location {
     max-width: 55px;
     height: auto;
   }
+
   /*
       &.dl-time-location {
           dd {
@@ -363,6 +398,7 @@ dl.dl-time-location {
     &, div span {
       color: #666666;
     }
+
     div {
       background: #dadada;
 
@@ -372,8 +408,6 @@ dl.dl-time-location {
     }
   }
 }
-
-
 
 
 span.extra-link-item {
@@ -419,6 +453,7 @@ span.extra-link-item {
     .icon_replace_filler('../images/icon-download.svg', @gc_green, @gc_green);
     background-size: 1.3rem auto;
   }
+
   &--website:before {
     .icon_replace_filler('../images/icon-blog.svg', @gc_green, @gc_green);
   }
