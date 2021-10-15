@@ -331,6 +331,13 @@
                 "operator": "==",
                 "value": "conf-overviewpage.php"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "conf-contenttypepage.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -341,5 +348,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634283222
+    "modified": 1634291698
 }

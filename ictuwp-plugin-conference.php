@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.0.3
- * Version description: Further integration with GC-theme. Better cards HTML.
+ * Version:             2.0.4
+ * Version description: Small CSS changes to adapt to 2021 styling of old theme.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.0.3' );
+define( 'ICTU_GC_CONF_VERSION', '2.0.4' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
 	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -674,16 +674,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
 				// append content
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_append_blocks'
-				), 12 );
+				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
 
 				//
-				add_action( 'genesis_after_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_content_for_noblocks_page'
-				), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -695,11 +689,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				//* Force full-width-content layout
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
+				// append content
+				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
+
 				//
-				add_action( 'genesis_after_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_content_for_noblocks_page'
-				), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
