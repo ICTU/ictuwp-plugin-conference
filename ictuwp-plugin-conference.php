@@ -189,8 +189,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 */
 		function fn_ictu_gcconf_add_page_templates( $post_templates ) {
 
-			$post_templates[ $this->template_conf_overviewpage ]    = _x( 'Conf. Overview page', "naam template", 'ictuwp-plugin-conference' );
-			$post_templates[ $this->template_conf_contenttypepage ] = _x( 'Conf. Contenttype page', "naam template", 'ictuwp-plugin-conference' );
+			$post_templates[ $this->template_conf_overviewpage ]    = _x( 'Conferentie programmapagina', "naam template", 'ictuwp-plugin-conference' );
+			$post_templates[ $this->template_conf_contenttypepage ] = _x( 'Conferentie overzicht contenttype', "naam template", 'ictuwp-plugin-conference' );
 
 			return $post_templates;
 
@@ -1140,8 +1140,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					} else {
 						//
 						$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
-						$randomid           = array_rand( $arr_speaker_images, 1 );
-						$return             .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+						if ( is_array( $arr_speaker_images ) ) {
+							$randomid = array_rand( $arr_speaker_images, 1 );
+							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+						}
+
 					}
 
 				endforeach;
@@ -1341,7 +1344,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 */
 		public
 		function fn_ictu_gcconf_frontend_write_speakercard(
-			$args = []
+			$args = array()
 		) {
 			$return = '';
 
@@ -1369,8 +1372,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE ) . '</figure>';
 			} else {
 				$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
-				$randomid           = array_rand( $arr_speaker_images, 1 );
-				$image              = wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false );
+				if ( is_array( $arr_speaker_images ) ) {
+					$randomid = array_rand( $arr_speaker_images, 1 );
+					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false ) . '</figure>';
+				}
 			}
 
 			/* Set metadata */
