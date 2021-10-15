@@ -380,7 +380,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								echo '<p>';
 								echo $my_em_event->output( '#_EVENTEXCERPT{999}' );
 								echo '</p>';
-//								echo '</div>';
+								echo '</div>';
 
 
 							endforeach;
