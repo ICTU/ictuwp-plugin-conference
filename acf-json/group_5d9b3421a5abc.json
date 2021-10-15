@@ -67,6 +67,34 @@
             "multiple": 0,
             "return_format": "object",
             "ui": 1
+        },
+        {
+            "key": "field_616862bb5b7bf",
+            "label": "Standaard foto's voor sprekers",
+            "name": "fallback_for_speaker_images",
+            "type": "relationship",
+            "instructions": "Kies uit de mediabibliotheek enkele foto's die gebruikt worden bij sprekers voor wie geen foto beschikbaar is.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "attachment"
+            ],
+            "taxonomy": "",
+            "filters": [
+                "search",
+                "taxonomy"
+            ],
+            "elements": [
+                "featured_image"
+            ],
+            "min": "",
+            "max": "",
+            "return_format": "id"
         }
     ],
     "location": [
@@ -86,5 +114,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634279442
+    "modified": 1634283266
 }
