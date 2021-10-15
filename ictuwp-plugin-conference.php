@@ -674,16 +674,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
 				// append content
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_append_blocks'
-				), 12 );
+				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
 
 				//
-				add_action( 'genesis_after_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_content_for_noblocks_page'
-				), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -695,11 +689,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				//* Force full-width-content layout
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
+				// append content
+				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
+
 				//
-				add_action( 'genesis_after_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_template_content_for_noblocks_page'
-				), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
