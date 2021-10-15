@@ -378,7 +378,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								echo '<p>';
 								echo $my_em_event->output( '#_EVENTEXCERPT{999}' );
 								echo '</p>';
-//								echo '</div>';
+								echo '</div>';
 
 
 							endforeach;
@@ -1197,7 +1197,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			( $make_list ? $return .= '</ul>' : $return = '' );
 
-			$return .= '</div>';
+//			$return .= '</div>';
 
 			if ( $args['echo'] ) {
 				echo $return;
