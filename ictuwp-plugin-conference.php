@@ -435,7 +435,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 							endforeach;
 
-							echo '</div>';
+							echo '</div>'; // . speakers
 
 							wp_reset_postdata();
 
@@ -477,7 +477,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					// -----------------------------------------------------------------------------------------
 
 
-					echo "\n" . '</div> <!-- // .section-content -->' . "\n";
+					echo '</div> <!-- // .section-content -->' . "\n";
 
 					echo '</section>' . "\n\n\n";
 
