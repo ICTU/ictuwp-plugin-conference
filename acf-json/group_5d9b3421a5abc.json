@@ -1,6 +1,6 @@
 {
     "key": "group_5d9b3421a5abc",
-    "title": "Conferentie - theme settings",
+    "title": "conferentie - theme settings",
     "fields": [
         {
             "key": "field_5d9b3433962bb",
@@ -86,5 +86,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634229723
+    "modified": 1634279442
 }
