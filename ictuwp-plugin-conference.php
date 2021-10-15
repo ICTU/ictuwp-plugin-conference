@@ -1199,7 +1199,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			( $make_list ? $return .= '</ul>' : $return = '' );
 
-			$return .= '</div>';
+//			$return .= '</div>';
 
 			if ( $args['echo'] ) {
 				echo $return;
