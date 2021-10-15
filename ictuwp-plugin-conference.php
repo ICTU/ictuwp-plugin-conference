@@ -336,9 +336,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					echo '<div class="section-content">';
 
 					if ( $block_free_text ) {
-						echo '1<hr>';
 						echo $block_free_text;
-						echo '2<hr>';
 					}
 
 
