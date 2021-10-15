@@ -1140,9 +1140,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					} else {
 						//
 						$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
-						if ( is_array($arr_speaker_images)) {
-							$randomid           = array_rand( $arr_speaker_images, 1 );
-							$return             .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+						if ( is_array( $arr_speaker_images ) ) {
+							$randomid = array_rand( $arr_speaker_images, 1 );
+							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
 						}
 
 					}
@@ -1343,7 +1343,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
 		public
-		function fn_ictu_gcconf_frontend_write_speakercard( $args = array()  ) {
+		function fn_ictu_gcconf_frontend_write_speakercard(
+			$args = array()
+		) {
 			$return = '';
 
 			$defaults = array(
@@ -1370,9 +1372,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE ) . '</figure>';
 			} else {
 				$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
-				if ( is_array($arr_speaker_images)) {
-					$randomid           = array_rand( $arr_speaker_images, 1 );
-					$image              = wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false );
+				if ( is_array( $arr_speaker_images ) ) {
+					$randomid = array_rand( $arr_speaker_images, 1 );
+					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false ) . '</figure>';
 				}
 			}
 
