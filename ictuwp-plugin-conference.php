@@ -282,7 +282,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 * @return void
 		 */
 
-		public function fn_ictu_gcconf_frontend_template_append_blocks() {
+		public function gcconf_template_append_blocks() {
 
 			global $post;
 
@@ -681,10 +681,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
 				// append content
-				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
-
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_template_append_blocks' ), 12 );
 				//
-				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'gcconf_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -697,10 +696,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
 				// append content
-				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_append_blocks' ), 12 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_template_append_blocks' ), 12 );
 
 				//
-				add_action( 'genesis_after_entry_content', array( $this, 'fn_ictu_gcconf_frontend_template_content_for_noblocks_page' ), 15 );
+				add_action( 'genesis_after_entry_content', array( $this, 'gcconf_content_for_noblocks_page' ), 15 );
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -835,7 +834,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public function fn_ictu_gcconf_frontend_speaker_append_links_sessions_keynotes( $args = [] ) {
+		public function gcconf_speaker_append_links_sessions_keynotes( $args = [] ) {
 
 			global $post;
 
@@ -856,7 +855,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
+
 			if ( $args['addkeynotessessions'] ) {
+				// we should show all sessions / keynotes for this speaker
 
 				$titlea           = '';
 				$titlearray       = array();
@@ -866,10 +867,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				if ( $objects ) {
 
 					foreach ( $objects as $post ):
+						// loop through all related sessions / keynotes
 
-						$posttype = get_post_type( $post );
+						$posttype = get_post_type( $post->ID );
 						$args2    = array(
-							'ID'           => get_the_ID(),
+							'ID'           => $post->ID,
 							'titletag'     => 'h3',
 							'echo'         => false,
 							'speakerimage' => false,
@@ -877,11 +879,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 						);
 
 						if ( $posttype === ICTU_GCCONF_CPT_KEYNOTE ) {
-
+							// current post is a keynote
 							$keynotessessions .= $this->fn_ictu_gcconf_frontend_write_keynotecard( $args2 );
 
 						} else {
-
+							// current post is a session
 							$keynotessessions .= $this->fn_ictu_gcconf_frontend_write_sessioncard( $args2 );
 
 						}
@@ -898,13 +900,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
+			// check for any links related to this speaker
 			if ( have_rows( 'speaker_links', $args['ID'] ) ):
 
 				$return .= '<div class="speaker-links">';
 
 				if ( $args['sectiontitle'] ) {
 
-					$return .= '<' . $args['titletag'] . '>' . sprintf( __( 'Find %s on social media', 'gebruikercentraal' ), get_the_title( get_the_ID() ) ) . '</' . $args['titletag'] . '>';
+					$return .= '<' . $args['titletag'] . '>' . sprintf( __( 'Find %s on social media', 'ictuwp-plugin-conference' ), get_the_title( get_the_ID() ) ) . '</' . $args['titletag'] . '>';
 
 				}
 
@@ -946,10 +949,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		public function gcconf_append_speaker_weblinks() {
 
 			global $post;
-			echo $this->fn_ictu_gcconf_frontend_speaker_append_links_sessions_keynotes( array(
+			echo $this->gcconf_speaker_append_links_sessions_keynotes( array(
 				'ID'           => $post->ID,
 				'echo'         => false,
-				'sectiontitle' => _x( 'Links', 'Header text speaker links', 'gebruikercentraal' )
+				'sectiontitle' => _x( 'Links', 'Header text speaker links', 'ictuwp-plugin-conference' )
 			) );
 			echo '</span>'; // .speaker-bio
 
@@ -1235,8 +1238,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 
 			$list_of_speakers = get_field( 'relation_speaker_and_session', $post->ID );
-			$section_title = get_the_title( $args['ID'] );
-			$title_id      = sanitize_title( $section_title );
+			$section_title    = get_the_title( $args['ID'] );
+			$title_id         = sanitize_title( $section_title );
 
 			$metainfo = [];
 
@@ -1421,7 +1424,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_frontend_template_content_for_noblocks_page() {
+		public function gcconf_content_for_noblocks_page() {
 
 
 			global $post;
