@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ICTU / Gebruiker Centraal / Conference post types and "
 "taxonomies\n"
 "POT-Creation-Date: 2021-10-14 17:14+0200\n"
-"PO-Revision-Date: 2021-10-14 17:14+0200\n"
+"PO-Revision-Date: 2021-11-18 11:22+0100\n"
 "Last-Translator: Paul van Buuren <poedit@wbvb.nl>\n"
 "Language-Team: Paul van Buuren <paul@wbvb.nl>\n"
 "Language: en_GB\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: ictuwp-plugin-conference.php:941
 #, php-format
 msgid "Find %s on social media"
-msgstr ""
+msgstr "Links for %s"
 
 #: ictuwp-plugin-conference.php:986
 msgctxt "Header text speaker links"
