@@ -75,8 +75,12 @@ if ( ! defined( 'CONF_SHOW_DATETIMES' ) ) {
 	define( 'CONF_SHOW_DATETIMES', false );
 }
 
-define( 'CONF_DEBUG', false );
-// define( 'CONF_DEBUG', true );
+if ( WP_DEBUG ) {
+//	define( 'CONF_DEBUG', false );
+	define( 'CONF_DEBUG', true );
+} else {
+	define( 'CONF_DEBUG', false );
+}
 
 
 /** ----------------------------------------------------------------------------------------------------
@@ -597,7 +601,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-			$list_of_speakers = get_field( 'speaker_session_keynote_relations', $post->ID );
+			$list_of_speakers = get_field( 'relation_speaker_and_session', $post->ID );
 
 			if ( ! $list_of_speakers ) {
 				// extra safety
@@ -646,10 +650,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			$infooter     = true;
-			$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
+			if ( defined( 'ID_SKIPLINKS' ) ) {
+				$infooter     = true;
+				$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
 
-			wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
+				wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
+			}
+
 
 		}
 
@@ -732,22 +739,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
 
 				// append speaker image
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_speaker_featured_image'
-				), 6 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_speaker_image' ), 6 );
 
 				// append speaker country info
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_speaker_append_country'
-				), 7 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_speaker_country' ), 7 );
 
 				// append weblinks
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_speaker_append_weblinks'
-				), 12 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_speaker_weblinks' ), 12 );
 
 
 			} elseif ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
@@ -755,10 +753,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
 
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_sessionkeynote_location_time'
-				), 8 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_session_location_time' ), 8 );
 
 				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_append_links' ), 12 );
 
@@ -769,10 +764,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
 
-				add_action( 'genesis_entry_content', array(
-					$this,
-					'fn_ictu_gcconf_frontend_sessionkeynote_location_time'
-				), 8 );
+				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_session_location_time' ), 8 );
 
 				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_append_links' ), 12 );
 
@@ -792,7 +784,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return string $return
 		 */
-		public function fn_ictu_gcconf_frontend_speaker_append_country() {
+		public function gcconf_append_speaker_country() {
 
 			global $post;
 
@@ -869,7 +861,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$titlea           = '';
 				$titlearray       = array();
 				$keynotessessions = '<div class="archive-list grid">';
-				$objects          = get_field( 'speaker_session_keynote_relations', $args['ID'] );
+				$objects          = get_field( 'relation_speaker_and_session', $args['ID'] );
 
 				if ( $objects ) {
 
@@ -951,7 +943,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public function fn_ictu_gcconf_frontend_speaker_append_weblinks() {
+		public function gcconf_append_speaker_weblinks() {
 
 			global $post;
 			echo $this->fn_ictu_gcconf_frontend_speaker_append_links_sessions_keynotes( array(
@@ -994,7 +986,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public function fn_ictu_gcconf_frontend_write_keynotecard( $args = [] ) {
+		public function fn_ictu_gcconf_frontend_write_keynotecard( $args = array() ) {
 
 			$defaults = array(
 				'ID'           => 0,
@@ -1013,7 +1005,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
+//			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
@@ -1208,7 +1200,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public function fn_ictu_gcconf_frontend_write_sessioncard( $args = [] ) {
+		public function fn_ictu_gcconf_frontend_write_sessioncard( $args = array() ) {
+
+			global $post;
 
 			$defaults = array(
 				'ID'               => 0,
@@ -1229,7 +1223,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
+//			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
 			if ( CONF_SHOW_DATETIMES ) {
 				$time_term     = get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
@@ -1240,9 +1234,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			$list_of_speakers = get_field( 'speaker_session_keynote_relations', $args['ID'] );
-			$section_title    = get_the_title( $args['ID'] );
-			$title_id         = sanitize_title( $section_title );
+			$list_of_speakers = get_field( 'relation_speaker_and_session', $post->ID );
+			$section_title = get_the_title( $args['ID'] );
+			$title_id      = sanitize_title( $section_title );
 
 			$metainfo = [];
 
@@ -1269,7 +1263,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				}
 			}
 
-			$return .= '<div class="card card--session" aria-labelledby="' . $title_id . '">';
+			$return .= '<section class="card card--session" aria-labelledby="' . $title_id . '">';
 			$return .= '<' . $args['titletag'] . ' class="card__title">' .
 					   '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span></a></' . $args['titletag'] . '>';
 
@@ -1318,7 +1312,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
-			$return .= '</div>';
+			$return .= '</section>'; // .card card--session
 
 			if ( $args['echo'] ) {
 				echo $return;
@@ -1336,10 +1330,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public
-		function fn_ictu_gcconf_frontend_write_speakercard(
-			$args = array()
-		) {
+		public function fn_ictu_gcconf_frontend_write_speakercard( $args = array() ) {
 			$return = '';
 
 			$defaults = array(
@@ -1430,8 +1421,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public
-		function fn_ictu_gcconf_frontend_template_content_for_noblocks_page() {
+		public function fn_ictu_gcconf_frontend_template_content_for_noblocks_page() {
 
 
 			global $post;
@@ -1590,8 +1580,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public
-		function fn_ictu_gcconf_frontend_speaker_featured_image() {
+		public function gcconf_append_speaker_image() {
 
 			global $post;
 
@@ -1611,8 +1600,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public
-		function fn_ictu_gcconf_frontend_sessionkeynote_location_time() {
+		public function gcconf_append_session_location_time() {
 
 			global $post;
 
@@ -1688,8 +1676,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void
 		 */
-		public
-		function fn_ictu_gcconf_register_post_types() {
+		public function fn_ictu_gcconf_register_post_types() {
 
 			// ---------------------------------------------------------------------------------------------------
 			// custom post type voor 'keynote'
@@ -2176,23 +2163,23 @@ if ( ! function_exists( 'gc_wbvb_breadcrumbstring' ) ) {
 
 //========================================================================================================
 
-if ( ! function_exists( 'bidirectional_acf_update_value' ) ) {
+if ( ! function_exists( 'gc_conf_bidirectional_acf_update_value' ) ) {
 
-	function bidirectional_acf_update_value( $value, $post_id, $field ) {
+	function gc_conf_bidirectional_acf_update_value( $value, $post_id, $field ) {
 
 		// vars
 		$field_name  = $field['name'];
 		$field_key   = $field['key'];
 		$global_name = 'is_updating_' . $field_name;
 
-		$debugstring = 'bidirectional_acf_update_value';
+		$debugstring = 'gc_conf_bidirectional_acf_update_value';
 
 		$debugstring .= "value='" . implode( ", ", $value ) . "'";
 		$debugstring .= ", post_id='" . $post_id . "'";
 		$debugstring .= " (type=" . get_post_type( $post_id ) . ")";
 		$debugstring .= ", field_key='" . $field_key . "'";
 		$debugstring .= ", field_name='" . $field_name . "'";
-
+		error_log( $debugstring );
 		// bail early if this filter was triggered from the update_field() function called within the loop below
 		// - this prevents an inifinte loop
 		if ( ! empty( $GLOBALS[ $global_name ] ) ) {
@@ -2283,11 +2270,7 @@ if ( ! function_exists( 'bidirectional_acf_update_value' ) ) {
 
 }
 
-//========================================================================================================
-
-//add_filter('acf/update_value/name=speakers', 'bidirectional_acf_update_value', 10, 3);
-
-add_filter( 'acf/update_value/name=speaker_session_keynote_relations', 'bidirectional_acf_update_value', 10, 3 );
+add_filter( 'acf/update_value/name=relation_speaker_and_session', 'gc_conf_bidirectional_acf_update_value', 10, 3 );
 
 //========================================================================================================
 
