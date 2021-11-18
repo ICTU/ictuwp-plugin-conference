@@ -1,6 +1,9 @@
 # ICTU GC - plugin - conference
  Content types and taxonomy for conference
 
+## Prerequisites
+Please install and activate the plugin ['ACF Post-2-Post'](https://wordpress.org/plugins/post-2-post-for-acf/). 
+This allows for _correctly_ saving bidirectional relationships between speakers and sessions / keynotes.
 
 ## Contact
 * Victor Zuydweg
