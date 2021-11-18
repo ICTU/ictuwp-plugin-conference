@@ -4,8 +4,8 @@
     "fields": [
         {
             "key": "field_5d933fd673c87",
-            "label": "Speakers",
-            "name": "speakers",
+            "label": "Speakers (relation_speaker_and_session)",
+            "name": "relation_speaker_and_session",
             "type": "relationship",
             "instructions": "",
             "required": 0,
@@ -32,7 +32,7 @@
         },
         {
             "key": "field_5da0567590bed",
-            "label": "Workshop of keynote",
+            "label": "Workshop of keynote (speaker_session_keynote_relations)",
             "name": "speaker_session_keynote_relations",
             "type": "relationship",
             "instructions": "",
@@ -83,5 +83,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634283254
+    "modified": 1637227630
 }

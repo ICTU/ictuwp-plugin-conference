@@ -4,8 +4,8 @@
     "fields": [
         {
             "key": "field_5da02c904aadd",
-            "label": "keynotes & sessions",
-            "name": "speaker_session_keynote_relations",
+            "label": "keynotes & sessions (relation_speaker_and_session)",
+            "name": "relation_speaker_and_session",
             "type": "relationship",
             "instructions": "",
             "required": 0,
@@ -48,5 +48,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634279458
+    "modified": 1637227598
 }
