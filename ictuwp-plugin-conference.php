@@ -237,7 +237,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$type = get_post_type( $post );
 
 					$args = array(
-						'ID'       => get_the_ID(),
+						'ID'       => $post->ID,
 						'titletag' => 'h2',
 					);
 
@@ -601,12 +601,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-			$list_of_speakers = get_field( 'relation_speaker_and_session', $post->ID );
-
-			if ( ! $list_of_speakers ) {
-				// extra safety
-				$list_of_speakers = get_field( 'speakers', $post->ID );
-			}
+			$list_of_speakers = get_field( 'relation_x1315x_speaker_vv_session', $post->ID );
 
 			if ( $list_of_speakers ) {
 
@@ -615,7 +610,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				foreach ( $list_of_speakers as $speaker ):
 
 					$args2 = array(
-						'ID'   => $speaker,
+						'ID'   => $speaker->ID,
 						'echo' => false,
 						'type' => 'author'
 					);
@@ -788,13 +783,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			global $post;
 
 			$return  = '';
+
+			/*
 			$country = '';
 
 			$countrycounter = 0;
 			$county_term    = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_COUNTRY );
 			$jobtitle       = get_field( 'speaker_jobtitle', $post->ID );
 
-			/*
 
 			if ( $county_term && ! is_wp_error( $county_term ) ) {
 
@@ -862,7 +858,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				$titlea           = '';
 				$titlearray       = array();
 				$keynotessessions = '<div class="archive-list grid">';
-				$objects          = get_field( 'relation_speaker_and_session', $args['ID'] );
+				$objects          = get_field( 'relation_x1315x_speaker_vv_session', $args['ID'] );
 
 				if ( $objects ) {
 
@@ -1085,7 +1081,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$countrynames = '';
 					$speakernames .= '<dd>';
 
-					$county_term = wp_get_post_terms( $speaker, ICTU_GCCONF_CT_COUNTRY );
+					$county_term = wp_get_post_terms( $speaker->ID, ICTU_GCCONF_CT_COUNTRY );
 
 					if ( $county_term && ! is_wp_error( $county_term ) ) {
 						$countrynames   = ' (';
@@ -1237,7 +1233,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			$list_of_speakers = get_field( 'relation_speaker_and_session', $post->ID );
+			$list_of_speakers = get_field( 'relation_x1315x_speaker_vv_session', $post->ID );
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
 
@@ -2166,114 +2162,7 @@ if ( ! function_exists( 'gc_wbvb_breadcrumbstring' ) ) {
 
 //========================================================================================================
 
-if ( ! function_exists( 'gc_conf_bidirectional_acf_update_value' ) ) {
-
-	function gc_conf_bidirectional_acf_update_value( $value, $post_id, $field ) {
-
-		// vars
-		$field_name  = $field['name'];
-		$field_key   = $field['key'];
-		$global_name = 'is_updating_' . $field_name;
-
-		$debugstring = 'gc_conf_bidirectional_acf_update_value';
-
-		$debugstring .= "value='" . implode( ", ", $value ) . "'";
-		$debugstring .= ", post_id='" . $post_id . "'";
-		$debugstring .= " (type=" . get_post_type( $post_id ) . ")";
-		$debugstring .= ", field_key='" . $field_key . "'";
-		$debugstring .= ", field_name='" . $field_name . "'";
-		error_log( $debugstring );
-		// bail early if this filter was triggered from the update_field() function called within the loop below
-		// - this prevents an inifinte loop
-		if ( ! empty( $GLOBALS[ $global_name ] ) ) {
-			return $value;
-		}
-
-		// set global variable to avoid inifite loop
-		// - could also remove_filter() then add_filter() again, but this is simpler
-		$GLOBALS[ $global_name ] = 1;
-
-		// loop over selected posts and add this $post_id
-		if ( is_array( $value ) ) {
-
-			foreach ( $value as $post_id2 ) {
-
-				// load existing related posts
-				$value2 = get_field( $field_name, $post_id2, false );
-
-
-				// allow for selected posts to not contain a value
-				if ( empty( $value2 ) ) {
-
-					$value2 = array();
-
-				}
-
-				// bail early if the current $post_id is already found in selected post's $value2
-				if ( in_array( $post_id, $value2 ) ) {
-					continue;
-				}
-
-				// append the current $post_id to the selected post's 'related_posts' value
-				$value2[] = $post_id;
-
-				// update the selected post's value (use field's key for performance)
-				update_field( $field_key, $value2, $post_id2 );
-
-			}
-
-		}
-
-
-		// find posts which have been removed
-		$old_value = get_field( $field_name, $post_id, false );
-
-		if ( is_array( $old_value ) ) {
-
-			foreach ( $old_value as $post_id2 ) {
-
-				// bail early if this value has not been removed
-				if ( is_array( $value ) && in_array( $post_id2, $value ) ) {
-					continue;
-				}
-
-
-				// load existing related posts
-				$value2 = get_field( $field_name, $post_id2, false );
-
-
-				// bail early if no value
-				if ( empty( $value2 ) ) {
-					continue;
-				}
-
-
-				// find the position of $post_id within $value2 so we can remove it
-				$pos = array_search( $post_id, $value2 );
-
-
-				// remove
-				unset( $value2[ $pos ] );
-
-
-				// update the un-selected post's value (use field's key for performance)
-				update_field( $field_key, $value2, $post_id2 );
-
-			}
-
-		}
-
-		// reset global varibale to allow this filter to function as per normal
-		$GLOBALS[ $global_name ] = 0;
-
-		// return
-		return $value;
-
-	}
-
-}
-
-add_filter( 'acf/update_value/name=relation_speaker_and_session', 'gc_conf_bidirectional_acf_update_value', 10, 3 );
+// For the bidirectional saving to work, please activate the plugin 'ACF Post-2-Post'
 
 //========================================================================================================
 
@@ -2284,27 +2173,7 @@ function fn_ictu_gcconf_extra_update_speaker_relationfield( $postid ) {
 	$reservelijst            = get_field( 'speakers', $postid );
 	$speakers_from_post_meta = get_post_meta( $postid, 'speaker_session_keynote_relations' );
 
-	if ( WP_DEBUG && CONF_DEBUG ) {
-
-		echo '<div style="display: unset; display: block; border: 10px solid black; padding: 1em;">';
-
-		dovardump( $list_of_speakers, 'juiste lijst' );
-
-		echo '<hr style="border: 2px solid red;">';
-
-		dovardump( $speakers_from_post_meta, 'post meta' );
-
-		echo '<hr style="border: 2px solid red;">';
-
-		dovardump( $reservelijst, 'oude lijst' );
-
-		echo '<hr style="border: 2px solid red;">';
-
-	}
-
 	if ( ! $list_of_speakers ) {
-
-		$return = '<h1>fn_ictu_gcconf_extra_update_speaker_relationfield: ' . get_the_title( $postid ) . '</h1><ul>';
 
 		$list_of_speakers = get_field( 'speakers', $postid );
 
@@ -2329,8 +2198,6 @@ function fn_ictu_gcconf_extra_update_speaker_relationfield( $postid ) {
 		$return .= '</ul>';
 
 	} else {
-
-		$return = '<h1>fn_ictu_gcconf_extra_update_speaker_relationfield: GEEN update</h1><br><ul>';
 
 		foreach ( $list_of_speakers as $speaker ):
 

@@ -1,11 +1,11 @@
 {
     "key": "group_5da02c8370b6c",
-    "title": "01 conferentie - speaker related",
+    "title": "01 conferentie - keynote & sessions  related to speaker",
     "fields": [
         {
-            "key": "field_5da02c904aadd",
-            "label": "keynotes & sessions (relation_speaker_and_session)",
-            "name": "relation_speaker_and_session",
+            "key": "field_5da02c9x1315x",
+            "label": "keynotes & sessions",
+            "name": "relation_x1315x_speaker_vv_session",
             "type": "relationship",
             "instructions": "",
             "required": 0,
@@ -48,5 +48,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1637227598
+    "modified": 1637235315
 }

@@ -1,39 +1,11 @@
 {
     "key": "group_5d933fd1c6977",
-    "title": "01 conferentie - speaker(s) for this session or keynote",
+    "title": "01 conferentie - speakers  related to sessions \/ keynote",
     "fields": [
         {
-            "key": "field_5d933fd673c87",
-            "label": "Speakers (relation_speaker_and_session)",
-            "name": "relation_speaker_and_session",
-            "type": "relationship",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "speaker"
-            ],
-            "taxonomy": "",
-            "filters": [
-                "search",
-                "taxonomy"
-            ],
-            "elements": [
-                "featured_image"
-            ],
-            "min": "",
-            "max": "",
-            "return_format": "object"
-        },
-        {
-            "key": "field_5da0567590bed",
-            "label": "Workshop of keynote (speaker_session_keynote_relations)",
-            "name": "speaker_session_keynote_relations",
+            "key": "field_5d933fdx1315x",
+            "label": "Speakers",
+            "name": "relation_x1315x_speaker_vv_session",
             "type": "relationship",
             "instructions": "",
             "required": 0,
@@ -83,5 +55,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1637227630
+    "modified": 1637235370
 }
