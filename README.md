@@ -11,9 +11,10 @@ This allows for _correctly_ saving bidirectional relationships between speakers 
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.0.4 - Small CSS changes to adapt to 2021 styling of old theme. 
+2.0.5 - Fixed small HTML error, fixed small PHP errors.
 
 ## Version history
+* 2.0.5 - Fixed small HTML error, fixed small PHP errors.
 * 2.0.4 - Small CSS changes to adapt to 2021 styling of old theme. 
 * 2.0.3 - Further integration with GC-theme. Better cards HTML. 
 * 2.0.2 - Renamed packages, checked translation.
