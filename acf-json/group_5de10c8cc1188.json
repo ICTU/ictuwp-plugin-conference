@@ -1,0 +1,156 @@
+{
+    "key": "group_5de10c8cc1188",
+    "title": "Velden voor verslag",
+    "fields": [
+        {
+            "key": "field_5de10cb8379d1",
+            "label": "Links",
+            "name": "extra_info_repeater",
+            "type": "repeater",
+            "instructions": "Een link naar een video of een geschreven verslag, blog, etc. Als je hier de URL invoert voor een video op Vimeo en je selecteert 'video' als type, dan maakt het systeem er een embedded video van.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5de10f0f379d3",
+            "min": 0,
+            "max": 0,
+            "layout": "row",
+            "button_label": "Add new link",
+            "sub_fields": [
+                {
+                    "key": "field_5de10d31379d2",
+                    "label": "URL",
+                    "name": "extra_info_repeater_url",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "https:\/\/example.com\/page"
+                },
+                {
+                    "key": "field_5de10f0f379d3",
+                    "label": "Link-tekst",
+                    "name": "extra_info_repeater_linktext",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "Link",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5de10f46379d4",
+                    "label": "Type",
+                    "name": "extra_info_repeater_type",
+                    "type": "radio",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "video": "Video",
+                        "website": "Blog",
+                        "presentation": "Link to presentation"
+                    },
+                    "allow_null": 0,
+                    "other_choice": 0,
+                    "default_value": "website",
+                    "layout": "vertical",
+                    "return_format": "value",
+                    "save_other_choice": 0
+                },
+                {
+                    "key": "field_5de1157e802b6",
+                    "label": "Korte beschrijving",
+                    "name": "extra_info_repeater_shortdescription",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "maxlength": "",
+                    "rows": "",
+                    "new_lines": ""
+                }
+            ]
+        },
+        {
+            "key": "field_5de11136b431f",
+            "label": "Foto's",
+            "name": "extra_info_images",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "session"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "keynote"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": false,
+    "modified": 1642428139
+}
