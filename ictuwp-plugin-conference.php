@@ -102,9 +102,9 @@ function cnf_make_meta( $meta ) {
 	}
 
 	if ( $meta_items ) {
-		$meta_data = '<div class="meta-data">';
+		$meta_data = '<span class="meta-data">';
 		$meta_data .= $meta_items;
-		$meta_data .= '</div>';
+		$meta_data .= '</span>';
 	}
 
 	return $meta_data;
@@ -646,10 +646,10 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			global $post;
 
 			if ( defined( 'ID_SKIPLINKS' ) ) {
-				$infooter     = true;
 				$dependencies = array( ID_SKIPLINKS ); // only load CSS file AFTER the ID_SKIPLINKS css file has been loaded
-
-				wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, ICTU_GC_CONF_VERSION, 'all' );
+				$file         = dirname( __FILE__ ) . '/css/frontend-conf.css';
+				$versie       = filemtime( $file );
+				wp_enqueue_style( ICTU_GC_CONF_ARCHIVE_CSS, trailingslashit( plugin_dir_url( __FILE__ ) ) . 'css/frontend-conf.css', $dependencies, $versie, 'all' );
 			}
 
 
@@ -686,6 +686,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			} elseif ( $this->template_conf_contenttypepage == $page_template ) {
 
 				remove_filter( 'genesis_post_title_output', 'gc_wbvb_sharebuttons_for_page_top', 15 );
+
+				// remove social media
+				remove_filter( 'genesis_entry_header', 'gc_wbvb_page_append_sokmet' );
 
 				//* Force full-width-content layout
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
@@ -782,7 +785,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			$return  = '';
+			$return = '';
 
 			/*
 			$country = '';
@@ -1004,8 +1007,6 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-//			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
-
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
 			$excerpt          = get_the_excerpt( $args['ID'] );
@@ -1110,13 +1111,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			$return = '<div class="card card--keynote' . ( $args['speakerimage'] ? ' l-with-image' : '' ) . '" aria-labelledby="' . $title_id . '">';
+			$return = '<div class="card card--keynote' . ( $args['speakerimage'] ? ' l-with-image' : '' ) . '" aria-labelledby="' . $title_id . '">' . "\n";
 			$return .= '<' . $args['titletag'] . ' class="card__title">';
-			$return .= '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></a></' . $args['titletag'] . '>';
+			$return .= '<a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '"><span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></a>';
+			$return .= '</' . $args['titletag'] . '>' . "\n";
 
 			if ( $list_of_speakers && $args['speakerimage'] ) {
 
-				$return .= '<div class="l-content-wrapper"><div class="card__image">';
+				$return .= '<div class="l-content-wrapper">';
+				$return .= '<div class="card__image">';
 
 				foreach ( $list_of_speakers as $speaker ):
 
@@ -1134,13 +1137,14 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				endforeach;
 
-				$return .= '</div>';
-				$return .= '<span class="speaker-bio">';
+				$return .= '</div>'; // .card__image
+				$return .= '<div class="speaker-bio">';
 				if ( $speakernames || $metainfo_time ) {
 					$return .= '<div class="meta-data">' . $speakernames . $metainfo_time . '</div>';
 				}
 				$return .= wp_strip_all_tags( $excerpt );
-				$return .= '</span></div>';
+				$return .= '</div>'; // .speaker-bio
+				$return .= '</div>'; // .l-content-wrapper
 
 			} else {
 				$return .= '<span class="speaker-bio">';
@@ -1170,7 +1174,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$linktext = get_sub_field( 'extra_info_repeater_linktext' );
 
 					if ( $url && $linktext ) {
-						$link = '<a href="' . $url . '" class="extra-link extra-link--' . $type . '" >' . $linktext . '</a>';
+						$link = '<a href="' . $url . '" class="extra-link extra-link--' . $type . '" ><span class="visuallyhidden">' . $type . '</span> ' . $linktext . '</a>';
 
 						( $make_list ? $return .= '<li class="extra-links__item">' . $link . '</li>' : $return .= $link );
 					}
@@ -1178,11 +1182,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				endwhile;
 
+				( $make_list ? $return .= '</ul>' : $return = '' );
+
 			}
 
-			( $make_list ? $return .= '</ul>' : $return = '' );
 
-//			$return .= '</div>';
+			$return .= '</div>';
 
 			if ( $args['echo'] ) {
 				echo $return;
@@ -1387,19 +1392,20 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			$return = '<section class="' . $args['classes'] . ( $image ? ' l-with-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
+			$return = "\n" . '<section class="' . $args['classes'] . ( $image ? ' l-with-image' : '' ) . '" itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person">';
 
 			// Set image if there is any
 			$return .= ( $image ? $image : '' );
 
 			// Set section / card
-			$return .= '<div class="' . $type . '__content">';
+			$return .= "\n" . '<div class="' . $type . '__content">';
 			$return .= '<' . $title_tag . ' class="' . $type . '__title"><a class="arrow-link" href="' . get_permalink( $args['ID'] ) . '">' .
 					   '<span class="arrow-link__text">' . $section_title . '</span><span class="arrow-link__icon"></span>' .
 					   '</a></' . $title_tag . '>';
 			$return .= ( $meta_data ? '<div class="meta-data">' . $meta_data . '</div>' : '' );
 			$return .= ( $excerpt ? $excerpt : '' );
-			$return .= '</div></section>';
+			$return .= '</div>';
+			$return .= '</section>' . "\n";
 
 
 			if ( $args['echo'] ) {
@@ -1482,7 +1488,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 							$currentposttype = get_post_type( $post );
 							$args            = array(
-								'ID'       => $post->ID,
+								'ID'       => $post,
 								'titletag' => 'h2',
 							);
 
