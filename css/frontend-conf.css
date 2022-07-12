@@ -7,8 +7,8 @@
 // @package   ictuwp-plugin-conference
 // @author    Paul van Buuren
 // @license   GPL-2.0+
-// @version   2.0.5
-// @desc.     Small CSS changes to adapt to 2021 styling of old theme.
+// @version   2.0.6
+// @desc.     Remove white background for taxonomy description.
 // @link      https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
 
 
@@ -150,14 +150,6 @@ Mixins
 }
 .grid > .card--speaker {
   margin-top: 8rem;
-}
-.archive.category .archive-list .entry.teaser {
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-}
-.archive.category .taxonomy-description {
-  background: #FFF;
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
-  padding: 3rem;
 }
 .extra-links {
   padding-left: 0;
