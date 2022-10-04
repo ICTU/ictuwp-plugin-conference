@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.0.6
- * Version description: Remove white background for taxonomy description.
+ * Version:             2.1.1
+ * Version description: Add event / page to breadcrumb for single speakers/sessions/keynotes.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.0.6' );
+define( 'ICTU_GC_CONF_VERSION', '2.1.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
 	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -160,10 +160,22 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			add_action( 'init', array( $this, 'fn_ictu_gcconf_add_rewrite_rules' ) );
 
 			// make sure the breadcrumb is useful for our CPTs
-			add_filter( 'genesis_single_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
-			add_filter( 'genesis_page_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
-			add_filter( 'genesis_archive_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
-			add_filter( 'genesis_tax_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+			if ( 'ictuwp-theme-gebruikercentraal' === get_stylesheet() ) {
+				// het oude theme uit 2016 is actief
+				// filter breadcrumb via Genesis hook
+				add_filter( 'genesis_single_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+				add_filter( 'genesis_page_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+				add_filter( 'genesis_archive_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+				add_filter( 'genesis_tax_crumb', array( $this, 'fn_ictu_gcconf_filter_breadcrumb' ), 10, 2 );
+			} else {
+				// TODO filter breadcrumb via yoast
+				if ( ! empty( get_option( 'wpseo_titles' )['breadcrumbs-enable'] ) ) {
+					// yoast breadcrumb is not active
+				} else {
+					// yoast breadcrumb is active
+				}
+
+			}
 
 			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
 
@@ -2058,17 +2070,33 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		 *
 		 * @return void ($args['echo'] = true) or $return (HTML)
 		 */
-		public
-		function fn_ictu_gcconf_filter_breadcrumb(
-			$crumb = '', $args = ''
-		) {
+		public function fn_ictu_gcconf_filter_breadcrumb( $crumb = '', $args = '' ) {
 
 			global $post;
 
-			$span_before_start   = '<span class="breadcrumb-link-wrap" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">';
-			$span_between_start  = '<span itemprop="name">';
-			$span_before_end     = '</span>';
-			$brief_page_overview = '';
+			$pageid_overview = '';
+			$eventformpage   = ''; // event of pagina waarop je je kunt inschrijven, hoort in breadcrumb
+			$separator       = '<span class="separator">&nbsp;</span>'; // zie ook gc_wbvb_breadcrumb_args, functions.php at line 481
+			$currentpageid   = get_the_id();
+			$pageid_speakers = get_field( 'themesettings_conference_speakers', 'option' );
+			$pageid_keynotes = get_field( 'themesettings_conference_keynotes', 'option' );
+			$pageid_sessions = get_field( 'themesettings_conference_sessions', 'option' );
+
+			if (
+				( $currentpageid === $pageid_speakers->ID ) ||
+				( $currentpageid === $pageid_keynotes->ID ) ||
+				( $currentpageid === $pageid_sessions->ID ) ||
+				is_singular( ICTU_GCCONF_CPT_SESSION ) ||
+				is_singular( ICTU_GCCONF_CPT_SPEAKER ) ||
+				is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+				// alleen voor single sessions / speakers / keynotes, of als de huidige pagina 1 van de 3 overzichtspagina's is
+				$eventformpage = get_field( 'themesettings_conference_event', 'option' );
+				if ( $eventformpage ) {
+					// er is een event of pagina waarop je je kunt inschrijven toegevoegd via de theme instellingen
+					// dus deze kunnen we toevoegen aan de breadcrumb
+					$eventformpage = '<a href="' . get_permalink( $eventformpage[0]->ID ) . '">' . get_the_title( $eventformpage[0]->ID ) . '</a>';
+				}
+			}
 
 			if ( is_singular( ICTU_GCCONF_CPT_SESSION ) || is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
 
@@ -2080,28 +2108,30 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			if ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
 
-				$brief_page_overview = get_field( 'themesettings_conference_speakers', 'option' );
+				$pageid_overview = $pageid_speakers;
 
 			} elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
 
-				$brief_page_overview = get_field( 'themesettings_conference_keynotes', 'option' );
+				$pageid_overview = $pageid_keynotes;
 
 			} elseif ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
 
-				$brief_page_overview = get_field( 'themesettings_conference_sessions', 'option' );
+				$pageid_overview = $pageid_sessions;
 
 			}
 
 			// -------------------------------------------------------------------------------------------------
 
-			if ( $brief_page_overview ) {
+			if ( $pageid_overview ) {
 
-				$actueelpagetitle = get_the_title( $brief_page_overview );
+				$crumb = gc_wbvb_breadcrumbstring( $pageid_overview, $args );
 
-				if ( $brief_page_overview ) {
-					$crumb = gc_wbvb_breadcrumbstring( $brief_page_overview, $args );
-				}
 			}
+
+			if ( $crumb && $eventformpage ) {
+				$crumb = $eventformpage . $separator . $crumb;
+			}
+
 
 			return $crumb;
 
@@ -2299,5 +2329,16 @@ function fn_ictu_gcconf_acf_json_save_point( $path ) {
 }
 
 add_filter( 'acf/settings/save_json', 'fn_ictu_gcconf_acf_json_save_point' );
+
+//========================================================================================================
+
+// ACF filter om ervoor zorgen dat via deze relatie-velden alleen *gepubliceerde* content te selecteren is
+add_filter( 'acf/fields/relationship/query/name=themesettings_conference_event', 'acf_relationshipfield_only_use_published_content', 10, 3 );
+
+function acf_relationshipfield_only_use_published_content( $options, $field, $post_id ) {
+	$options['post_status'] = [ 'publish' ];
+
+	return $options;
+}
 
 //========================================================================================================

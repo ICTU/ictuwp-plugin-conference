@@ -11,9 +11,10 @@ This allows for _correctly_ saving bidirectional relationships between speakers 
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.0.6 - Remove white background for taxonomy description.
+2.1.1 - Add event / page to breadcrumb for single speakers/sessions/keynotes.
 
 ## Version history
+* 2.1.1 - Add event / page to breadcrumb for single speakers/sessions/keynotes.
 * 2.0.6 - Remove white background for taxonomy description.
 * 2.0.5 - Fixed small HTML error, fixed small PHP errors.
 * 2.0.4 - Small CSS changes to adapt to 2021 styling of old theme. 

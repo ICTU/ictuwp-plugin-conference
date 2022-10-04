@@ -69,6 +69,34 @@
             "ui": 1
         },
         {
+            "key": "field_633b15ddcfc28",
+            "label": "Inschrijfpagina",
+            "name": "themesettings_conference_event",
+            "type": "relationship",
+            "instructions": "selecteer hier het event (of de pagina) waar bezoekers zich kunnen inschrijven voor de conferentie",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page",
+                "event"
+            ],
+            "taxonomy": "",
+            "filters": [
+                "search",
+                "post_type",
+                "taxonomy"
+            ],
+            "elements": "",
+            "min": "",
+            "max": 1,
+            "return_format": "object"
+        },
+        {
             "key": "field_616862bb5b7bf",
             "label": "Standaard foto's voor sprekers",
             "name": "fallback_for_speaker_images",
@@ -114,5 +142,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634283266
+    "show_in_rest": 0,
+    "modified": 1664819529
 }
