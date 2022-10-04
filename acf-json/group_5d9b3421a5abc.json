@@ -72,7 +72,7 @@
             "key": "field_633b15ddcfc28",
             "label": "Inschrijfpagina",
             "name": "themesettings_conference_event",
-            "type": "post_object",
+            "type": "relationship",
             "instructions": "selecteer hier het event (of de pagina) waar bezoekers zich kunnen inschrijven voor de conferentie",
             "required": 0,
             "conditional_logic": 0,
@@ -86,10 +86,15 @@
                 "event"
             ],
             "taxonomy": "",
-            "allow_null": 0,
-            "multiple": 0,
-            "return_format": "object",
-            "ui": 1
+            "filters": [
+                "search",
+                "post_type",
+                "taxonomy"
+            ],
+            "elements": "",
+            "min": "",
+            "max": 1,
+            "return_format": "object"
         },
         {
             "key": "field_616862bb5b7bf",
@@ -138,5 +143,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1664816672
+    "modified": 1664819529
 }
