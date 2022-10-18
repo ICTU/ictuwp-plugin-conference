@@ -177,7 +177,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
-			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
+//			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
+			add_image_size( SPEAKER_IMG_SIZE, 296, 342, true );
 
 			// add a page temlate name
 			$this->templates                     = array();
