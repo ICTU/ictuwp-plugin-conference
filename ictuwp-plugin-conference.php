@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.2.2
- * Version description: Doubled image size to improve display of speaker photos.
+ * Version:             2.3.1
+ * Version description: Extra labels for session overview, and on single session display.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.2.2' );
+define( 'ICTU_GC_CONF_VERSION', '2.3.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
 	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -178,7 +178,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 //			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
-			add_image_size( SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.2.2
+			add_image_size( SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.3.1
 
 			// add a page temlate name
 			$this->templates                     = array();

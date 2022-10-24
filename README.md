@@ -11,9 +11,10 @@ This allows for _correctly_ saving bidirectional relationships between speakers 
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.2.2 - Doubled image size to improve display of speaker photos.
+2.3.1 - Extra labels for session overview, and on single session display.
 
 ## Version history
+* 2.3.1 - Extra labels for session overview, and on single session display.
 * 2.2.2 - Doubled image size to improve display of speaker photos.
 * 2.1.1 - Add event / page to breadcrumb for single speakers/sessions/keynotes.
 * 2.0.6 - Remove white background for taxonomy description.
