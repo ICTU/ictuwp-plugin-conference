@@ -1676,7 +1676,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				foreach ( $time_term as $term ) {
 					// make these clickable
-					$names[] = '<a href="' . get_term_link( $term->term_id, ICTU_GCCONF_CT_TIMESLOT ) . '">' . $term->name . '</a>';
+					// $names[] = '<a href="' . get_term_link( $term->term_id, ICTU_GCCONF_CT_TIMESLOT ) . '">' . $term->name . '</a>';
+					$names[] = $term->name;
 				}
 
 				$metainfo[0]['name'] = implode( ', ', $names );
