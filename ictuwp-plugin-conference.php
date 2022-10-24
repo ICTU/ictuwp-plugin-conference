@@ -71,8 +71,8 @@ if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
 }
 
 if ( ! defined( 'CONF_SHOW_DATETIMES' ) ) {
-//  define( 'CONF_SHOW_DATETIMES', true );
-	define( 'CONF_SHOW_DATETIMES', false );
+	define( 'CONF_SHOW_DATETIMES', true );
+//	define( 'CONF_SHOW_DATETIMES', false );
 }
 
 if ( WP_DEBUG ) {
@@ -1211,7 +1211,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		}
 
 		/** ----------------------------------------------------------------------------------------------------
-		 * Show speaker(s) for a session
+		 * Show extra meta info for a session
 		 *
 		 * @param array $args
 		 *
@@ -1220,6 +1220,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 		public function fn_ictu_gcconf_frontend_write_sessioncard( $args = array() ) {
 
 			global $post;
+
 
 			$defaults = array(
 				'ID'               => 0,
@@ -1231,7 +1232,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				'echo'             => true
 			);
 
-			$return = '';
+			$return   = '';
+			$metainfo = [];
+			$item     = [];
 
 			// Parse incoming $args into an array and merge it with $defaults
 			$args = wp_parse_args( $args, $defaults );
@@ -1240,44 +1243,76 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				return;
 			}
 
-//			fn_ictu_gcconf_extra_update_speaker_relationfield( $args['ID'] );
 
 			if ( CONF_SHOW_DATETIMES ) {
-				$time_term     = get_term_by( 'id', $args['session_time'], ICTU_GCCONF_CT_TIMESLOT );
-				$location_term = get_term_by( 'id', $args['session_location'], ICTU_GCCONF_CT_LOCATION );
+				// taxonomy info for timeslots and locations
+				$time_term     = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
+				$location_term = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
 			} else {
 				$time_term     = '';
 				$location_term = '';
 			}
 
-
+			// get session type
+			$sessiontypes     = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_SESSIONTYPE );
 			$list_of_speakers = get_field( 'relation_x1315x_speaker_vv_session', $post->ID );
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
 
-			$metainfo = [];
-
-			$metainfo[] = ( $time_term ? _x( 'Timeblock', 'timeblock taxonomy', 'ictuwp-plugin-conference' ) . $time_term->name : '' );
-			$metainfo[] = ( $time_term ? _x( 'Session location', 'session location taxonomy', 'ictuwp-plugin-conference' ) . $location_term->name : '' );
-
 			if ( $list_of_speakers && $args['speakernames'] ) {
-				$label    = _x( 'Speaker', 'speaker type', 'ictuwp-plugin-conference' );
-				$speakers = [];
-
+				$arrtemp      = [];
+				$item['type'] = 'speaker';
+				$label        = _x( 'Speaker', 'speaker type', 'ictuwp-plugin-conference' );
 				if ( count( $list_of_speakers ) > 1 ) {
 					$label = _x( 'Speakers', 'speaker type', 'ictuwp-plugin-conference' );
 				}
 
 				foreach ( $list_of_speakers as $speaker ):
-					$speakers[] = get_the_title( $speaker );
+					$arrtemp[] = get_the_title( $speaker );
 				endforeach;
 
-
-				if ( $speakers ) {
-					$speakers            = implode( ', ', $speakers );
-					$metainfo[2]['name'] = ( $label ? '<label>' . $label . ':</label> ' : '' ) . $speakers;
-					$metainfo[2]['type'] = 'speaker';
+				// add speakers as
+				if ( $arrtemp ) {
+					$arrtemp      = implode( ', ', $arrtemp );
+					$item['name'] = ( $label ? '<label>' . $label . ':</label> ' : '' ) . $arrtemp;
+					$metainfo[]   = $item;
 				}
+			}
+
+			// session types are (in 2022) :
+			// - online
+			// - hybride
+			// - fysiek op locatie
+			if ( $sessiontypes ) {
+				$label        = _x( 'Waar', 'session type', 'ictuwp-plugin-conference' );
+				$arrtemp      = [];
+				$item['type'] = 'session-type';
+
+				foreach ( $sessiontypes as $sessiontype ):
+					$arrtemp[] = $sessiontype->name;
+				endforeach;
+
+				if ( $arrtemp ) {
+					$arrtemp      = implode( ', ', $arrtemp );
+					$item['name'] = ( $label ? '<label>' . $label . ':</label> ' : '' ) . $arrtemp;
+					$metainfo[]   = $item;
+				}
+			}
+
+			// translated as 'tijdblok'
+			if ( $time_term && ! is_wp_error( $time_term ) ) {
+
+				$label = _x( 'Timeblock', 'timeblock taxonomy', 'ictuwp-plugin-conference' );
+				$times = [];
+				foreach ( $time_term as $term ) {
+					$times[] = $term->name;
+				}
+
+				$item['type'] = 'event-times';
+				$times        = implode( ', ', $times );
+				$item['name'] = ( $label ? '<label>' . $label . ':</label> ' : '' ) . $times;
+				$metainfo[]   = $item;
+
 			}
 
 			$return .= '<section class="card card--session" aria-labelledby="' . $title_id . '">';
@@ -1640,11 +1675,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			if ( $time_term && ! is_wp_error( $time_term ) ) {
 
 				foreach ( $time_term as $term ) {
-					$names[] = $term->name;
+					// make these clickable
+					$names[] = '<a href="' . get_term_link( $term->term_id, ICTU_GCCONF_CT_TIMESLOT ) . '">' . $term->name . '</a>';
 				}
 
 				$metainfo[0]['name'] = implode( ', ', $names );
-				$metainfo[0]['type'] = 'time';
+				$metainfo[0]['type'] = 'event-times';
 			}
 
 			if ( $location_term && ! is_wp_error( $location_term ) ) {
@@ -1677,6 +1713,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				$metainfo[3]['name'] = implode( ', ', $type );
 				$metainfo[3]['type'] = 'session-type';
+
 			}
 
 			if ( $metainfo ) {
