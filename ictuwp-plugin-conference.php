@@ -2372,12 +2372,16 @@ add_filter( 'acf/settings/save_json', 'fn_ictu_gcconf_acf_json_save_point' );
 //========================================================================================================
 
 // ACF filter om ervoor zorgen dat via deze relatie-velden alleen *gepubliceerde* content te selecteren is
-add_filter( 'acf/fields/relationship/query/name=themesettings_conference_event', 'acf_relationshipfield_only_use_published_content', 10, 3 );
+add_filter( 'acf/fields/relationship/query/name=themesettings_conference_event', 'gc_conf_acf_relationshipfield_only_use_published_content', 10, 3 );
 
-function acf_relationshipfield_only_use_published_content( $options, $field, $post_id ) {
-	$options['post_status'] = [ 'publish' ];
+if ( ! function_exists( 'gc_conf_acf_relationshipfield_only_use_published_content' ) ) {
 
-	return $options;
+	function gc_conf_acf_relationshipfield_only_use_published_content( $options, $field, $post_id ) {
+		$options['post_status'] = [ 'publish' ];
+
+		return $options;
+	}
+
 }
 
 //========================================================================================================
