@@ -11,9 +11,10 @@ This allows for _correctly_ saving bidirectional relationships between speakers 
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.3.2 - Better prefix for ACF filter.
+2.4.1 - Removed option to store ACF definitions in acf-json folder in this plugin.
 
 ## Version history
+* 2.4.1 - Removed option to store ACF definitions in acf-json folder in this plugin.
 * 2.3.2 - Better prefix for ACF filter.
 * 2.3.1 - Extra labels for session overview, and on single session display.
 * 2.2.2 - Doubled image size to improve display of speaker photos.

@@ -8,7 +8,7 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.3.2
+ * Version:             2.4.1
  * Version description: Better prefix for ACF filter.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
@@ -32,7 +32,7 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.3.2' );
+define( 'ICTU_GC_CONF_VERSION', '2.4.1' );
 
 if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
 	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
@@ -2330,44 +2330,6 @@ function fn_ictu_gcconf_load_plugin_textdomain() {
 	load_plugin_textdomain( 'ictuwp-plugin-conference', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 }
-
-//========================================================================================================
-
-/**
- * Have the ACF (advanced custom fields) plugin read the settings from this plugin's acf-json folder
- *
- * @since    1.0.0
- */
-function fn_ictu_gcconf_add_acf_folder( $paths ) {
-
-	// append path
-	$paths[] = plugin_dir_path( __FILE__ ) . 'acf-json';
-
-	// return
-	return $paths;
-
-}
-
-add_filter( 'acf/settings/load_json', 'fn_ictu_gcconf_add_acf_folder' );
-
-//========================================================================================================
-
-/**
- * Have the ACF (advanced custom fields) plugin save settings to a json file in this plugin's acf-json folder
- *
- * @since    1.0.0
- */
-function fn_ictu_gcconf_acf_json_save_point( $path ) {
-
-	// update path
-	$path = plugin_dir_path( __FILE__ ) . 'acf-json';
-
-	// return
-	return $path;
-
-}
-
-add_filter( 'acf/settings/save_json', 'fn_ictu_gcconf_acf_json_save_point' );
 
 //========================================================================================================
 
