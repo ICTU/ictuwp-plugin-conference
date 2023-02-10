@@ -67,11 +67,11 @@ if ( ! defined( 'GC_CONF_COUNTRY_TAX' ) ) {
 }
 
 if ( ! defined( 'GC_CONF_SPEAKER_IMG_SIZE' ) ) {
-	define( 'GC_CONF_SPEAKER_IMG_SIZE', 'speaker-image-size' );
+	define( 'GC_CONF_SPEAKER_IMG_SIZE', 'speaker-image-size' );  // image size, prev. SPEAKER_IMG_SIZE
 }
 
 if ( ! defined( 'GC_CONF_SHOW_DATETIMES' ) ) {
-	define( 'GC_CONF_SHOW_DATETIMES', true );
+	define( 'GC_CONF_SHOW_DATETIMES', true );  // flag to display times, prev. GC_CONF_SHOW_DATETIMES
 //	define( 'GC_CONF_SHOW_DATETIMES', false );
 }
 
