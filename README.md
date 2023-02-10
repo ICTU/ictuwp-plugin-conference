@@ -11,9 +11,10 @@ This allows for _correctly_ saving bidirectional relationships between speakers 
 * Paul van Buuren: paul@wbvb.nl
 
 ## Current version:
-2.4.1 - Removed option to store ACF definitions in acf-json folder in this plugin.
+2.5.1 - Renamed constants to comply with GC standards.
 
 ## Version history
+* 2.5.1 - Renamed constants to comply with GC standards.
 * 2.4.1 - Removed option to store ACF definitions in acf-json folder in this plugin.
 * 2.3.2 - Better prefix for ACF filter.
 * 2.3.1 - Extra labels for session overview, and on single session display.

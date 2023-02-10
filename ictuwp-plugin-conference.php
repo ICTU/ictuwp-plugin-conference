@@ -8,8 +8,8 @@
  * Plugin Name:         ICTU / Gebruiker Centraal / Conference post types and taxonomies
  * Plugin URI:          https://github.com/ICTU/Gebruiker-Centraal---Inclusie---custom-post-types-taxonomies
  * Description:         Plugin for conference.gebruikercentraal.nl to register custom post types and custom taxonomies
- * Version:             2.4.1
- * Version description: Better prefix for ACF filter.
+ * Version:             2.5.1
+ * Version description: Renamed constants to comply with GC standards.
  * Author:              Paul van Buuren
  * Author URI:          https://wbvb.nl/
  * License:             GPL-2.0+
@@ -32,47 +32,47 @@ add_action( 'plugins_loaded', array( 'ICTU_GC_conference', 'init' ), 10 );
 define( 'ICTU_GC_CONF_ARCHIVE_CSS', 'ictu-gcconf-archive-css' );
 define( 'ICTU_GC_CONF_BASE_URL', trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
-define( 'ICTU_GC_CONF_VERSION', '2.4.1' );
+define( 'ICTU_GC_CONF_VERSION', '2.5.1' );
 
-if ( ! defined( 'ICTU_GCCONF_CPT_SPEAKER' ) ) {
-	define( 'ICTU_GCCONF_CPT_SPEAKER', 'speaker' );   // slug for custom taxonomy 'speaker'
+if ( ! defined( 'GC_CONF_SPEAKER_CPT' ) ) {
+	define( 'GC_CONF_SPEAKER_CPT', 'speaker' );   // slug for custom post type 'speaker', prev. ICTU_GCCONF_CPT_SPEAKER
 }
 
-if ( ! defined( 'ICTU_GCCONF_CPT_SESSION' ) ) {
-	define( 'ICTU_GCCONF_CPT_SESSION', 'session' );   // slug for custom taxonomy 'session' (i.e. workshop)
+if ( ! defined( 'GC_CONF_SESSION_CPT' ) ) {
+	define( 'GC_CONF_SESSION_CPT', 'session' );   // slug for custom post type 'session' (i.e. workshop), prev. ICTU_GCCONF_CPT_SESSION
 }
 
-if ( ! defined( 'ICTU_GCCONF_CPT_KEYNOTE' ) ) {
-	define( 'ICTU_GCCONF_CPT_KEYNOTE', 'keynote' );  // slug for custom post type 'keynote'
+if ( ! defined( 'GC_CONF_KEYNOTE_CPT' ) ) {
+	define( 'GC_CONF_KEYNOTE_CPT', 'keynote' );  // slug for custom post type 'keynote', prev. ICTU_GCCONF_CPT_KEYNOTE
 }
 
-if ( ! defined( 'ICTU_GCCONF_CT_TIMESLOT' ) ) {
-	define( 'ICTU_GCCONF_CT_TIMESLOT', 'timeslot' );  // slug for custom taxonomy 'timeslot'
+if ( ! defined( 'GC_CONF_TIMESLOT_TAX' ) ) {
+	define( 'GC_CONF_TIMESLOT_TAX', 'timeslot' );  // slug for custom taxonomy 'timeslot', prev. ICTU_GCCONF_CT_TIMESLOT
 }
 
-if ( ! defined( 'ICTU_GCCONF_CT_LOCATION' ) ) {
-	define( 'ICTU_GCCONF_CT_LOCATION', 'location' );  // slug for custom taxonomy 'location'
+if ( ! defined( 'GC_CONF_LOCATION_TAX' ) ) {
+	define( 'GC_CONF_LOCATION_TAX', 'location' );  // slug for custom taxonomy 'location', prev. ICTU_GCCONF_CT_LOCATION
 }
 
-if ( ! defined( 'ICTU_GCCONF_CT_SESSIONTYPE' ) ) {
-	define( 'ICTU_GCCONF_CT_SESSIONTYPE', 'sessiontype' );  // slug for custom taxonomy 'sessiontype'
+if ( ! defined( 'GC_CONF_SESSIONTYPE_TAX' ) ) {
+	define( 'GC_CONF_SESSIONTYPE_TAX', 'sessiontype' );  // slug for custom taxonomy 'sessiontype', prev. ICTU_GCCONF_CT_SESSIONTYPE
 }
 
-if ( ! defined( 'ICTU_GCCONF_CT_LEVEL' ) ) {
-	define( 'ICTU_GCCONF_CT_LEVEL', 'expertise' );  // slug for custom taxonomy 'expertise' (workshop level)
+if ( ! defined( 'GC_CONF_EXPERTLEVEL_TAX' ) ) {
+	define( 'GC_CONF_EXPERTLEVEL_TAX', 'expertise' );  // slug for custom taxonomy 'expertise' (workshop level), prev. ICTU_GCCONF_CT_LEVEL
 }
 
-if ( ! defined( 'ICTU_GCCONF_CT_COUNTRY' ) ) {
-	define( 'ICTU_GCCONF_CT_COUNTRY', 'speakercountry' );  // slug for custom taxonomy for a speaker's country
+if ( ! defined( 'GC_CONF_COUNTRY_TAX' ) ) {
+	define( 'GC_CONF_COUNTRY_TAX', 'speakercountry' );  // slug for custom taxonomy for a speaker's country, prev. ICTU_GCCONF_CT_COUNTRY
 }
 
-if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
-	define( 'SPEAKER_IMG_SIZE', 'speaker-image-size' );
+if ( ! defined( 'GC_CONF_SPEAKER_IMG_SIZE' ) ) {
+	define( 'GC_CONF_SPEAKER_IMG_SIZE', 'speaker-image-size' );  // image size, prev. SPEAKER_IMG_SIZE
 }
 
-if ( ! defined( 'CONF_SHOW_DATETIMES' ) ) {
-	define( 'CONF_SHOW_DATETIMES', true );
-//	define( 'CONF_SHOW_DATETIMES', false );
+if ( ! defined( 'GC_CONF_SHOW_DATETIMES' ) ) {
+	define( 'GC_CONF_SHOW_DATETIMES', true );  // flag to display times, prev. GC_CONF_SHOW_DATETIMES
+//	define( 'GC_CONF_SHOW_DATETIMES', false );
 }
 
 if ( WP_DEBUG ) {
@@ -177,8 +177,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
-//			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
-			add_image_size( SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.3.1
+//			add_image_size( GC_CONF_SPEAKER_IMG_SIZE, 148, 171, true );
+			add_image_size( GC_CONF_SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.3.1
 
 			// add a page temlate name
 			$this->templates                     = array();
@@ -216,11 +216,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 		/** ----------------------------------------------------------------------------------------------------
 		 * Add a custom loop, used by these CPTs:
-		 * ICTU_GCCONF_CT_LOCATION
-		 * ICTU_GCCONF_CT_SESSIONTYPE
-		 * ICTU_GCCONF_CT_LEVEL
-		 * ICTU_GCCONF_CT_COUNTRY
-		 * ICTU_GCCONF_CT_TIMESLOT
+		 * GC_CONF_LOCATION_TAX
+		 * GC_CONF_SESSIONTYPE_TAX
+		 * GC_CONF_EXPERTLEVEL_TAX
+		 * GC_CONF_COUNTRY_TAX
+		 * GC_CONF_TIMESLOT_TAX
 		 *
 		 * @return void
 		 */
@@ -231,11 +231,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$colcount = 'grid--col-3';
 
 			if (
-				( is_tax( ICTU_GCCONF_CT_LOCATION ) ) ||
-				( is_tax( ICTU_GCCONF_CT_SESSIONTYPE ) ) ||
-				( is_tax( ICTU_GCCONF_CT_LEVEL ) ) ||
-				( is_tax( ICTU_GCCONF_CT_COUNTRY ) ) ||
-				( is_tax( ICTU_GCCONF_CT_TIMESLOT ) )
+				( is_tax( GC_CONF_LOCATION_TAX ) ) ||
+				( is_tax( GC_CONF_SESSIONTYPE_TAX ) ) ||
+				( is_tax( GC_CONF_EXPERTLEVEL_TAX ) ) ||
+				( is_tax( GC_CONF_COUNTRY_TAX ) ) ||
+				( is_tax( GC_CONF_TIMESLOT_TAX ) )
 			) {
 				$colcount = 'grid--col-2';
 			}
@@ -254,11 +254,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 						'titletag' => 'h2',
 					);
 
-					if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+					if ( $type === GC_CONF_SPEAKER_CPT ) {
 
 						echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
 
-					} elseif ( $type === ICTU_GCCONF_CPT_KEYNOTE ) {
+					} elseif ( $type === GC_CONF_KEYNOTE_CPT ) {
 
 						echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 
@@ -715,18 +715,18 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
 
-			} elseif ( is_post_type_archive( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+			} elseif ( is_post_type_archive( GC_CONF_KEYNOTE_CPT ) ) {
 
 				/** Replace the standard loop with our custom loop */
 				remove_action( 'genesis_loop', 'genesis_do_loop' );
 				remove_action( 'genesis_loop', 'gc_wbvb_archive_loop' );
 
 			} elseif (
-				( is_tax( ICTU_GCCONF_CT_LOCATION ) ) ||
-				( is_tax( ICTU_GCCONF_CT_SESSIONTYPE ) ) ||
-				( is_tax( ICTU_GCCONF_CT_LEVEL ) ) ||
-				( is_tax( ICTU_GCCONF_CT_COUNTRY ) ) ||
-				( is_tax( ICTU_GCCONF_CT_TIMESLOT ) )
+				( is_tax( GC_CONF_LOCATION_TAX ) ) ||
+				( is_tax( GC_CONF_SESSIONTYPE_TAX ) ) ||
+				( is_tax( GC_CONF_EXPERTLEVEL_TAX ) ) ||
+				( is_tax( GC_CONF_COUNTRY_TAX ) ) ||
+				( is_tax( GC_CONF_TIMESLOT_TAX ) )
 			) {
 
 				//Removes Title and Description on Archive, Taxonomy, Category, Tag
@@ -740,7 +740,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_action( 'genesis_loop', array( $this, 'fn_ictu_gcconf_tax_loop' ) );
 
 
-			} elseif ( ICTU_GCCONF_CPT_SPEAKER == get_post_type() ) {
+			} elseif ( GC_CONF_SPEAKER_CPT == get_post_type() ) {
 
 				//* Force full-width-content layout
 				add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
@@ -758,7 +758,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				add_action( 'genesis_entry_content', array( $this, 'gcconf_append_speaker_weblinks' ), 12 );
 
 
-			} elseif ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
+			} elseif ( is_singular( GC_CONF_SESSION_CPT ) ) {
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -769,7 +769,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				add_action( 'genesis_entry_content', array( $this, 'fn_ictu_gcconf_frontend_append_speakers' ), 14 );
 
-			} elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+			} elseif ( is_singular( GC_CONF_KEYNOTE_CPT ) ) {
 
 				// add extra class, to make the title BIGGERDER
 				add_filter( 'genesis_attr_entry', array( $this, 'fn_ictu_gcconf_add_class_inleiding_to_entry' ) );
@@ -804,7 +804,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$country = '';
 
 			$countrycounter = 0;
-			$county_term    = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_COUNTRY );
+			$county_term    = wp_get_post_terms( $post->ID, GC_CONF_COUNTRY_TAX );
 			$jobtitle       = get_field( 'speaker_jobtitle', $post->ID );
 
 
@@ -890,7 +890,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 							'speakernames' => false,
 						);
 
-						if ( $posttype === ICTU_GCCONF_CPT_KEYNOTE ) {
+						if ( $posttype === GC_CONF_KEYNOTE_CPT ) {
 							// current post is a keynote
 							$keynotessessions .= $this->fn_ictu_gcconf_frontend_write_keynotecard( $args2 );
 
@@ -1027,9 +1027,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$list_of_speakers = get_field( 'speaker_session_keynote_relations', $args['ID'] );
 			$speakernames     = '';
 
-			if ( CONF_SHOW_DATETIMES ) {
-				$time_term     = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
-				$location_term = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
+			if ( GC_CONF_SHOW_DATETIMES ) {
+				$time_term     = wp_get_post_terms( $args['ID'], GC_CONF_TIMESLOT_TAX );
+				$location_term = wp_get_post_terms( $args['ID'], GC_CONF_LOCATION_TAX );
 			} else {
 				$time_term     = '';
 				$location_term = '';
@@ -1095,7 +1095,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 					$countrynames = '';
 					$speakernames .= '<dd>';
 
-					$county_term = wp_get_post_terms( $speaker->ID, ICTU_GCCONF_CT_COUNTRY );
+					$county_term = wp_get_post_terms( $speaker->ID, GC_CONF_COUNTRY_TAX );
 
 					if ( $county_term && ! is_wp_error( $county_term ) ) {
 						$countrynames   = ' (';
@@ -1137,13 +1137,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				foreach ( $list_of_speakers as $speaker ):
 
 					if ( has_post_thumbnail( $speaker ) ) {
-						$return .= get_the_post_thumbnail( $speaker, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+						$return .= get_the_post_thumbnail( $speaker, GC_CONF_SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
 					} else {
 						//
 						$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
 						if ( is_array( $arr_speaker_images ) ) {
 							$randomid = array_rand( $arr_speaker_images, 1 );
-							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], GC_CONF_SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
 						}
 
 					}
@@ -1244,17 +1244,17 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			if ( CONF_SHOW_DATETIMES ) {
+			if ( GC_CONF_SHOW_DATETIMES ) {
 				// taxonomy info for timeslots and locations
-				$time_term     = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_TIMESLOT );
-				$location_term = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_LOCATION );
+				$time_term     = wp_get_post_terms( $args['ID'], GC_CONF_TIMESLOT_TAX );
+				$location_term = wp_get_post_terms( $args['ID'], GC_CONF_LOCATION_TAX );
 			} else {
 				$time_term     = '';
 				$location_term = '';
 			}
 
 			// get session type
-			$sessiontypes     = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_SESSIONTYPE );
+			$sessiontypes     = wp_get_post_terms( $args['ID'], GC_CONF_SESSIONTYPE_TAX );
 			$list_of_speakers = get_field( 'relation_x1315x_speaker_vv_session', $post->ID );
 			$section_title    = get_the_title( $args['ID'] );
 			$title_id         = sanitize_title( $section_title );
@@ -1406,12 +1406,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			/* Set image */
 			if ( has_post_thumbnail( $args['ID'] ) ) {
-				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE ) . '</figure>';
+				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], GC_CONF_SPEAKER_IMG_SIZE ) . '</figure>';
 			} else {
 				$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
 				if ( is_array( $arr_speaker_images ) ) {
 					$randomid = array_rand( $arr_speaker_images, 1 );
-					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false ) . '</figure>';
+					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], GC_CONF_SPEAKER_IMG_SIZE, false ) . '</figure>';
 				}
 			}
 
@@ -1421,7 +1421,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			$meta_items[] = ( get_field( 'speaker_jobtitle', $args['ID'] ) ? get_field( 'speaker_jobtitle', $args['ID'] ) : '' );
 			$objects      = get_field( 'speaker_session_keynote_relations', $args['ID'] );
-			$county_term  = wp_get_post_terms( $args['ID'], ICTU_GCCONF_CT_COUNTRY );
+			$county_term  = wp_get_post_terms( $args['ID'], GC_CONF_COUNTRY_TAX );
 
 			foreach ( $meta_items as $meta ) {
 				$meta_data .= '<span class="meta-data__item">' . $meta . '</span>';
@@ -1479,9 +1479,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			if ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
-			} elseif ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
-			} elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+			if ( is_singular( GC_CONF_SESSION_CPT ) ) {
+			} elseif ( is_singular( GC_CONF_SPEAKER_CPT ) ) {
+			} elseif ( is_singular( GC_CONF_KEYNOTE_CPT ) ) {
 			} elseif ( is_page() ) {
 
 				$the_id            = $post->ID;
@@ -1502,18 +1502,18 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				if ( $speaker_page->ID === $the_id ) {
 					// it is the speaker page
 					$docheck = true;
-					$type    = ICTU_GCCONF_CPT_SPEAKER;
+					$type    = GC_CONF_SPEAKER_CPT;
 				} elseif ( $keynote_page->ID === $the_id ) {
 					// it is the keynote page
 					$docheck = true;
-					$type    = ICTU_GCCONF_CPT_KEYNOTE;
+					$type    = GC_CONF_KEYNOTE_CPT;
 				} elseif ( $session_page->ID === $the_id ) {
 					// it is the session page
 					$docheck = true;
-					$type    = ICTU_GCCONF_CPT_SESSION;
+					$type    = GC_CONF_SESSION_CPT;
 				}
 
-				if ( $type === ICTU_GCCONF_CPT_SPEAKER ) {
+				if ( $type === GC_CONF_SPEAKER_CPT ) {
 					$colcount = 'grid--col-3';
 				}
 
@@ -1540,11 +1540,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 								'titletag' => 'h2',
 							);
 
-							if ( $currentposttype === ICTU_GCCONF_CPT_SPEAKER ) {
+							if ( $currentposttype === GC_CONF_SPEAKER_CPT ) {
 
 								echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
 
-							} elseif ( $currentposttype === ICTU_GCCONF_CPT_KEYNOTE ) {
+							} elseif ( $currentposttype === GC_CONF_KEYNOTE_CPT ) {
 
 								echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 
@@ -1594,11 +1594,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 									'titletag' => 'h2',
 								);
 
-								if ( $currentposttype === ICTU_GCCONF_CPT_SPEAKER ) {
+								if ( $currentposttype === GC_CONF_SPEAKER_CPT ) {
 
 									echo $this->fn_ictu_gcconf_frontend_write_speakercard( $args );
 
-								} elseif ( $currentposttype === ICTU_GCCONF_CPT_KEYNOTE ) {
+								} elseif ( $currentposttype === GC_CONF_KEYNOTE_CPT ) {
 
 									echo $this->fn_ictu_gcconf_frontend_write_keynotecard( $args );
 
@@ -1621,7 +1621,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
-			if ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) || is_singular( 'page' ) ) {
+			if ( is_singular( GC_CONF_SPEAKER_CPT ) || is_singular( 'page' ) ) {
 				//
 			}
 
@@ -1639,7 +1639,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			if ( has_post_thumbnail( $post ) ) {
 				echo '<span class="speaker-image">';
-				echo get_the_post_thumbnail( $post, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
+				echo get_the_post_thumbnail( $post, GC_CONF_SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
 				echo '</span>';
 			}
 			echo '<span class="speaker-bio">';
@@ -1657,13 +1657,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			global $post;
 
-			$session_type  = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_SESSIONTYPE );
-			$session_level = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_LEVEL );
+			$session_type  = wp_get_post_terms( $post->ID, GC_CONF_SESSIONTYPE_TAX );
+			$session_level = wp_get_post_terms( $post->ID, GC_CONF_EXPERTLEVEL_TAX );
 			$metainfo      = '';
 
-			if ( CONF_SHOW_DATETIMES ) {
-				$time_term     = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_TIMESLOT );
-				$location_term = wp_get_post_terms( $post->ID, ICTU_GCCONF_CT_LOCATION );
+			if ( GC_CONF_SHOW_DATETIMES ) {
+				$time_term     = wp_get_post_terms( $post->ID, GC_CONF_TIMESLOT_TAX );
+				$location_term = wp_get_post_terms( $post->ID, GC_CONF_LOCATION_TAX );
 			} else {
 				$time_term     = '';
 				$location_term = '';
@@ -1676,7 +1676,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 				foreach ( $time_term as $term ) {
 					// make these clickable
-					// $names[] = '<a href="' . get_term_link( $term->term_id, ICTU_GCCONF_CT_TIMESLOT ) . '">' . $term->name . '</a>';
+					// $names[] = '<a href="' . get_term_link( $term->term_id, GC_CONF_TIMESLOT_TAX ) . '">' . $term->name . '</a>';
 					$names[] = $term->name;
 				}
 
@@ -1771,11 +1771,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"capability_type"     => "post",
 				"map_meta_cap"        => true,
 				"hierarchical"        => false,
-				"rewrite"             => array( "slug" => ICTU_GCCONF_CPT_SESSION, "with_front" => true ),
+				"rewrite"             => array( "slug" => GC_CONF_SESSION_CPT, "with_front" => true ),
 				"query_var"           => true,
 				"supports"            => array( "title", "editor", "excerpt" ),
 			);
-			register_post_type( ICTU_GCCONF_CPT_SESSION, $args );
+			register_post_type( GC_CONF_SESSION_CPT, $args );
 
 			// ---------------------------------------------------------------------------------------------------
 			// custom post type voor 'keynote'
@@ -1814,11 +1814,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"capability_type"     => "post",
 				"map_meta_cap"        => true,
 				"hierarchical"        => false,
-				"rewrite"             => array( "slug" => ICTU_GCCONF_CPT_KEYNOTE, "with_front" => true ),
+				"rewrite"             => array( "slug" => GC_CONF_KEYNOTE_CPT, "with_front" => true ),
 				"query_var"           => true,
 				"supports"            => array( "title", "editor", "excerpt" ),
 			);
-			register_post_type( ICTU_GCCONF_CPT_KEYNOTE, $args );
+			register_post_type( GC_CONF_KEYNOTE_CPT, $args );
 
 
 			// ---------------------------------------------------------------------------------------------------
@@ -1857,11 +1857,11 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"capability_type"     => "post",
 				"map_meta_cap"        => true,
 				"hierarchical"        => false,
-				"rewrite"             => array( "slug" => ICTU_GCCONF_CPT_SPEAKER, "with_front" => true ),
+				"rewrite"             => array( "slug" => GC_CONF_SPEAKER_CPT, "with_front" => true ),
 				"query_var"           => true,
 				"supports"            => array( "title", "editor", "thumbnail", "excerpt" ),
 			);
-			register_post_type( ICTU_GCCONF_CPT_SPEAKER, $args );
+			register_post_type( GC_CONF_SPEAKER_CPT, $args );
 
 
 			// ---------------------------------------------------------------------------------------------------
@@ -1899,15 +1899,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"show_in_menu"       => true,
 				"show_in_nav_menus"  => true,
 				"query_var"          => true,
-				"rewrite"            => array( 'slug' => ICTU_GCCONF_CT_TIMESLOT, 'with_front' => true, ),
+				"rewrite"            => array( 'slug' => GC_CONF_TIMESLOT_TAX, 'with_front' => true, ),
 				"show_admin_column"  => false,
 				"show_in_rest"       => false,
 				"rest_base"          => "",
 				"show_in_quick_edit" => true,
 			);
-			register_taxonomy( ICTU_GCCONF_CT_TIMESLOT, array(
-				ICTU_GCCONF_CPT_KEYNOTE,
-				ICTU_GCCONF_CPT_SESSION
+			register_taxonomy( GC_CONF_TIMESLOT_TAX, array(
+				GC_CONF_KEYNOTE_CPT,
+				GC_CONF_SESSION_CPT
 			), $args );
 
 
@@ -1946,13 +1946,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"show_in_menu"       => true,
 				"show_in_nav_menus"  => true,
 				"query_var"          => true,
-				"rewrite"            => array( 'slug' => ICTU_GCCONF_CT_SESSIONTYPE, 'with_front' => true, ),
+				"rewrite"            => array( 'slug' => GC_CONF_SESSIONTYPE_TAX, 'with_front' => true, ),
 				"show_admin_column"  => false,
 				"show_in_rest"       => false,
 				"rest_base"          => "",
 				"show_in_quick_edit" => true,
 			);
-			register_taxonomy( ICTU_GCCONF_CT_SESSIONTYPE, array( ICTU_GCCONF_CPT_SESSION ), $args );
+			register_taxonomy( GC_CONF_SESSIONTYPE_TAX, array( GC_CONF_SESSION_CPT ), $args );
 
 			// ---------------------------------------------------------------------------------------------------
 			// Expertise taxonomie voor methode
@@ -1989,13 +1989,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"show_in_menu"       => true,
 				"show_in_nav_menus"  => true,
 				"query_var"          => true,
-				"rewrite"            => array( 'slug' => ICTU_GCCONF_CT_LEVEL, 'with_front' => true, ),
+				"rewrite"            => array( 'slug' => GC_CONF_EXPERTLEVEL_TAX, 'with_front' => true, ),
 				"show_admin_column"  => false,
 				"show_in_rest"       => false,
 				"rest_base"          => "",
 				"show_in_quick_edit" => true,
 			);
-			register_taxonomy( ICTU_GCCONF_CT_LEVEL, array( ICTU_GCCONF_CPT_SESSION ), $args );
+			register_taxonomy( GC_CONF_EXPERTLEVEL_TAX, array( GC_CONF_SESSION_CPT ), $args );
 
 			// ---------------------------------------------------------------------------------------------------
 			// Expertise taxonomie voor methode
@@ -2032,15 +2032,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"show_in_menu"       => true,
 				"show_in_nav_menus"  => true,
 				"query_var"          => true,
-				"rewrite"            => array( 'slug' => ICTU_GCCONF_CT_LOCATION, 'with_front' => true, ),
+				"rewrite"            => array( 'slug' => GC_CONF_LOCATION_TAX, 'with_front' => true, ),
 				"show_admin_column"  => false,
 				"show_in_rest"       => false,
 				"rest_base"          => "",
 				"show_in_quick_edit" => true,
 			);
-			register_taxonomy( ICTU_GCCONF_CT_LOCATION, array(
-				ICTU_GCCONF_CPT_SESSION,
-				ICTU_GCCONF_CPT_KEYNOTE
+			register_taxonomy( GC_CONF_LOCATION_TAX, array(
+				GC_CONF_SESSION_CPT,
+				GC_CONF_KEYNOTE_CPT
 			), $args );
 
 			// ---------------------------------------------------------------------------------------------------
@@ -2078,19 +2078,19 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				"show_in_menu"       => true,
 				"show_in_nav_menus"  => true,
 				"query_var"          => true,
-				"rewrite"            => array( 'slug' => ICTU_GCCONF_CT_COUNTRY, 'with_front' => true, ),
+				"rewrite"            => array( 'slug' => GC_CONF_COUNTRY_TAX, 'with_front' => true, ),
 				"show_admin_column"  => false,
 				"show_in_rest"       => false,
 				"rest_base"          => "",
 				"show_in_quick_edit" => true,
 			);
-			register_taxonomy( ICTU_GCCONF_CT_COUNTRY, array( ICTU_GCCONF_CPT_SPEAKER ), $args );
+			register_taxonomy( GC_CONF_COUNTRY_TAX, array( GC_CONF_SPEAKER_CPT ), $args );
 
 			// ---------------------------------------------------------------------------------------------------
 
 			// make tags available to keynotes and sessions
-			register_taxonomy_for_object_type( 'post_tag', ICTU_GCCONF_CPT_KEYNOTE );
-			register_taxonomy_for_object_type( 'post_tag', ICTU_GCCONF_CPT_SESSION );
+			register_taxonomy_for_object_type( 'post_tag', GC_CONF_KEYNOTE_CPT );
+			register_taxonomy_for_object_type( 'post_tag', GC_CONF_SESSION_CPT );
 
 			// ---------------------------------------------------------------------------------------------------
 
@@ -2125,9 +2125,9 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				( $currentpageid === $pageid_speakers->ID ) ||
 				( $currentpageid === $pageid_keynotes->ID ) ||
 				( $currentpageid === $pageid_sessions->ID ) ||
-				is_singular( ICTU_GCCONF_CPT_SESSION ) ||
-				is_singular( ICTU_GCCONF_CPT_SPEAKER ) ||
-				is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+				is_singular( GC_CONF_SESSION_CPT ) ||
+				is_singular( GC_CONF_SPEAKER_CPT ) ||
+				is_singular( GC_CONF_KEYNOTE_CPT ) ) {
 				// alleen voor single sessions / speakers / keynotes, of als de huidige pagina 1 van de 3 overzichtspagina's is
 				$eventformpage = get_field( 'themesettings_conference_event', 'option' );
 				if ( $eventformpage ) {
@@ -2137,7 +2137,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				}
 			}
 
-			if ( is_singular( ICTU_GCCONF_CPT_SESSION ) || is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
+			if ( is_singular( GC_CONF_SESSION_CPT ) || is_singular( GC_CONF_SPEAKER_CPT ) ) {
 
 				$crumb = get_the_title( get_the_id() );
 
@@ -2145,15 +2145,15 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			// -------------------------------------------------------------------------------------------------
 
-			if ( is_singular( ICTU_GCCONF_CPT_SPEAKER ) ) {
+			if ( is_singular( GC_CONF_SPEAKER_CPT ) ) {
 
 				$pageid_overview = $pageid_speakers;
 
-			} elseif ( is_singular( ICTU_GCCONF_CPT_KEYNOTE ) ) {
+			} elseif ( is_singular( GC_CONF_KEYNOTE_CPT ) ) {
 
 				$pageid_overview = $pageid_keynotes;
 
-			} elseif ( is_singular( ICTU_GCCONF_CPT_SESSION ) ) {
+			} elseif ( is_singular( GC_CONF_SESSION_CPT ) ) {
 
 				$pageid_overview = $pageid_sessions;
 
