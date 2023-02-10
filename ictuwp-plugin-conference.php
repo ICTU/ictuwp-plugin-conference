@@ -35,11 +35,11 @@ define( 'ICTU_GC_CONF_ASSETS_URL', trailingslashit( ICTU_GC_CONF_BASE_URL ) );
 define( 'ICTU_GC_CONF_VERSION', '2.5.1' );
 
 if ( ! defined( 'GC_CONF_SPEAKER_CPT' ) ) {
-	define( 'GC_CONF_SPEAKER_CPT', 'speaker' );   // slug for custom taxonomy 'speaker', prev. ICTU_GCCONF_CPT_SPEAKER
+	define( 'GC_CONF_SPEAKER_CPT', 'speaker' );   // slug for custom post type 'speaker', prev. ICTU_GCCONF_CPT_SPEAKER
 }
 
 if ( ! defined( 'GC_CONF_SESSION_CPT' ) ) {
-	define( 'GC_CONF_SESSION_CPT', 'session' );   // slug for custom taxonomy 'session' (i.e. workshop), prev. ICTU_GCCONF_CPT_SESSION
+	define( 'GC_CONF_SESSION_CPT', 'session' );   // slug for custom post type 'session' (i.e. workshop), prev. ICTU_GCCONF_CPT_SESSION
 }
 
 if ( ! defined( 'GC_CONF_KEYNOTE_CPT' ) ) {
