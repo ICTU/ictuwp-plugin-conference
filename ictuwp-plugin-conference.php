@@ -66,13 +66,13 @@ if ( ! defined( 'GC_CONF_COUNTRY_TAX' ) ) {
 	define( 'GC_CONF_COUNTRY_TAX', 'speakercountry' );  // slug for custom taxonomy for a speaker's country, prev. ICTU_GCCONF_CT_COUNTRY
 }
 
-if ( ! defined( 'SPEAKER_IMG_SIZE' ) ) {
-	define( 'SPEAKER_IMG_SIZE', 'speaker-image-size' );
+if ( ! defined( 'GC_CONF_SPEAKER_IMG_SIZE' ) ) {
+	define( 'GC_CONF_SPEAKER_IMG_SIZE', 'speaker-image-size' );
 }
 
-if ( ! defined( 'CONF_SHOW_DATETIMES' ) ) {
-	define( 'CONF_SHOW_DATETIMES', true );
-//	define( 'CONF_SHOW_DATETIMES', false );
+if ( ! defined( 'GC_CONF_SHOW_DATETIMES' ) ) {
+	define( 'GC_CONF_SHOW_DATETIMES', true );
+//	define( 'GC_CONF_SHOW_DATETIMES', false );
 }
 
 if ( WP_DEBUG ) {
@@ -177,8 +177,8 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			}
 
-//			add_image_size( SPEAKER_IMG_SIZE, 148, 171, true );
-			add_image_size( SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.3.1
+//			add_image_size( GC_CONF_SPEAKER_IMG_SIZE, 148, 171, true );
+			add_image_size( GC_CONF_SPEAKER_IMG_SIZE, 444, 513, true ); // version 2.3.1
 
 			// add a page temlate name
 			$this->templates                     = array();
@@ -1027,7 +1027,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$list_of_speakers = get_field( 'speaker_session_keynote_relations', $args['ID'] );
 			$speakernames     = '';
 
-			if ( CONF_SHOW_DATETIMES ) {
+			if ( GC_CONF_SHOW_DATETIMES ) {
 				$time_term     = wp_get_post_terms( $args['ID'], GC_CONF_TIMESLOT_TAX );
 				$location_term = wp_get_post_terms( $args['ID'], GC_CONF_LOCATION_TAX );
 			} else {
@@ -1137,13 +1137,13 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 				foreach ( $list_of_speakers as $speaker ):
 
 					if ( has_post_thumbnail( $speaker ) ) {
-						$return .= get_the_post_thumbnail( $speaker, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+						$return .= get_the_post_thumbnail( $speaker, GC_CONF_SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
 					} else {
 						//
 						$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
 						if ( is_array( $arr_speaker_images ) ) {
 							$randomid = array_rand( $arr_speaker_images, 1 );
-							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
+							$return   .= wp_get_attachment_image( $arr_speaker_images[ $randomid ], GC_CONF_SPEAKER_IMG_SIZE, false, array( 'class' => 'speaker-thumbnail thumbnail alignleft' ) );
 						}
 
 					}
@@ -1244,7 +1244,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			}
 
 
-			if ( CONF_SHOW_DATETIMES ) {
+			if ( GC_CONF_SHOW_DATETIMES ) {
 				// taxonomy info for timeslots and locations
 				$time_term     = wp_get_post_terms( $args['ID'], GC_CONF_TIMESLOT_TAX );
 				$location_term = wp_get_post_terms( $args['ID'], GC_CONF_LOCATION_TAX );
@@ -1406,12 +1406,12 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			/* Set image */
 			if ( has_post_thumbnail( $args['ID'] ) ) {
-				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], SPEAKER_IMG_SIZE ) . '</figure>';
+				$image = '<figure class="' . $args['type'] . '__image">' . get_the_post_thumbnail( $args['ID'], GC_CONF_SPEAKER_IMG_SIZE ) . '</figure>';
 			} else {
 				$arr_speaker_images = get_field( 'fallback_for_speaker_images', 'option' );
 				if ( is_array( $arr_speaker_images ) ) {
 					$randomid = array_rand( $arr_speaker_images, 1 );
-					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], SPEAKER_IMG_SIZE, false ) . '</figure>';
+					$image    = '<figure class="' . $args['type'] . '__image">' . wp_get_attachment_image( $arr_speaker_images[ $randomid ], GC_CONF_SPEAKER_IMG_SIZE, false ) . '</figure>';
 				}
 			}
 
@@ -1639,7 +1639,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 
 			if ( has_post_thumbnail( $post ) ) {
 				echo '<span class="speaker-image">';
-				echo get_the_post_thumbnail( $post, SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
+				echo get_the_post_thumbnail( $post, GC_CONF_SPEAKER_IMG_SIZE, array( 'class' => 'speaker-thumbnail thumbnail alignright' ) );
 				echo '</span>';
 			}
 			echo '<span class="speaker-bio">';
@@ -1661,7 +1661,7 @@ if ( ! class_exists( 'ICTU_GC_conference' ) ) :
 			$session_level = wp_get_post_terms( $post->ID, GC_CONF_EXPERTLEVEL_TAX );
 			$metainfo      = '';
 
-			if ( CONF_SHOW_DATETIMES ) {
+			if ( GC_CONF_SHOW_DATETIMES ) {
 				$time_term     = wp_get_post_terms( $post->ID, GC_CONF_TIMESLOT_TAX );
 				$location_term = wp_get_post_terms( $post->ID, GC_CONF_LOCATION_TAX );
 			} else {
